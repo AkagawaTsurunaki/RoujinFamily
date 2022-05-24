@@ -31,12 +31,19 @@ public class Table <T> {
 		data.add(seg);
 	}
 	
-	public void removeDataSeg(T seg) {
+	public boolean removeDataSeg(T seg) {
 		for(T t : data) {
 			if(t.equals(seg)) {
 				data.remove(t);
+				return true;
 			}
 		}
+		return false;
+	}
+	
+	public void clear() {
+		this.idCount = 0;
+		data.clear();
 	}
 	
 }
