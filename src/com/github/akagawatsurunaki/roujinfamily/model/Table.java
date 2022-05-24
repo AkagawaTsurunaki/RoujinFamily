@@ -4,16 +4,39 @@ import java.util.List;
 
 public class Table <T> {
 
-	int idCount;
-	List<T> data;
+	private int idCount;
+	private List<T> data;
 	
+	// #region Constructor and setters and getters
 	public Table(int idCount, List<T> data) {
 		this.idCount = idCount;
 		this.data = data;
 	}
-	
-	public List<T> getDataList() {
+	public void setIdCount(int idCount) {
+		this.idCount = idCount;
+	}
+	public int getIdCount() {
+		return idCount;
+	}
+	public List<T> getData() {
 		return data;
+	}
+	public void setData(List<T> data) {
+		this.data = data;
+	}
+	// #endregion
+	
+	public void addDataSeg(T seg) {
+		idCount++;
+		data.add(seg);
+	}
+	
+	public void removeDataSeg(T seg) {
+		for(T t : data) {
+			if(t.equals(seg)) {
+				data.remove(t);
+			}
+		}
 	}
 	
 }

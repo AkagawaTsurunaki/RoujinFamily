@@ -71,7 +71,6 @@ public class LoginFrame extends JFrame {
 		JButton btnNewButton = new JButton("返回");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("系统准备退出");
 				System.exit(EXIT_ON_CLOSE);
 			}
 		});
@@ -81,23 +80,20 @@ public class LoginFrame extends JFrame {
 		JButton btnNewButton_1 = new JButton("确定");
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-				String nm = textField.getText();
-				//nm.substring(0, Constants.MAX_USERNAME_LENGYH);
-				String psw = new String(passwordField.getPassword());
-				//psw.substring(0, Constants.MAX_PASSWORD_LENGTH);
-				
+				String userName = textField.getText();
+				String password = new String(passwordField.getPassword());
 				try {
-					if(LoginController.getInstance().rqslogin(nm, psw)) {
+					if(LoginController.getInstance().rqslogin(userName, password)) {
 						System.out.println("登陆成功");
 					}
 					else {
-						loginFailed("密码错误。", "登陆失败");
+						msgBox("密码错误。", "登陆失败");
 					}
-				} catch (UserInfoDataReadingException e1) {
-					loginFailed("不能读取用户文件。", "登陆失败");
 				} catch (UserNotFoundException e2) {
-					loginFailed("找不到该用户。", "登陆失败");
+					msgBox("找不到该用户。", "登陆失败");
+				} catch (UserInfoDataReadingException e1) {
+					msgBox("用户文件读取失败。\n目标文件访问被拒或目标文件不存在或目标文件已损坏。", "登陆失败");
+					System.exit(ERROR);
 				}
 			}
 		});
@@ -108,8 +104,8 @@ public class LoginFrame extends JFrame {
 		passwordField.setBounds(174, 144, 228, 21);
 		contentPane.add(passwordField);
 	}
-	void loginFailed(String msg, String title) {
+
+	public void msgBox(String msg, String title) {
 		JOptionPane.showMessageDialog(this, msg, title, JOptionPane.OK_OPTION);
 	}
-	
 }
