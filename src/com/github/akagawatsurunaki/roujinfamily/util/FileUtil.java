@@ -22,6 +22,9 @@ public class FileUtil {
 		printWriter.write(content);
 		printWriter.flush();
 		printWriter.close();
+		bufferedWriter.close();
+		outputStreamWriter.close();
+		fileOutputStream.close();
 	}
 
 	public static String readFile(String filePath) throws IOException {
@@ -35,6 +38,8 @@ public class FileUtil {
 			stringBuilder.append(line).append("\r\n");
 		}
 		bufferedReader.close();
+		inputStreamReader.close();
+		fileInputStream.close();
 		return stringBuilder.toString();
 	}
 
