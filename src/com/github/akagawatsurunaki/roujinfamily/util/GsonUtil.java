@@ -1,24 +1,14 @@
 package com.github.akagawatsurunaki.roujinfamily.util;
 
 import com.github.akagawatsurunaki.roujinfamily.model.Gender;
+import com.github.akagawatsurunaki.roujinfamily.model.Member;
 import com.github.akagawatsurunaki.roujinfamily.model.Role;
 import com.github.akagawatsurunaki.roujinfamily.model.Table;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
 import java.lang.reflect.Type;
-import java.nio.charset.StandardCharsets;
-import java.text.Format;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Formatter;
 import java.util.List;
-
-import com.github.akagawatsurunaki.roujinfamily.exception.UserInfoDataReadingException;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;
@@ -148,6 +138,30 @@ public class GsonUtil {
 	
 	public static User fromJsonToUser(String json) {
 		return glbGson.fromJson(json, new TypeToken<User>() {}.getType());
+	}
+	
+	public static String fromMemberTableToJson(Table<Member> memberTable) {
+		return glbGson.toJson(memberTable, new TypeToken<Table<Member>>() {}.getType());
+	}
+	
+	public static Table<Member> fromJsonToMemberTable(String json){
+		return glbGson.fromJson(json, new TypeToken<Table<Member>>() {}.getType());
+	}
+	
+	public static String fromMembersToJson(List<Member> memberList) {
+		return glbGson.toJson(memberList, new TypeToken<List<Member>>() {}.getType());
+	}
+	
+	public static List<Member> fromJsonToMembers(String json) {
+		return glbGson.fromJson(json, new TypeToken<List<Member>>() {}.getType());
+	}
+	
+	public static String fromMemberToJson(Member member) {
+		return glbGson.toJson(member, new TypeToken<Member>() {}.getType());
+	}
+	
+	public static Member fromJsonToMember(String json) {
+		return glbGson.fromJson(json, new TypeToken<Member>() {}.getType());
 	}
 
 	

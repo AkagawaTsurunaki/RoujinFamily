@@ -1,15 +1,10 @@
 package com.github.akagawatsurunaki.roujinfamily.view;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
 import com.github.akagawatsurunaki.roujinfamily.controller.UserManagementController;
 import com.github.akagawatsurunaki.roujinfamily.model.Role;
-
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.JRadioButton;
@@ -162,7 +157,6 @@ public class NewUserFrame extends JFrame {
 		btnNewButton = new JButton("È¡Ïû");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				UserManagementController.getInstance().freezeMngmtMainFrame(false);
 				NewUserFrame.this.dispose();
 				UserManagementController.getInstance().showMainFrame();
 			}
