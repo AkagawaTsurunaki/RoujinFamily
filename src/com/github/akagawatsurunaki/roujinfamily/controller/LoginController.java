@@ -1,12 +1,9 @@
 package com.github.akagawatsurunaki.roujinfamily.controller;
 
-import javax.swing.JOptionPane;
-
 import com.github.akagawatsurunaki.roujinfamily.exception.UserInfoDataReadingException;
 import com.github.akagawatsurunaki.roujinfamily.exception.UserNotFoundException;
 import com.github.akagawatsurunaki.roujinfamily.service.LoginService;
 import com.github.akagawatsurunaki.roujinfamily.service.LoginServiceImpl;
-import com.github.akagawatsurunaki.roujinfamily.view.LoginFrame;
 
 public class LoginController {
 	

@@ -17,7 +17,7 @@ public class UserDaoImpl implements UserDao {
 	private static UserDao instance = new UserDaoImpl();
 	private static final String filePath = "C:\\Users\\96514\\Desktop\\save\\Test.json";
 	private static User loginUser;
-	private Table<User> usersTable;
+	private Table<User> userTable;
 
 	public static UserDao getInstance() {
 		if (instance == null) {
@@ -48,7 +48,7 @@ public class UserDaoImpl implements UserDao {
 	public void loadAllUsersFromFile() throws UserInfoDataReadingException {
 		try {
 			String str = FileUtil.readFile(filePath);
-			this.usersTable = GsonUtil.fromJsonToUserTable(str);
+			this.userTable = GsonUtil.fromJsonToUserTable(str);
 		} catch (IOException e) {
 			throw new UserInfoDataReadingException("读取用户信息文件失败。");
 		}
@@ -56,7 +56,7 @@ public class UserDaoImpl implements UserDao {
 
 	@Override
 	public void saveAllUsersToFile() throws UserInfoDataWritingException {
-		String dataStr = GsonUtil.fromUserTableToJson(usersTable);
+		String dataStr = GsonUtil.fromUserTableToJson(userTable);
 		try {
 			FileUtil.writeFile(filePath, dataStr);
 		} catch (IOException e) {
@@ -65,14 +65,14 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
-	public Table<User> getUsersTable() {
-		return this.usersTable;
+	public Table<User> getUserTable() {
+		return this.userTable;
 	}
 
 	@Override
 	public boolean addUser(User newUser) throws UserInfoDataWritingException, UserInfoInvalidException {
 		
-		List<User> userList = getUsersTable().getData();
+		List<User> userList = getUserTable().getData();
 		for (User user : userList) {
 			if(user.getId() == newUser.getId()) {
 				user.setUserName(newUser.getUserName());
@@ -87,8 +87,8 @@ public class UserDaoImpl implements UserDao {
 			}
 		}
 		
-		newUser.setId(usersTable.getIdCount() + 1);
-		usersTable.addDataSeg(newUser);
+		newUser.setId(userTable.getIdCount() + 1);
+		userTable.addDataSeg(newUser);
 		saveAllUsersToFile();
 			
 		
@@ -97,21 +97,21 @@ public class UserDaoImpl implements UserDao {
 
 	@Override
 	public boolean clearUserTable() throws UserInfoDataWritingException {
-		usersTable.clear();
+		userTable.clear();
 		saveAllUsersToFile();
 		return true;
 	}
 
 	@Override
 	public boolean removeUser(int id) throws UserInfoDataWritingException, UserNotFoundException {
-		usersTable.removeDataSeg(findUserById(id)); 
+		userTable.removeDataSeg(findUserById(id)); 
 		saveAllUsersToFile();
 		return true; 
 		
 	}
 	@Override
 	public User findUserByUserName(String userName) throws UserNotFoundException {
-		List<User> userList = getUsersTable().getData();
+		List<User> userList = getUserTable().getData();
 		for (User user : userList) {
 			if (userName.equals(user.getUserName())) {
 				return user;
@@ -121,7 +121,7 @@ public class UserDaoImpl implements UserDao {
 	}
 	@Override
 	public User findUserById(int id) throws UserNotFoundException {
-		List<User> userList = getUsersTable().getData();
+		List<User> userList = getUserTable().getData();
 		for (User user : userList) {
 			if (user.getId() == id) {
 				return user;
