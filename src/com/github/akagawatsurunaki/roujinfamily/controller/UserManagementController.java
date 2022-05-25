@@ -6,12 +6,14 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 import com.github.akagawatsurunaki.roujinfamily.exception.UserInfoDataReadingException;
 import com.github.akagawatsurunaki.roujinfamily.exception.UserInfoDataWritingException;
 import com.github.akagawatsurunaki.roujinfamily.exception.UserInfoInvalidException;
+import com.github.akagawatsurunaki.roujinfamily.exception.UserNotFoundException;
 import com.github.akagawatsurunaki.roujinfamily.model.Gender;
 import com.github.akagawatsurunaki.roujinfamily.model.Role;
 import com.github.akagawatsurunaki.roujinfamily.model.Table;
@@ -55,7 +57,6 @@ public class UserManagementController {
 	private void showMainFrame() {
 		this.managementMainFrame = new UserManagementFrame();
 		managementMainFrame.setVisible(true);
-		rqsLoadAllUsers();
 		updateUserTableContent();
 	}
 
@@ -63,7 +64,7 @@ public class UserManagementController {
 		try {
 			rqsLoadAllUsers();
 			List<User> usersList = service.getUsersTable().getData();
-			String[] tableTitle = {"身份标识", "账户", "姓名", "性别", "出生日期", "电话", "权限" };
+			String[] tableTitle = { "身份标识", "账户", "姓名", "性别", "出生日期", "电话", "权限" };
 			String[][] tableContent = new String[usersList.size()][tableTitle.length];
 			int i = 0;
 			for (User u : usersList) {
@@ -78,7 +79,7 @@ public class UserManagementController {
 				}
 			};
 
-			managementMainFrame.tableContent(tableModel);
+			managementMainFrame.updateUserTableContent(tableModel);
 
 		} catch (UserInfoDataReadingException e) {
 			errMsgBox("用户文件读取失败。\n文件不存在或不可读。", "读取文件时遇到问题");
@@ -94,44 +95,99 @@ public class UserManagementController {
 		newUserFrame = new NewUserFrame();
 		newUserFrame.setVisible(true);
 	}
-	
+
 	public void freezeMngmtMainFrame(boolean b) {
 		managementMainFrame.setEnabled(b);
-		
+
 	}
-	
+
 	public void rqsAddUser() {
 		freezeMngmtMainFrame(true);
-		
-		int id = -1;
-		String userName = newUserFrame.getUserNameTxtFld().getText();
-		String password = newUserFrame.getPasswordTxtFld().getText();
-		String realName = newUserFrame.getRealNameTxtFld().getText();
-		
-		Gender gender =
-				newUserFrame.getFemaleRdBt().isSelected()
-				? Gender.FEMALE : Gender.MALE;
 
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-M-d");
-		LocalDate birthday = LocalDate.parse(newUserFrame.getBirthdayTxtFld().getText(), formatter);
-		String telNumber = newUserFrame.getTelNumTxtFld().getText();
-		
-		Role role = (Role) newUserFrame.getRoleCbBox().getSelectedItem();
-				
 		try {
-			User user = new User(id, userName, password, realName, gender, birthday, telNumber, role);
-			if(service.addUser(user)) {
-				updateUserTableContent();
-			}
+			service.addUser(rqsPackUser());
 		} catch (UserInfoInvalidException e) {
 			errMsgBox(e.getErrorMessage(), "非法输入");
 		} catch (UserInfoDataWritingException e) {
-			// TODO Auto-generated catch block
 			errMsgBox("用户文件读取失败。\n文件不存在或不可读。", "读取文件时遇到问题");
 		}
+
+		updateUserTableContent();
+	}
+
+	private User rqsPackUser() throws UserInfoInvalidException {
+		int id = newUserFrame.getUserId();
+		String userName = newUserFrame.getUserNameTxtFld().getText();
+		String password = newUserFrame.getPasswordTxtFld().getText();
+		String realName = newUserFrame.getRealNameTxtFld().getText();
+		Gender gender = newUserFrame.getFemaleRdBt().isSelected() ? Gender.FEMALE : Gender.MALE;
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-M-d");
+		LocalDate birthday = LocalDate.parse(newUserFrame.getBirthdayTxtFld().getText(), formatter);
+		String telNumber = newUserFrame.getTelNumTxtFld().getText();
+
+		Role role = (Role) newUserFrame.getRoleCbBox().getSelectedItem();
+
+		User user = new User(id, userName, password, realName, gender, birthday, telNumber, role);
+
+		return user;
 	}
 
 	public void rqsRemoveUser() {
+		JTable table = managementMainFrame.getTable();
+		int[] slcRowsIndex = table.getSelectedRows();
+		for (int i : slcRowsIndex) {
+			int id = Integer.parseInt(table.getValueAt(i, 0).toString());
+	
+			try {
+				service.removeUser(id);
+			} catch (UserInfoDataWritingException e) {
+				errMsgBox("用户文件写入失败。\n文件不存在或不可写入。", "写入文件时遇到问题");
+			} catch (UserNotFoundException e) {
+				errMsgBox("删除指定用户失败。\n用户不存在。", "删除用户时遇到问题");
+			}
+		}
+		updateUserTableContent();
+	}
+	
+	public User rqsFindUserById(int id) throws UserNotFoundException {
+		return service.findUserById(id);
+	}
+
+	public void showEditUserFrame() {
+		
+		showNewUserFrame();
+		
+		JTable table = managementMainFrame.getTable();
+		int slcRowIndex = table.getSelectedRow();
+		if(slcRowIndex == -1) {
+			return;
+		}
+		int id = Integer.parseInt(table.getValueAt(slcRowIndex, 0).toString());
+		User user;
+		
+		
+		
+		try {
+			user = rqsFindUserById(id);
+			newUserFrame.setUserId(user.getId());
+			newUserFrame.getUserNameTxtFld().setText(user.getUserName());
+			newUserFrame.getPasswordTxtFld().setText(user.getPassword());
+			newUserFrame.getRealNameTxtFld().setText(user.getRealName());
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-M-d");
+			String birthday = formatter.format(user.getBirthday());
+			newUserFrame.getBirthdayTxtFld().setText(birthday);
+			newUserFrame.getTelNumTxtFld().setText(user.getTelNumber());
+			if(user.getGender() == Gender.FEMALE) {
+				newUserFrame.getFemaleRdBt().setSelected(true);
+			}
+			else {
+				newUserFrame.getFemaleRdBt().setSelected(false);
+			}
+			newUserFrame.getRoleCbBox().setSelectedItem(user.getRole());
+			
+		} catch (UserNotFoundException e) {
+			errMsgBox("修改指定用户失败。\n用户不存在。", "修改用户时遇到问题");
+		}
 		
 	}
 }

@@ -22,7 +22,13 @@ import java.awt.event.ActionEvent;
 public class UserManagementFrame extends JFrame {
 
 	private JPanel contentPane;
-	private JTable table;
+	private JTable table = new JTable();
+	JScrollBar scrollBar  = new JScrollBar();
+	JScrollPane scrollPane = new JScrollPane(table);
+	
+	public JTable getTable(){
+		return table;
+	}
 
 	/**
 	 * Create the frame.
@@ -46,6 +52,12 @@ public class UserManagementFrame extends JFrame {
 		contentPane.add(btnNewButton);
 		
 		JButton btnNewButton_1 = new JButton("删除");
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				UserManagementController.getInstance().rqsRemoveUser();
+			}
+		});
 		btnNewButton_1.setBounds(164, 67, 103, 38);
 		contentPane.add(btnNewButton_1);
 		
@@ -62,6 +74,11 @@ public class UserManagementFrame extends JFrame {
 		contentPane.add(btnNewButton_4);
 		
 		JButton btnNewButton_5 = new JButton("更改权限");
+		btnNewButton_5.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				UserManagementController.getInstance().showEditUserFrame();
+			}
+		});
 		btnNewButton_5.setBounds(51, 363, 103, 40);
 		contentPane.add(btnNewButton_5);
 		
@@ -77,20 +94,18 @@ public class UserManagementFrame extends JFrame {
 		
 	}
 	
-	public void tableContent(TableModel tableModel) {
-		JScrollBar scrollBar = new JScrollBar();
+	public void updateUserTableContent(TableModel tableModel) {
+		
 		scrollBar.setBounds(586, 137, 17, 212);
 		contentPane.add(scrollBar);
-		table = new JTable();
 		table.setVisible(true);
 		table.setBounds(51, 137, 537, 212);
 		contentPane.add(table);
 		table.getTableHeader().setVisible(true);
 		table.setModel(tableModel);
 		table.setEnabled(true);
-		JScrollPane scrollPane = new JScrollPane(table);
 		scrollPane.setBounds(51, 133, 553, 215);
 		contentPane.add(scrollPane);
-		 
+
 	}
 }

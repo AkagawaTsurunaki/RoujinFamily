@@ -10,12 +10,13 @@ import com.github.akagawatsurunaki.roujinfamily.model.User;
 
 public interface UserManagementService {
 
-	public boolean addUser(User user)throws UserInfoDataWritingException;
+	public boolean addUser(User user)throws UserInfoDataWritingException, UserInfoInvalidException;
 	public boolean clearAllUsers() throws UserInfoDataWritingException;
-	public boolean removeUser(User user) throws UserInfoDataWritingException;
-	public boolean editUser(User newUser, User oriUser) throws UserInfoDataWritingException, UserInfoInvalidException;
+	public boolean removeUser(int id) throws UserInfoDataWritingException, UserNotFoundException;
+	
 	public User findUserByName(String userName) throws UserNotFoundException;
 	public boolean loadAllUsers() throws UserInfoDataReadingException;
 	public Table<User> getUsersTable() throws UserInfoDataReadingException;
+	User findUserById(int id) throws UserNotFoundException;
 
 }
