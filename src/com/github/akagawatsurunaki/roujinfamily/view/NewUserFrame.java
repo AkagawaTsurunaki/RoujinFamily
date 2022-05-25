@@ -162,7 +162,9 @@ public class NewUserFrame extends JFrame {
 		btnNewButton = new JButton("取消");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				UserManagementController.getInstance().freezeMngmtMainFrame(false);
 				NewUserFrame.this.dispose();
+				UserManagementController.getInstance().showMainFrame();
 			}
 		});
 		btnNewButton.setBounds(276, 570, 127, 40);
@@ -171,8 +173,7 @@ public class NewUserFrame extends JFrame {
 		btnNewButton_1 = new JButton("确定");
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				UserManagementController c = UserManagementController.getInstance();
-				c.rqsAddUser();
+				UserManagementController.getInstance().rqsAddUser();
 				NewUserFrame.this.dispose();
 			}
 		});
