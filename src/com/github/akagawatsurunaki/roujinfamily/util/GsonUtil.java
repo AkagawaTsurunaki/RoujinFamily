@@ -33,6 +33,7 @@ import com.github.akagawatsurunaki.roujinfamily.model.User;
 
 public class GsonUtil {
 	// #region Regist Global Gson
+
 	// Regist a global gson in order to serialize and deserialize.
 	private static Gson glbGson = new GsonBuilder()
 	  .registerTypeAdapter(LocalDate.class, new JsonSerializer<LocalDate>() {
@@ -94,10 +95,10 @@ public class GsonUtil {
 		@Override
 		public Gender deserialize(JsonElement jsonElement, Type sourceType, JsonDeserializationContext context) throws JsonParseException {
 			String genderStr = jsonElement.getAsString();
-			if(genderStr.equals("male")) {
+			if(genderStr.equals("MALE")) {
 				return Gender.MALE;
 			}
-			else if(genderStr.equals("female")) {
+			else if(genderStr.equals("FEMALE")) {
 				return Gender.FEMALE;
 			}
 			else {
@@ -108,13 +109,13 @@ public class GsonUtil {
 		@Override
 		public Role deserialize(JsonElement jsonElement, Type sourceType, JsonDeserializationContext context) throws JsonParseException {
 			String genderStr = jsonElement.getAsString();
-			if(genderStr.equals("admin")) {
+			if(genderStr.equals("ADMINISTRATOR")) {
 				return Role.ADMINISTRATOR;
 			}
-			else if(genderStr.equals("houseKeeper")) {
+			else if(genderStr.equals("HOUSE_KEEPER")) {
 				return Role.HOUSE_KEEPER;
 			}
-			else if(genderStr.equals("logistics")) {
+			else if(genderStr.equals("LOGISTICS")) {
 				return Role.LOGISTICS;
 			}
 			else {

@@ -7,7 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import com.github.akagawatsurunaki.roujinfamily.Controller.LoginController;
+import com.github.akagawatsurunaki.roujinfamily.controller.LoginController;
 import com.github.akagawatsurunaki.roujinfamily.exception.UserInfoDataReadingException;
 import com.github.akagawatsurunaki.roujinfamily.exception.UserNotFoundException;
 import com.github.akagawatsurunaki.roujinfamily.model.Constants;

@@ -1,4 +1,4 @@
-package com.github.akagawatsurunaki.roujinfamily.Controller;
+package com.github.akagawatsurunaki.roujinfamily.controller;
 
 import javax.swing.JOptionPane;
 
