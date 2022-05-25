@@ -22,8 +22,8 @@ public class UserManagementServiceImpl implements UserManagementService {
 	private static UserDao userDao = UserDaoImpl.getInstance();
 	
 	@Override
-	public boolean addUser(User user) throws UserInfoDataWritingException {
-		return userDao.addUser(user);
+	public boolean addUser(User newUser) throws UserInfoDataWritingException, UserInfoInvalidException {
+		return userDao.addUser(newUser);
 	}
 	
 	@Override
@@ -32,16 +32,16 @@ public class UserManagementServiceImpl implements UserManagementService {
 	}
 
 	@Override
-	public boolean removeUser(User user) throws UserInfoDataWritingException {
-		return userDao.removeUser(user);
-	}
-	@Override
-	public boolean editUser(User newUser, User oriUser) throws UserInfoDataWritingException, UserInfoInvalidException {
-		return userDao.editUser(newUser, oriUser);
+	public boolean removeUser(int id) throws UserInfoDataWritingException, UserNotFoundException {
+		return userDao.removeUser(id);
 	}
 	@Override
 	public User findUserByName(String userName) throws UserNotFoundException {
 		return userDao.findUserByUserName(userName);
+	}
+	@Override
+	public User findUserById(int id) throws UserNotFoundException {
+		return userDao.findUserById(id);
 	}
 	@Override
 	public boolean loadAllUsers() throws UserInfoDataReadingException {

@@ -70,37 +70,11 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
-	public boolean addUser(User user) throws UserInfoDataWritingException {
-		if (usersTable != null) {
-			user.setId(usersTable.getIdCount() + 1);
-			usersTable.addDataSeg(user);
-			saveAllUsersToFile();
-			return true;
-		}
-		return false;
-	}
-
-	@Override
-	public boolean clearUserTable() throws UserInfoDataWritingException {
-		usersTable.clear();
-		saveAllUsersToFile();
-		return true;
-	}
-
-	@Override
-	public boolean removeUser(User user) throws UserInfoDataWritingException {
+	public boolean addUser(User newUser) throws UserInfoDataWritingException, UserInfoInvalidException {
 		
-		if(usersTable.removeDataSeg(user)) {
-			saveAllUsersToFile();
-			return true;
-		}
-		return false;
-	}
-	@Override
-	public boolean editUser(User newUser, User oriUser) throws UserInfoDataWritingException, UserInfoInvalidException {
 		List<User> userList = getUsersTable().getData();
 		for (User user : userList) {
-			if(user.getId() == oriUser.getId()) {
+			if(user.getId() == newUser.getId()) {
 				user.setUserName(newUser.getUserName());
 				user.setPassword(newUser.getPassword());
 				user.setRealName(newUser.getRealName());
@@ -112,7 +86,28 @@ public class UserDaoImpl implements UserDao {
 				return true;
 			}
 		}
+		
+		newUser.setId(usersTable.getIdCount() + 1);
+		usersTable.addDataSeg(newUser);
+		saveAllUsersToFile();
+			
+		
 		return false;
+	}
+
+	@Override
+	public boolean clearUserTable() throws UserInfoDataWritingException {
+		usersTable.clear();
+		saveAllUsersToFile();
+		return true;
+	}
+
+	@Override
+	public boolean removeUser(int id) throws UserInfoDataWritingException, UserNotFoundException {
+		usersTable.removeDataSeg(findUserById(id)); 
+		saveAllUsersToFile();
+		return true; 
+		
 	}
 	@Override
 	public User findUserByUserName(String userName) throws UserNotFoundException {
@@ -124,6 +119,17 @@ public class UserDaoImpl implements UserDao {
 		}
 		throw new UserNotFoundException("用户不存在。");
 	}
+	@Override
+	public User findUserById(int id) throws UserNotFoundException {
+		List<User> userList = getUsersTable().getData();
+		for (User user : userList) {
+			if (user.getId() == id) {
+				return user;
+			}
+		}
+		throw new UserNotFoundException("用户不存在。");
+	}
+
 
 	
 

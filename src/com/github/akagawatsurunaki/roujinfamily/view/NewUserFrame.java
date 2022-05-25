@@ -70,6 +70,14 @@ public class NewUserFrame extends JFrame {
 	private JComboBox<Role> roleCbBox;
 	private JButton btnNewButton;
 	private JButton btnNewButton_1;
+	private int userId = -1;
+	
+	public int getUserId() {
+		return userId;
+	}
+	public void setUserId(int id) {
+		userId = id;
+	}
 	
 	
 

@@ -23,12 +23,11 @@ public interface UserDao {
 
 	// Add new User into static table and save it automatcially
 	// If update and save successfully, it will return TRUE
-	public boolean addUser(User user) throws UserInfoDataWritingException;
+	public boolean addUser(User user) throws UserInfoDataWritingException, UserInfoInvalidException;
 	// Clear the whole user table and save it to the file.
 	public boolean clearUserTable() throws UserInfoDataWritingException;
 	//
-	public boolean removeUser(User user) throws UserInfoDataWritingException;
+	public boolean removeUser(int id) throws UserInfoDataWritingException, UserNotFoundException;
 	//
-	public boolean editUser(User newUser, User oriUser) throws UserInfoDataWritingException, UserInfoInvalidException;
-
+	public User findUserById(int id) throws UserNotFoundException;
 }

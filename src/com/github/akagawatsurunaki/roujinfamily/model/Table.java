@@ -41,6 +41,7 @@ public class Table <T> {
 		return false;
 	}
 	
+	
 	public void clear() {
 		this.idCount = 0;
 		data.clear();
