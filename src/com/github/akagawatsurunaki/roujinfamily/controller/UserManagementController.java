@@ -54,7 +54,7 @@ public class UserManagementController {
 		}
 	}
 
-	private void showMainFrame() {
+	public void showMainFrame() {
 		this.managementMainFrame = new UserManagementFrame();
 		managementMainFrame.setVisible(true);
 		updateUserTableContent();
@@ -102,6 +102,7 @@ public class UserManagementController {
 	}
 
 	public void rqsAddUser() {
+		
 		freezeMngmtMainFrame(true);
 
 		try {
@@ -152,20 +153,18 @@ public class UserManagementController {
 	public User rqsFindUserById(int id) throws UserNotFoundException {
 		return service.findUserById(id);
 	}
-
+	// Show Edit User Frame (New User Frame)
 	public void showEditUserFrame() {
-		
-		showNewUserFrame();
 		
 		JTable table = managementMainFrame.getTable();
 		int slcRowIndex = table.getSelectedRow();
 		if(slcRowIndex == -1) {
 			return;
 		}
+		freezeMngmtMainFrame(false);
+		showNewUserFrame();
 		int id = Integer.parseInt(table.getValueAt(slcRowIndex, 0).toString());
 		User user;
-		
-		
 		
 		try {
 			user = rqsFindUserById(id);

@@ -73,7 +73,7 @@ public class UserManagementFrame extends JFrame {
 		btnNewButton_4.setBounds(503, 67, 103, 38);
 		contentPane.add(btnNewButton_4);
 		
-		JButton btnNewButton_5 = new JButton("更改权限");
+		JButton btnNewButton_5 = new JButton("修改信息");
 		btnNewButton_5.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				UserManagementController.getInstance().showEditUserFrame();
@@ -85,7 +85,7 @@ public class UserManagementFrame extends JFrame {
 		JButton btnNewButton_6 = new JButton("退出");
 		btnNewButton_6.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.exit(EXIT_ON_CLOSE);
+				System.exit(0);
 			}
 		});
 		btnNewButton_6.setBounds(500, 362, 103, 42);
