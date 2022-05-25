@@ -1,5 +1,3 @@
 # RoujinFamily
-NEU Homework
-2022/5/23
-The work about login UI were completed.
-This segment has been tested deficiently.
+**Northeastern University (China) Basic Programming Training.**
+It's my pleasure to help you.
