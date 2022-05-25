@@ -77,7 +77,6 @@ public class UserDaoImpl implements UserDao {
 			saveAllUsersToFile();
 			return true;
 		}
-		
 		return false;
 	}
 

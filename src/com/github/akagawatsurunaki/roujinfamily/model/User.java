@@ -1,10 +1,14 @@
 package com.github.akagawatsurunaki.roujinfamily.model;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.regex.Pattern;
+
+import javax.swing.text.DateFormatter;
 
 import com.github.akagawatsurunaki.roujinfamily.exception.UserInfoInvalidException;
 import com.github.akagawatsurunaki.roujinfamily.util.Matcher;
+import com.google.gson.JsonPrimitive;
 public class User {
 
 	//#region Properties
@@ -142,6 +146,19 @@ public class User {
 	}
 	//#endregion
 	
+	public String[] toStringArray() {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-M-d");
+		String[] retArr = { 
+				Integer.toString(id), 
+				userName, 
+				realName, 
+				gender.toString(),
+				formatter.format(birthday),
+				telNumber,
+				role.toString()
+		};
+		return retArr;
+	}
 
 	
 }

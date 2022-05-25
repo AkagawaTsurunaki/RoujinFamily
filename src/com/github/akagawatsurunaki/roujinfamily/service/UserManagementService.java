@@ -1,9 +1,11 @@
 package com.github.akagawatsurunaki.roujinfamily.service;
 
 import com.github.akagawatsurunaki.roujinfamily.dao.*;
+import com.github.akagawatsurunaki.roujinfamily.exception.UserInfoDataReadingException;
 import com.github.akagawatsurunaki.roujinfamily.exception.UserInfoDataWritingException;
 import com.github.akagawatsurunaki.roujinfamily.exception.UserInfoInvalidException;
 import com.github.akagawatsurunaki.roujinfamily.exception.UserNotFoundException;
+import com.github.akagawatsurunaki.roujinfamily.model.Table;
 import com.github.akagawatsurunaki.roujinfamily.model.User;
 
 public interface UserManagementService {
@@ -13,5 +15,7 @@ public interface UserManagementService {
 	public boolean removeUser(User user) throws UserInfoDataWritingException;
 	public boolean editUser(User newUser, User oriUser) throws UserInfoDataWritingException, UserInfoInvalidException;
 	public User findUserByName(String userName) throws UserNotFoundException;
+	public boolean loadAllUsers() throws UserInfoDataReadingException;
+	public Table<User> getUsersTable() throws UserInfoDataReadingException;
 
 }

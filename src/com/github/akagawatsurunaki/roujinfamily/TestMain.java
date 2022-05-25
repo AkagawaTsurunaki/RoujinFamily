@@ -74,25 +74,8 @@ public class TestMain {
 	            "13999999999",
 	            Role.HOUSE_KEEPER
 				);
-		
-		UserDao dao = UserDaoImpl.getInstance();
-		UserManagementService serv = UserManagementServiceImpl.getInstance();
-		try {
-			System.out.println("Dao crearting...");
-			
-			dao.loadAllUsersFromFile();
-			Table<User> t = dao.getUsersTable();
-			serv.clearAllUsers();
-			serv.addUser(admin);
-			System.out.println(serv.addUser(user));
-			System.out.println(serv.addUser(user2));
-			System.out.println(serv.removeUser(user));
-			System.out.println(serv.editUser(newUser, user2));
-			System.out.println(serv.findUserByName("TestChange"));
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		String[] sA = newUser.toStringArray();
+		System.out.println(sA[4]);
 		
 	};
 

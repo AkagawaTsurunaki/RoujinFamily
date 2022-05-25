@@ -1,7 +1,20 @@
 package com.github.akagawatsurunaki.roujinfamily.model;
 
 public enum Role {
-	ADMINISTRATOR,
-	HOUSE_KEEPER,
-	LOGISTICS
+	ADMINISTRATOR {
+		public String toString() {
+			return "管理员";
+		}
+	},
+	HOUSE_KEEPER{
+		public String toString() {
+			return "生活管家";
+		}
+	},
+	LOGISTICS{
+		public String toString() {
+			return "后勤管理";
+		}
+	}
+	
 }
