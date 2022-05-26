@@ -7,4 +7,5 @@ import com.github.akagawatsurunaki.roujinfamily.model.Role;
 public interface LoginService {
 	public void initialize() throws FileReadingException;
 	public Role login(String nm, String rawPsw) throws ObjectNotFoundException, FileReadingException;
+	int findUserIdByPassword(String password);
 }

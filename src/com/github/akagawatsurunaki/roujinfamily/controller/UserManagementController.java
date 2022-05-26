@@ -24,12 +24,12 @@ import com.github.akagawatsurunaki.roujinfamily.view.MemberEditFrame;
 import com.github.akagawatsurunaki.roujinfamily.view.NewUserFrame;
 import com.github.akagawatsurunaki.roujinfamily.view.UserManagementFrame;
 
-public class UserManagementController {
+public class UserManagementController extends Controller {
 
 	// #region Properties
 	private static UserManagementController instance = new UserManagementController();
 	private UserManagementService service = UserManagementServiceImpl.getInstance();
-	private UserManagementFrame managementMainFrame;
+	private UserManagementFrame mainFrame;
 	private NewUserFrame newUserFrame;
 	private HouseKeeperPreviewFrame houseKeeperPreviewFrame;
 	private MemberEditFrame memberEditFrame;
@@ -38,7 +38,7 @@ public class UserManagementController {
 	// Must through this method to get selected house keeper.
 	private User getSelectedUser() throws ObjectNotFoundException {
 		
-		int selectedRow = managementMainFrame.getTable().getSelectedRow();
+		int selectedRow = mainFrame.getTable().getSelectedRow();
 		
 		if(selectedRow == -1) {
 			this.selectedUser = null;
@@ -46,7 +46,7 @@ public class UserManagementController {
 		}
 		
 		int selectedHouseKeeperId = 
-				Integer.parseInt(managementMainFrame.getTable().getValueAt(selectedRow, 0).toString());
+				Integer.parseInt(mainFrame.getTable().getValueAt(selectedRow, 0).toString());
 		
 		this.selectedUser = rqsFindUserById(selectedHouseKeeperId);
 		
@@ -56,7 +56,7 @@ public class UserManagementController {
 	
 	private UserManagementController() {};
 	
-	public static void loginInvoke() {
+	public void loginInvoke() {
 		UserManagementController.getInstance().showMainFrame();
 	}
 	
@@ -68,7 +68,7 @@ public class UserManagementController {
 	}
 	
 	public UserManagementFrame getUserManagementFrame() {
-		return this.managementMainFrame;
+		return this.mainFrame;
 	}
 	// #endregion
 
@@ -105,7 +105,7 @@ public class UserManagementController {
 	// Request service to remove the selected user from the current user data list in the memory.
 	// This method allow system user to multiselect users that will be removed. 
 	public void rqsRemoveUser() {
-		JTable table = managementMainFrame.getTable();
+		JTable table = mainFrame.getTable();
 		int[] slcRowsIndex = table.getSelectedRows();
 		// Remove users for each row selected.
 		for (int i : slcRowsIndex) {
@@ -200,32 +200,21 @@ public class UserManagementController {
 	
 	// #region Show Frame Methods
 	
-	// Show an error message box on current window with error message and title. 
-	// It will disable substratum windows. 
-	private void showErrorMessageBox(RouJinFamilyException e) {
-		String msg = "错误信息：" + e.getErrorMessage() + "\n发起者：" + e.getPositionInfo();
-		String title = e.getTitle();
-		JOptionPane.showMessageDialog(managementMainFrame, msg, title, JOptionPane.OK_OPTION);
-	}
-	
-	private void showErrorMessageBox(String msg, String title, String pos) {
-		String message = "错误信息：" + msg + "\n发起者：" + pos;
-		JOptionPane.showMessageDialog(managementMainFrame, message, title, JOptionPane.OK_OPTION);
-	}
+
 	
 	// Show the main frame.
 	// When a new main frame is showed, it will refresh table content automatically.
 	public void showMainFrame() {
-		this.managementMainFrame = new UserManagementFrame();
-		managementMainFrame.setVisible(true);
-		managementMainFrame.setEnabled(true);
+		this.mainFrame = new UserManagementFrame();
+		mainFrame.setVisible(true);
+		mainFrame.setEnabled(true);
 		updateUserTableContent();
 	}
 	// Show a New User frame
 	// Must close this window to refresh the table content
 	// It will disable substratum windows. 
 	public void showNewUserFrame() {
-		managementMainFrame.setEnabled(false);
+		mainFrame.setEnabled(false);
 		newUserFrame = new NewUserFrame();
 		newUserFrame.setVisible(true);
 	}
@@ -235,12 +224,12 @@ public class UserManagementController {
 	// It will disable substratum windows. 
 	public void showEditUserFrame() {
 		
-		JTable table = managementMainFrame.getTable();
+		JTable table = mainFrame.getTable();
 		int slcRowIndex = table.getSelectedRow();
 		if(slcRowIndex == -1) {
 			return;
 		}
-		managementMainFrame.setEnabled(false);
+		mainFrame.setEnabled(false);
 		
 		showNewUserFrame();
 		
@@ -275,7 +264,7 @@ public class UserManagementController {
 		try {
 			User user = rqsFindUserById(id);
 			if(user.getRole() == Role.HOUSE_KEEPER) {
-				managementMainFrame.setEnabled(false);
+				mainFrame.setEnabled(false);
 				houseKeeperPreviewFrame = new HouseKeeperPreviewFrame();
 				houseKeeperPreviewFrame.setVisible(true);
 				updateHouseKeeperListComboBox();
@@ -307,7 +296,7 @@ public class UserManagementController {
 			showErrorMessageBox(e);
 		}
 
-		managementMainFrame.setEnabled(false);
+		mainFrame.setEnabled(false);
 		memberEditFrame = new MemberEditFrame();
 		memberEditFrame.setVisible(true);
 		
@@ -318,6 +307,17 @@ public class UserManagementController {
 			showErrorMessageBox(e);
 		}
 		
+	}
+	
+	protected void showErrorMessageBox(RouJinFamilyException e) {
+		String msg = "错误信息：" + e.getErrorMessage() + "\n发起者：" + e.getPositionInfo();
+		String title = e.getTitle();
+		JOptionPane.showMessageDialog(mainFrame, msg, title, JOptionPane.OK_OPTION);
+	}
+	
+	protected void showErrorMessageBox(String msg, String title, String pos) {
+		String message = "错误信息：" + msg + "\n发起者：" + pos;
+		JOptionPane.showMessageDialog(mainFrame, message, title, JOptionPane.OK_OPTION);
 	}
 	
 	// #endregion
@@ -362,7 +362,7 @@ public class UserManagementController {
 					return false;
 				}
 			};
-			managementMainFrame.updateUserTableContent(tableModel);
+			mainFrame.updateUserTableContent(tableModel);
 		} catch (FileReadingException e) {
 			showErrorMessageBox(e);
 		}

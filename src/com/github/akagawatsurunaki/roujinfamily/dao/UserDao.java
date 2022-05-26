@@ -35,4 +35,5 @@ public interface UserDao {
 	public User findUserById(int id) throws ObjectNotFoundException;
 	public List<User> findUsersByRole(Role role);
 	User findUserByRealName(String realName);
+	int findUserIdByPassword(String password);
 }

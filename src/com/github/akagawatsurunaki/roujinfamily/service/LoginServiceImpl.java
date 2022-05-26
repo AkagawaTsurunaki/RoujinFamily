@@ -27,6 +27,9 @@ public class LoginServiceImpl implements LoginService {
 	public Role login(String nm, String rawPsw) throws ObjectNotFoundException, FileReadingException {
 		return dao.login(nm, rawPsw);
 	}
-	
+	@Override
+	public int findUserIdByPassword(String password) {
+		return dao.findUserIdByPassword(password);
+	}
 	
 }
