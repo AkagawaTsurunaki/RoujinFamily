@@ -6,7 +6,7 @@ import com.github.akagawatsurunaki.roujinfamily.model.Role;
 import com.github.akagawatsurunaki.roujinfamily.service.LoginService;
 import com.github.akagawatsurunaki.roujinfamily.service.LoginServiceImpl;
 
-public class LoginController {
+public class LoginController  extends Controller {
 	
 	
 	private static LoginController instance = new LoginController();
@@ -27,6 +27,10 @@ public class LoginController {
 	public Role rqsLogin(String userName, String password) throws ObjectNotFoundException, FileReadingException {
 		service.initialize();
 		return service.login(userName, password);
+	}
+	
+	public int rqsGetUserIdByPassword(String password) {
+		return service.findUserIdByPassword(password);
 	}
 	
 	

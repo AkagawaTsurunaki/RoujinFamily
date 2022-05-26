@@ -1,15 +1,9 @@
 package com.github.akagawatsurunaki.roujinfamily.view;
 
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
 import com.github.akagawatsurunaki.roujinfamily.controller.UserManagementController;
-import com.github.akagawatsurunaki.roujinfamily.model.Member;
-import com.github.akagawatsurunaki.roujinfamily.model.User;
-
-import javax.swing.JList;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JButton;
@@ -17,9 +11,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.ActionEvent;
-import javax.swing.JTextField;
 
-public class HouseKeeperPreviewFrame extends JFrame {
+public class HouseKeeperPreviewFrame extends Frame {
+
+
+	private static final long serialVersionUID = 1L;
 
 	private JPanel contentPane;
 	

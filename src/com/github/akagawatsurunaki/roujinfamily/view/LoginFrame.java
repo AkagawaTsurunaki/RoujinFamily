@@ -5,6 +5,8 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import com.github.akagawatsurunaki.roujinfamily.controller.HouseKeeperManagementController;
 import com.github.akagawatsurunaki.roujinfamily.controller.LoginController;
 import com.github.akagawatsurunaki.roujinfamily.controller.UserManagementController;
 import com.github.akagawatsurunaki.roujinfamily.exception.FileReadingException;
@@ -19,7 +21,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JPasswordField;
 
-public class LoginFrame extends JFrame {
+public class LoginFrame extends Frame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -83,13 +85,22 @@ public class LoginFrame extends JFrame {
 				try {
 					
 						Role role = LoginController.getInstance().rqsLogin(userName, password);
+						if(role == null) {
+							msgBox("您输入的密码错误。", "登陆失败");
+							LoginFrame.this.passwordField.setText("");
+							return;
+						}
+						
 						switch (role) {
 						case ADMINISTRATOR: {
-							UserManagementController.loginInvoke();
+							UserManagementController.getInstance().loginInvoke();
 							break;
 						}
 						case HOUSE_KEEPER: {
-							msgBox("该功能还未完成。", "登陆失败");
+							
+							int houseKeeperId = LoginController.getInstance().rqsGetUserIdByPassword(password);
+							HouseKeeperManagementController.getInstance().loginInvoke(houseKeeperId);
+							
 							break;
 						}
 						case LOGISTICS: {
@@ -97,12 +108,16 @@ public class LoginFrame extends JFrame {
 							break;
 						}
 						default:
-							msgBox("密码错误。", "登陆失败");
+							msgBox("您输入的密码错误。", "登陆失败");
+							LoginFrame.this.passwordField.setText("");
+							break;
 						}
 						LoginFrame.this.dispose();
 					
 				} catch (ObjectNotFoundException e2) {
 					msgBox("找不到该用户。", "登陆失败");
+					LoginFrame.this.textField.setText("");
+					LoginFrame.this.passwordField.setText("");
 				} catch (FileReadingException e1) {
 					msgBox("用户文件读取失败。\n目标文件访问被拒或目标文件不存在或目标文件已损坏。", "登陆失败");
 					System.exit(ERROR);

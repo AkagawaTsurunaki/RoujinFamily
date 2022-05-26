@@ -154,7 +154,16 @@ public class UserDaoImpl implements UserDao {
 		}
 		return null;
 	}
-	
+	@Override
+	public int findUserIdByPassword(String password) {
+		List<User> userList = getUserTable().getData();
+		for (User user : userList) {
+			if (user.getPassword().equals(password)) {
+				return user.getId();
+			}
+		}
+		return -1;
+	}
 
 
 	
