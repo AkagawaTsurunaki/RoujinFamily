@@ -2,7 +2,7 @@ package com.github.akagawatsurunaki.roujinfamily.model;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import com.github.akagawatsurunaki.roujinfamily.exception.UserInfoInvalidException;
+import com.github.akagawatsurunaki.roujinfamily.exception.CanNotMatchException;
 import com.github.akagawatsurunaki.roujinfamily.util.Matcher;
 
 public class User extends Member {
@@ -21,7 +21,7 @@ public class User extends Member {
 			Gender gender,
 			LocalDate birthday,
 			String telNumber,
-			Role role) throws UserInfoInvalidException {
+			Role role) throws CanNotMatchException {
 		setId(id);
 		setUserName(userName);
 		setPassword(password);
@@ -31,6 +31,7 @@ public class User extends Member {
 		setTelNumber(telNumber);
 		setRole(role);
 	}
+	
 
 	//#endregion
 
@@ -51,33 +52,33 @@ public class User extends Member {
 	
 	// #region Setters
 
-	public void setUserName(String userName) throws UserInfoInvalidException {
+	public void setUserName(String userName) throws CanNotMatchException {
 		if(Matcher.matchUserNamePattern(userName)) {
 			this.userName = userName;
 		}
 		else {
-			throw new UserInfoInvalidException("用户名只能是大写字母、小写字母和数字的组合，且长度限制在1到20个字符。");
+			throw new CanNotMatchException("用户名只能是大写字母、小写字母和数字的组合，且长度限制在1到20个字符。", "非法输入", "该错误是由模型层发起的。");
 		}
 	}
-	public void setPassword(String password) throws UserInfoInvalidException {
+	public void setPassword(String password) throws CanNotMatchException {
 		if(Matcher.matchPasswordPattern(password)) {
 			this.password = password;
 		}
 		else {
-			throw new UserInfoInvalidException("密码必须含有至少1个大写字母、1个小写字母、1个数字和@$!%*?&中的任意1个，且长度限制在8到20个字符。");
+			throw new CanNotMatchException("密码必须含有至少1个大写字母、1个小写字母、1个数字和@$!%*?&中的任意1个，且长度限制在8到20个字符。", "非法输入", "该错误是由模型层发起的。");
 		}
 	}
 
 
 
-	public void setRole(Role role) throws UserInfoInvalidException {
+	public void setRole(Role role) throws CanNotMatchException {
 		if (role == Role.ADMINISTRATOR ||
 			role == Role.HOUSE_KEEPER ||
 			role ==	Role.LOGISTICS) {
 			this.role = role;
 		}
 		else {
-			throw new UserInfoInvalidException("用户角色必须为管理员、生活管家、后勤管理中的一种。");
+			throw new CanNotMatchException("用户角色必须为管理员、生活管家、后勤管理中的一种。", "非法输入", "该错误是由模型层发起的。");
 		}
 	}
 	//#endregion

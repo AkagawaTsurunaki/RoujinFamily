@@ -52,20 +52,29 @@ public class UserManagementFrame extends JFrame {
 				UserManagementController.getInstance().rqsRemoveUser();
 			}
 		});
-		btnNewButton_1.setBounds(164, 67, 103, 38);
+		btnNewButton_1.setBounds(199, 67, 103, 38);
 		contentPane.add(btnNewButton_1);
 		
-		JButton btnNewButton_2 = new JButton("查看服务...");
-		btnNewButton_2.setBounds(277, 67, 103, 38);
+		JButton btnNewButton_2 = new JButton("查看服务");
+		btnNewButton_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(table.getSelectedRow() != -1) {
+					int id = Integer.parseInt(table.getValueAt(table.getSelectedRow(), 0).toString());
+					UserManagementController.getInstance().showHouseKeeperEditFrame(id);
+				}
+			}
+		});
+		btnNewButton_2.setBounds(350, 67, 103, 38);
 		contentPane.add(btnNewButton_2);
 		
 		JButton btnNewButton_3 = new JButton("设置服务");
-		btnNewButton_3.setBounds(390, 67, 103, 38);
+		btnNewButton_3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				UserManagementController.getInstance().showMemberEditFrame();
+			}
+		});
+		btnNewButton_3.setBounds(500, 67, 103, 38);
 		contentPane.add(btnNewButton_3);
-		
-		JButton btnNewButton_4 = new JButton("添加老人");
-		btnNewButton_4.setBounds(503, 67, 103, 38);
-		contentPane.add(btnNewButton_4);
 		
 		JButton btnNewButton_5 = new JButton("修改信息");
 		btnNewButton_5.addActionListener(new ActionListener() {
@@ -102,4 +111,6 @@ public class UserManagementFrame extends JFrame {
 		contentPane.add(scrollPane);
 
 	}
+	
+	
 }

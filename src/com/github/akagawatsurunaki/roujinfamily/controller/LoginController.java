@@ -1,7 +1,8 @@
 package com.github.akagawatsurunaki.roujinfamily.controller;
 
-import com.github.akagawatsurunaki.roujinfamily.exception.UserInfoDataReadingException;
-import com.github.akagawatsurunaki.roujinfamily.exception.UserNotFoundException;
+import com.github.akagawatsurunaki.roujinfamily.exception.FileReadingException;
+import com.github.akagawatsurunaki.roujinfamily.exception.ObjectNotFoundException;
+import com.github.akagawatsurunaki.roujinfamily.model.Role;
 import com.github.akagawatsurunaki.roujinfamily.service.LoginService;
 import com.github.akagawatsurunaki.roujinfamily.service.LoginServiceImpl;
 
@@ -23,9 +24,9 @@ public class LoginController {
 	
 	//#region S
 	
-	public boolean rqslogin(String userName, String password) throws UserNotFoundException, UserInfoDataReadingException {
+	public Role rqsLogin(String userName, String password) throws ObjectNotFoundException, FileReadingException {
 		service.initialize();
-		return service.login(userName, password);		
+		return service.login(userName, password);
 	}
 	
 	

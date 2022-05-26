@@ -1,14 +1,17 @@
 package com.github.akagawatsurunaki.roujinfamily.service;
 
+import java.util.List;
+
 import com.github.akagawatsurunaki.roujinfamily.dao.MemberDao;
 import com.github.akagawatsurunaki.roujinfamily.dao.MemberDaoImpl;
 import com.github.akagawatsurunaki.roujinfamily.dao.UserDao;
 import com.github.akagawatsurunaki.roujinfamily.dao.UserDaoImpl;
-import com.github.akagawatsurunaki.roujinfamily.exception.UserInfoDataReadingException;
-import com.github.akagawatsurunaki.roujinfamily.exception.UserInfoDataWritingException;
-import com.github.akagawatsurunaki.roujinfamily.exception.UserInfoInvalidException;
-import com.github.akagawatsurunaki.roujinfamily.exception.UserNotFoundException;
+import com.github.akagawatsurunaki.roujinfamily.exception.FileReadingException;
+import com.github.akagawatsurunaki.roujinfamily.exception.FileWritingException;
+import com.github.akagawatsurunaki.roujinfamily.exception.CanNotMatchException;
+import com.github.akagawatsurunaki.roujinfamily.exception.ObjectNotFoundException;
 import com.github.akagawatsurunaki.roujinfamily.model.Member;
+import com.github.akagawatsurunaki.roujinfamily.model.Role;
 import com.github.akagawatsurunaki.roujinfamily.model.Table;
 import com.github.akagawatsurunaki.roujinfamily.model.User;
 
@@ -28,11 +31,11 @@ public class UserManagementServiceImpl implements UserManagementService {
 	// #region Add Methods
 	
 	@Override
-	public boolean addUser(User newUser) throws UserInfoDataWritingException, UserInfoInvalidException {
+	public boolean addUser(User newUser) throws FileWritingException, CanNotMatchException {
 		return userDao.addUser(newUser);
 	}
 	@Override
-	public boolean addMember(Member newMember) throws UserInfoDataWritingException, UserInfoInvalidException {
+	public boolean addMember(Member newMember) throws FileWritingException, CanNotMatchException {
 		return memberDao.addMember(newMember);
 	}
 	
@@ -41,11 +44,11 @@ public class UserManagementServiceImpl implements UserManagementService {
 	// #region Clear Methods
 	
 	@Override
-	public boolean clearAllUsers() throws UserInfoDataWritingException {
+	public boolean clearAllUsers() throws FileWritingException {
 		return userDao.clearUserTable();
 	}
 	@Override
-	public boolean clearAllMembers() throws UserInfoDataWritingException {
+	public boolean clearAllMembers() throws FileWritingException {
 		return memberDao.clearMemberTable();
 	}
 	
@@ -54,11 +57,11 @@ public class UserManagementServiceImpl implements UserManagementService {
 	// #region Remove Methods
 
 	@Override
-	public boolean removeUser(int id) throws UserInfoDataWritingException, UserNotFoundException {
+	public boolean removeUser(int id) throws FileWritingException, ObjectNotFoundException {
 		return userDao.removeUser(id);
 	}
 	@Override
-	public boolean removeMember(int id) throws UserInfoDataWritingException, UserNotFoundException {
+	public boolean removeMember(int id) throws FileWritingException, ObjectNotFoundException {
 		return memberDao.removeMember(id);
 	}
 	
@@ -67,35 +70,52 @@ public class UserManagementServiceImpl implements UserManagementService {
 	// #region Find Methods
 	
 	@Override
-	public User findUserByName(String userName) throws UserNotFoundException {
+	public User findUserByName(String userName) throws ObjectNotFoundException {
 		return userDao.findUserByUserName(userName);
 	}
 	@Override
-	public Member findMemberByRealName(String realName) throws UserNotFoundException{
+	public Member findMemberByRealName(String realName) throws ObjectNotFoundException{
 		return memberDao.findMemberByRealName(realName);
 	}
 	@Override
-	public User findUserById(int id) throws UserNotFoundException {
+	public User findUserById(int id) throws ObjectNotFoundException {
 		return userDao.findUserById(id);
 	}
 	@Override
-	public Member findMemberById(int id) throws UserNotFoundException {
+	public Member findMemberById(int id) throws ObjectNotFoundException {
 		return memberDao.findMemberById(id);
 	}
+	@Override
+	public List<Member> findMembersByHouseKeeperId(int houseKeeperId){
+		return memberDao.findMembersByHouseKeeperId(houseKeeperId);
+	}
+	@Override
+	public List<User> findUsersByRole(Role role) {
+		return userDao.findUsersByRole(role);
+	}
+	@Override
+	public User findUserByRealName(String realName) {
+		return userDao.findUserByRealName(realName);
+	}
+	
 	
 	// #endregion
 	
 	// #region Load Methods
 	
 	@Override
-	public boolean loadAllUsers() throws UserInfoDataReadingException {
+	public boolean loadAllUsers() throws FileReadingException {
 		userDao.loadAllUsersFromFile();
 		return true;
 	}
 	@Override
-	public boolean loadAllMembers() throws UserInfoDataReadingException {
+	public boolean loadAllMembers() throws FileReadingException {
 		memberDao.loadAllMembersFromFile();
 		return true;
+	}
+	@Override
+	public void saveAllMembers() throws FileWritingException {
+		memberDao.saveAllMembersToFile();
 	}
 	
 	// #endregion
@@ -103,12 +123,21 @@ public class UserManagementServiceImpl implements UserManagementService {
 	// #region Table Getters 
 	
 	@Override
-	public Table<User> getUsersTable() throws UserInfoDataReadingException {
+	public Table<User> getUsersTable() throws FileReadingException {
 	 	return userDao.getUserTable();
 	}
 	@Override
-	public Table<Member> getMemberTable() throws UserInfoDataReadingException{
+	public Table<Member> getMemberTable() throws FileReadingException{
 		return memberDao.getMemberTable();
+	}
+	
+	// #endregion
+	
+	// #region List Getters
+	
+	@Override
+	public List<Member> getMemberListCanBeAdded(int houseKeeperId) {
+		return memberDao.getMemberListCanBeAdded(houseKeeperId);
 	}
 	
 	// #endregion

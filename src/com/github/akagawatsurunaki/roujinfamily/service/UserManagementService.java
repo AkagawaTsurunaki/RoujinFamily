@@ -1,29 +1,37 @@
 package com.github.akagawatsurunaki.roujinfamily.service;
 
-import com.github.akagawatsurunaki.roujinfamily.exception.UserInfoDataReadingException;
-import com.github.akagawatsurunaki.roujinfamily.exception.UserInfoDataWritingException;
-import com.github.akagawatsurunaki.roujinfamily.exception.UserInfoInvalidException;
-import com.github.akagawatsurunaki.roujinfamily.exception.UserNotFoundException;
+import java.util.List;
+
+import com.github.akagawatsurunaki.roujinfamily.exception.FileReadingException;
+import com.github.akagawatsurunaki.roujinfamily.exception.FileWritingException;
+import com.github.akagawatsurunaki.roujinfamily.exception.CanNotMatchException;
+import com.github.akagawatsurunaki.roujinfamily.exception.ObjectNotFoundException;
 import com.github.akagawatsurunaki.roujinfamily.model.Member;
+import com.github.akagawatsurunaki.roujinfamily.model.Role;
 import com.github.akagawatsurunaki.roujinfamily.model.Table;
 import com.github.akagawatsurunaki.roujinfamily.model.User;
 
 public interface UserManagementService {
 
-	public boolean addUser(User user)throws UserInfoDataWritingException, UserInfoInvalidException;
-	public boolean clearAllUsers() throws UserInfoDataWritingException;
-	public boolean removeUser(int id) throws UserInfoDataWritingException, UserNotFoundException;
+	public boolean addUser(User user)throws FileWritingException, CanNotMatchException;
+	public boolean clearAllUsers() throws FileWritingException;
+	public boolean removeUser(int id) throws FileWritingException, ObjectNotFoundException;
 	
-	public User findUserByName(String userName) throws UserNotFoundException;
-	public boolean loadAllUsers() throws UserInfoDataReadingException;
-	public Table<User> getUsersTable() throws UserInfoDataReadingException;
-	User findUserById(int id) throws UserNotFoundException;
-	Table<Member> getMemberTable() throws UserInfoDataReadingException;
-	boolean loadAllMembers() throws UserInfoDataReadingException;
-	Member findMemberByRealName(String realName) throws UserNotFoundException;
-	Member findMemberById(int id) throws UserNotFoundException;
-	boolean removeMember(int id) throws UserInfoDataWritingException, UserNotFoundException;
-	boolean clearAllMembers() throws UserInfoDataWritingException;
-	boolean addMember(Member newMember) throws UserInfoDataWritingException, UserInfoInvalidException;
+	public User findUserByName(String userName) throws ObjectNotFoundException;
+	public boolean loadAllUsers() throws FileReadingException;
+	public Table<User> getUsersTable() throws FileReadingException;
+	User findUserById(int id) throws ObjectNotFoundException;
+	Table<Member> getMemberTable() throws FileReadingException;
+	boolean loadAllMembers() throws FileReadingException;
+	Member findMemberByRealName(String realName) throws ObjectNotFoundException;
+	Member findMemberById(int id) throws ObjectNotFoundException;
+	boolean removeMember(int id) throws FileWritingException, ObjectNotFoundException;
+	boolean clearAllMembers() throws FileWritingException;
+	boolean addMember(Member newMember) throws FileWritingException, CanNotMatchException;
+	List<Member> findMembersByHouseKeeperId(int houseKeeperId);
+	List<User> findUsersByRole(Role role);
+	User findUserByRealName(String realName);
+	List<Member> getMemberListCanBeAdded(int houseKeeperId);
+	void saveAllMembers() throws FileWritingException;
 
 }

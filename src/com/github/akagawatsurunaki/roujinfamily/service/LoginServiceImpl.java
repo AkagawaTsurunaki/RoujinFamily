@@ -2,8 +2,9 @@ package com.github.akagawatsurunaki.roujinfamily.service;
 
 import com.github.akagawatsurunaki.roujinfamily.dao.UserDao;
 import com.github.akagawatsurunaki.roujinfamily.dao.UserDaoImpl;
-import com.github.akagawatsurunaki.roujinfamily.exception.UserInfoDataReadingException;
-import com.github.akagawatsurunaki.roujinfamily.exception.UserNotFoundException;
+import com.github.akagawatsurunaki.roujinfamily.exception.FileReadingException;
+import com.github.akagawatsurunaki.roujinfamily.exception.ObjectNotFoundException;
+import com.github.akagawatsurunaki.roujinfamily.model.Role;
 
 public class LoginServiceImpl implements LoginService {
 	private static LoginService instance = new LoginServiceImpl();
@@ -18,12 +19,12 @@ public class LoginServiceImpl implements LoginService {
 	private LoginServiceImpl() {}
 	//#endregion
 	
-	public void initialize() throws UserInfoDataReadingException {
+	public void initialize() throws FileReadingException {
 		dao.initialize();
 	}
 	
 	@Override
-	public boolean login(String nm, String rawPsw) throws UserNotFoundException, UserInfoDataReadingException {
+	public Role login(String nm, String rawPsw) throws ObjectNotFoundException, FileReadingException {
 		return dao.login(nm, rawPsw);
 	}
 	

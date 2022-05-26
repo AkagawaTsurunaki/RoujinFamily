@@ -15,6 +15,9 @@ public class FileUtil {
 
 	public static void writeFile(String filePath, String content) throws IOException {
 		File file = new File(filePath);
+		if(!file.exists()) {
+			file.createNewFile();
+		}
 		FileOutputStream fileOutputStream = new FileOutputStream(file);
 		OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fileOutputStream, StandardCharsets.UTF_8);
 		BufferedWriter bufferedWriter = new BufferedWriter(outputStreamWriter);
@@ -29,6 +32,9 @@ public class FileUtil {
 
 	public static String readFile(String filePath) throws IOException {
 		File file = new File(filePath);
+		if(!file.exists()) {
+			file.createNewFile();
+		}
 		FileInputStream fileInputStream = new FileInputStream(file); 
 		InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream, StandardCharsets.UTF_8); 
 		BufferedReader bufferedReader = new BufferedReader(inputStreamReader); 
