@@ -82,9 +82,6 @@ public class LoginFrame extends JFrame {
 				String password = new String(passwordField.getPassword());
 				try {
 					
-						// TODO:
-						UserManagementController.loginInvoke();
-					
 						Role role = LoginController.getInstance().rqsLogin(userName, password);
 						switch (role) {
 						case ADMINISTRATOR: {
