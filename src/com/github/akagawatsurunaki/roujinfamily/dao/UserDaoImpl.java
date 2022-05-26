@@ -1,12 +1,15 @@
 package com.github.akagawatsurunaki.roujinfamily.dao;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
-import com.github.akagawatsurunaki.roujinfamily.exception.UserInfoDataReadingException;
-import com.github.akagawatsurunaki.roujinfamily.exception.UserInfoDataWritingException;
-import com.github.akagawatsurunaki.roujinfamily.exception.UserInfoInvalidException;
-import com.github.akagawatsurunaki.roujinfamily.exception.UserNotFoundException;
+import com.github.akagawatsurunaki.roujinfamily.exception.FileReadingException;
+import com.github.akagawatsurunaki.roujinfamily.exception.FileWritingException;
+import com.github.akagawatsurunaki.roujinfamily.exception.CanNotMatchException;
+import com.github.akagawatsurunaki.roujinfamily.exception.ObjectNotFoundException;
+import com.github.akagawatsurunaki.roujinfamily.model.Member;
+import com.github.akagawatsurunaki.roujinfamily.model.Role;
 import com.github.akagawatsurunaki.roujinfamily.model.Table;
 import com.github.akagawatsurunaki.roujinfamily.model.User;
 import com.github.akagawatsurunaki.roujinfamily.util.FileUtil;
@@ -27,7 +30,7 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
-	public void initialize() throws UserInfoDataReadingException {
+	public void initialize() throws FileReadingException {
 		instance.loadAllUsersFromFile();
 	}
 
@@ -35,32 +38,32 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
-	public boolean login(String userName, String password) throws UserNotFoundException {
+	public Role login(String userName, String password) throws ObjectNotFoundException {
 		loginUser = findUserByUserName(userName);
 		if (loginUser.getPassword().equals(password)) {
-			return true;
+			return loginUser.getRole();
 		}
-		return false;
+		return null;
 	}
 
 
 	@Override
-	public void loadAllUsersFromFile() throws UserInfoDataReadingException {
+	public void loadAllUsersFromFile() throws FileReadingException {
 		try {
 			String str = FileUtil.readFile(filePath);
 			this.userTable = GsonUtil.fromJsonToUserTable(str);
 		} catch (IOException e) {
-			throw new UserInfoDataReadingException("读取用户信息文件失败。");
+			throw new FileReadingException("用户信息文件无法读取。", "读取文件失败", "该错误是由数据层发起的。");
 		}
 	}
 
 	@Override
-	public void saveAllUsersToFile() throws UserInfoDataWritingException {
+	public void saveAllUsersToFile() throws FileWritingException {
 		String dataStr = GsonUtil.fromUserTableToJson(userTable);
 		try {
 			FileUtil.writeFile(filePath, dataStr);
 		} catch (IOException e) {
-			throw new UserInfoDataWritingException("写入用户信息文件失败。");
+			throw new FileWritingException("会员信息文件无法保存。", "写入文件失败", "该错误是由数据层发起的。");
 		}
 	}
 
@@ -70,7 +73,7 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
-	public boolean addUser(User newUser) throws UserInfoDataWritingException, UserInfoInvalidException {
+	public boolean addUser(User newUser) throws FileWritingException, CanNotMatchException {
 		
 		List<User> userList = getUserTable().getData();
 		for (User user : userList) {
@@ -90,45 +93,68 @@ public class UserDaoImpl implements UserDao {
 		newUser.setId(userTable.getIdCount() + 1);
 		userTable.addDataSeg(newUser);
 		saveAllUsersToFile();
-			
-		
-		return false;
+
+		return true;
 	}
 
 	@Override
-	public boolean clearUserTable() throws UserInfoDataWritingException {
+	public boolean clearUserTable() throws FileWritingException {
 		userTable.clear();
 		saveAllUsersToFile();
 		return true;
 	}
 
 	@Override
-	public boolean removeUser(int id) throws UserInfoDataWritingException, UserNotFoundException {
+	public boolean removeUser(int id) throws FileWritingException, ObjectNotFoundException {
 		userTable.removeDataSeg(findUserById(id)); 
 		saveAllUsersToFile();
 		return true; 
 		
 	}
 	@Override
-	public User findUserByUserName(String userName) throws UserNotFoundException {
+	public User findUserByUserName(String userName) throws ObjectNotFoundException {
 		List<User> userList = getUserTable().getData();
 		for (User user : userList) {
 			if (userName.equals(user.getUserName())) {
 				return user;
 			}
 		}
-		throw new UserNotFoundException("用户不存在。");
+		throw new ObjectNotFoundException("不存在用户名为“" + userName +"”的用户。", "找不到对象", "该错误是由数据层发起的。");
+
 	}
 	@Override
-	public User findUserById(int id) throws UserNotFoundException {
+	public User findUserById(int id) throws ObjectNotFoundException {
 		List<User> userList = getUserTable().getData();
 		for (User user : userList) {
 			if (user.getId() == id) {
 				return user;
 			}
 		}
-		throw new UserNotFoundException("用户不存在。");
+		throw new ObjectNotFoundException("不存在ID为“" + id +"”的用户。", "找不到对象", "该错误是由数据层发起的。");
+
 	}
+	@Override
+	public List<User> findUsersByRole(Role role) {
+		List<User> userList = getUserTable().getData();
+		List<User> ret = new ArrayList<User>();
+		for (User user : userList) {
+			if (user.getRole().equals(role)) {
+				ret.add(user);
+			}
+		}
+		return ret;
+	}
+	@Override
+	public User findUserByRealName(String realName) {
+		List<User> userList = getUserTable().getData();
+		for (User user : userList) {
+			if (user.getRealName().equals(realName)) {
+				return user;
+			}
+		}
+		return null;
+	}
+	
 
 
 	

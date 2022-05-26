@@ -1,20 +1,24 @@
 package com.github.akagawatsurunaki.roujinfamily.dao;
 
-import com.github.akagawatsurunaki.roujinfamily.exception.UserInfoDataReadingException;
-import com.github.akagawatsurunaki.roujinfamily.exception.UserInfoDataWritingException;
-import com.github.akagawatsurunaki.roujinfamily.exception.UserInfoInvalidException;
-import com.github.akagawatsurunaki.roujinfamily.exception.UserNotFoundException;
+import java.util.List;
+
+import com.github.akagawatsurunaki.roujinfamily.exception.FileReadingException;
+import com.github.akagawatsurunaki.roujinfamily.exception.FileWritingException;
+import com.github.akagawatsurunaki.roujinfamily.exception.CanNotMatchException;
+import com.github.akagawatsurunaki.roujinfamily.exception.ObjectNotFoundException;
 import com.github.akagawatsurunaki.roujinfamily.model.Member;
 import com.github.akagawatsurunaki.roujinfamily.model.Table;
 
 public interface MemberDao {
-	public void initialize() throws UserInfoDataReadingException;
-	public void loadAllMembersFromFile() throws UserInfoDataReadingException;
-	public void saveAllMembersToFile() throws UserInfoDataWritingException;
+	public void initialize() throws FileReadingException;
+	public void loadAllMembersFromFile() throws FileReadingException;
+	public void saveAllMembersToFile() throws FileWritingException;
 	public Table<Member> getMemberTable();
-	boolean addMember(Member newMember) throws UserInfoDataWritingException, UserInfoInvalidException;
-	boolean clearMemberTable() throws UserInfoDataWritingException;
-	boolean removeMember(int id) throws UserInfoDataWritingException, UserNotFoundException;
-	Member findMemberByRealName(String realName) throws UserNotFoundException;
-	Member findMemberById(int id) throws UserNotFoundException;
+	boolean addMember(Member newMember) throws FileWritingException, CanNotMatchException;
+	boolean clearMemberTable() throws FileWritingException;
+	boolean removeMember(int id) throws FileWritingException, ObjectNotFoundException;
+	Member findMemberByRealName(String realName) throws ObjectNotFoundException;
+	Member findMemberById(int id) throws ObjectNotFoundException;
+	List<Member> findMembersByHouseKeeperId(int houseKeeperId);
+	List<Member> getMemberListCanBeAdded(int houseKeeperId);
 }

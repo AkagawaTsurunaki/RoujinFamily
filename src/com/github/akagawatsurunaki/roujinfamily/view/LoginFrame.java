@@ -6,8 +6,11 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import com.github.akagawatsurunaki.roujinfamily.controller.LoginController;
-import com.github.akagawatsurunaki.roujinfamily.exception.UserInfoDataReadingException;
-import com.github.akagawatsurunaki.roujinfamily.exception.UserNotFoundException;
+import com.github.akagawatsurunaki.roujinfamily.controller.UserManagementController;
+import com.github.akagawatsurunaki.roujinfamily.exception.FileReadingException;
+import com.github.akagawatsurunaki.roujinfamily.exception.ObjectNotFoundException;
+import com.github.akagawatsurunaki.roujinfamily.model.Role;
+
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -78,15 +81,32 @@ public class LoginFrame extends JFrame {
 				String userName = textField.getText();
 				String password = new String(passwordField.getPassword());
 				try {
-					if(LoginController.getInstance().rqslogin(userName, password)) {
-						System.out.println("登陆成功");
-					}
-					else {
-						msgBox("密码错误。", "登陆失败");
-					}
-				} catch (UserNotFoundException e2) {
+					
+						// TODO:
+						UserManagementController.loginInvoke();
+					
+						Role role = LoginController.getInstance().rqsLogin(userName, password);
+						switch (role) {
+						case ADMINISTRATOR: {
+							UserManagementController.loginInvoke();
+							break;
+						}
+						case HOUSE_KEEPER: {
+							msgBox("该功能还未完成。", "登陆失败");
+							break;
+						}
+						case LOGISTICS: {
+							msgBox("该功能还未完成。", "登陆失败");
+							break;
+						}
+						default:
+							msgBox("密码错误。", "登陆失败");
+						}
+						LoginFrame.this.dispose();
+					
+				} catch (ObjectNotFoundException e2) {
 					msgBox("找不到该用户。", "登陆失败");
-				} catch (UserInfoDataReadingException e1) {
+				} catch (FileReadingException e1) {
 					msgBox("用户文件读取失败。\n目标文件访问被拒或目标文件不存在或目标文件已损坏。", "登陆失败");
 					System.exit(ERROR);
 				}
