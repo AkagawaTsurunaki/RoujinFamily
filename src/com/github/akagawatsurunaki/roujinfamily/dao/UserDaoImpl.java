@@ -3,12 +3,10 @@ package com.github.akagawatsurunaki.roujinfamily.dao;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import com.github.akagawatsurunaki.roujinfamily.exception.FileReadingException;
 import com.github.akagawatsurunaki.roujinfamily.exception.FileWritingException;
 import com.github.akagawatsurunaki.roujinfamily.exception.CanNotMatchException;
 import com.github.akagawatsurunaki.roujinfamily.exception.ObjectNotFoundException;
-import com.github.akagawatsurunaki.roujinfamily.model.Member;
 import com.github.akagawatsurunaki.roujinfamily.model.Role;
 import com.github.akagawatsurunaki.roujinfamily.model.Table;
 import com.github.akagawatsurunaki.roujinfamily.model.User;
