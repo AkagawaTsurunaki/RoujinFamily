@@ -8,12 +8,13 @@ import com.github.akagawatsurunaki.roujinfamily.exception.FileWritingException;
 import com.github.akagawatsurunaki.roujinfamily.exception.ObjectNotFoundException;
 import com.github.akagawatsurunaki.roujinfamily.model.Member;
 import com.github.akagawatsurunaki.roujinfamily.model.RegularBus;
+import com.github.akagawatsurunaki.roujinfamily.model.Table;
 
 public interface LogisticsManagementService {
 
 	public String[] getRegularBusTableTitle();
 
-	String[][] getRegularBusTableAsStringArray();
+	String[][] getRegularBusTableAsStringArray() throws FileReadingException;
 
 	boolean loadAllRegularBuses() throws FileReadingException;
 
@@ -40,6 +41,10 @@ public interface LogisticsManagementService {
 	RegularBus findRegularBus(RegularBus regularBus) throws ObjectNotFoundException;
 
 	RegularBus findRegularBus(int regularBusId) throws ObjectNotFoundException;
+
+	boolean addRegularBus(RegularBus newRegularBus) throws FileWritingException, CanNotMatchException;
+
+	Table<RegularBus> getRegularBusTable();
 	
 	
 }

@@ -29,18 +29,16 @@ public class GsonUtil {
 	// #region Regist Global Gson
 
 	// Regist a global gson in order to serialize and deserialize.
-	private static Gson glbGson = new GsonBuilder()
+	public static Gson glbGson = new GsonBuilder()
 	  .registerTypeAdapter(LocalDate.class, new JsonSerializer<LocalDate>() {
 		@Override
 		public JsonElement serialize(LocalDate localDate, Type sourceType, JsonSerializationContext context) {
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-M-d");
-			return new JsonPrimitive(formatter.format(localDate));
+			return new JsonPrimitive(GlobalFormatter.dateFormatter.format(localDate));
 		}
 	}).registerTypeAdapter(LocalTime.class, new JsonSerializer<LocalTime>() {
 		@Override
 		public JsonElement serialize(LocalTime localTime, Type sourceType, JsonSerializationContext context) {
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-			return new JsonPrimitive(formatter.format(localTime));
+			return new JsonPrimitive(GlobalFormatter.timeFormatter.format(localTime));
 		}
 	}).registerTypeAdapter(DayOfWeek.class, new JsonSerializer<DayOfWeek>() {
 		@Override
@@ -121,15 +119,13 @@ public class GsonUtil {
 		}
 	}).registerTypeAdapter(LocalDate.class, new JsonDeserializer<LocalDate>() {
 		@Override
-		public LocalDate deserialize(JsonElement jsonElement, Type sourceType, JsonDeserializationContext context) throws JsonParseException {
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-M-d");	
-			return LocalDate.parse(jsonElement.getAsString(), formatter);
+		public LocalDate deserialize(JsonElement jsonElement, Type sourceType, JsonDeserializationContext context) throws JsonParseException {	
+			return LocalDate.parse(jsonElement.getAsString(), GlobalFormatter.dateFormatter);
 		};
 	}).registerTypeAdapter(LocalTime.class, new JsonDeserializer<LocalTime>() {
 		@Override
 		public LocalTime deserialize(JsonElement jsonElement, Type sourceType, JsonDeserializationContext context) throws JsonParseException {
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");	
-			return LocalTime.parse(jsonElement.getAsString(), formatter);
+			return LocalTime.parse(jsonElement.getAsString(), GlobalFormatter.timeFormatter);
 		};
 	}).registerTypeAdapter(Gender.class, new JsonDeserializer<Gender>() {
 		@Override
@@ -217,10 +213,7 @@ public class GsonUtil {
 				throw new JsonParseException("AkagawaTsurunaki: Fail to parse \"RouteType\".");
 			}
 		};
-	})
-	  
-	  
-	  .create();
+	}).create();
 	
 	// #endregion
 	

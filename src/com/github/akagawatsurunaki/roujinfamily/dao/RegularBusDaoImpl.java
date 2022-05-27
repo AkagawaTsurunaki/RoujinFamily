@@ -68,6 +68,49 @@ public class RegularBusDaoImpl implements RegularBusDao {
     
     // #endregion
     
+    // #region Add Bus Methods
+    
+    @Override
+    public boolean addRegularBus(RegularBus newRegularBus) throws FileWritingException, CanNotMatchException {
+    	
+		List<RegularBus> busList = regularBusTable.getData();
+		
+		if(busList == null || busList.isEmpty()) {
+			for (RegularBus bus : busList) {
+				if(bus.getId() == newRegularBus.getId()) {
+					bus.setDepartureTime(newRegularBus.getDepartureTime());
+					bus.setNotes(newRegularBus.getNotes());
+					bus.setOperateDate(newRegularBus.getOperateDate());
+					bus.setPassengerList(newRegularBus.getPassengerList());
+					bus.setRouteCode(newRegularBus.getRouteCode());
+					bus.setRouteDirection(newRegularBus.getRouteDirection());
+					bus.setRouteName(newRegularBus.getRouteName());
+					bus.setRouteType(newRegularBus.getRouteType());
+					bus.setTerminateTime(newRegularBus.getTerminateTime());
+					return true;
+				}
+			}
+		}
+
+		newRegularBus.setId(regularBusTable.getIdCount() + 1);
+		regularBusTable.addDataSeg(newRegularBus);
+		saveAllRegularBuses();
+
+		return true;
+    }
+    
+    // #endregion
+    
+    // #region Get Bus Methods
+    @Override
+    public Table<RegularBus> getRegularBusTable(){
+    	return regularBusTable;
+    }
+    
+    
+    
+    // #endregion
+    
     // #region Add Passenger Methods
     @Override
     public boolean addPassengerIntoRegularBus(Member member, RegularBus regularBus) throws FileWritingException, CanNotMatchException { 
@@ -165,8 +208,9 @@ public class RegularBusDaoImpl implements RegularBusDao {
     	return tableTitle;
     }
     @Override
-    public String[][] getRegularBusTableAsStringArray() {
+    public String[][] getRegularBusTableAsStringArray() throws FileReadingException {
     	
+    	loadAllRegularBuses();
     	List<RegularBus> busList = regularBusTable.getData();
     	int len = getRegularBusTableTitle().length;
     	String[][] tableContent = new String[busList.size()][len];

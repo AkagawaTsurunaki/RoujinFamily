@@ -12,7 +12,7 @@ public class RegularBus {
 	// #region Peoperties
 	
 	private int id;
-	private String routeCode;
+	public String routeCode;
 	private String routeName;
 	private RouteType routeType;
 	private RouteDirection routeDirection;
@@ -28,6 +28,7 @@ public class RegularBus {
 	
 	public RegularBus(int id,
 			String routeCode,
+			String routeName,
 			RouteType routeType,
 			RouteDirection routeDirection,
 			DayOfWeek operateDate,
@@ -35,9 +36,11 @@ public class RegularBus {
 			LocalTime terminateTime,
 			String notes,
 			List<Member> passengerList
-			) throws CanNotMatchException{
+			) throws CanNotMatchException {
 		setId(id);
 		setRouteCode(routeCode);
+		setRouteName(routeName);
+		setRouteType(routeType);
 		setRouteDirection(routeDirection);
 		setOperateDate(operateDate);
 		setDepartureTime(departureTime);
@@ -104,16 +107,18 @@ public class RegularBus {
 		this.id = id;
 	}
 
-	public void setRouteCode(String routecode) throws CanNotMatchException {
-		if(routecode.length() > Constants.MAX_ROUTECODE_LENGTH || 
-				routecode.length() < Constants.MIN_ROUTECODE_LENGTH) {
-			throw new CanNotMatchException("线路代码长度必须多于" +
+	public void setRouteCode(String routeCode) throws CanNotMatchException {
+		
+		
+		if(routeCode.length() > Constants.MAX_ROUTECODE_LENGTH || 
+				routeCode.length() < Constants.MIN_ROUTECODE_LENGTH) {
+			throw new CanNotMatchException("线路代码长度必须多于" + 
 											Constants.MIN_ROUTECODE_LENGTH + 
 											"字但少于" + 
 											Constants.MAX_ROUTECODE_LENGTH + 
 											"字。", "非法输入", "该错误是由模型层发起的。");
 		}
-		this.routeName = routecode;
+		this.routeCode = routeCode;
 	}
 
 	public void setRouteName(String routeName) throws CanNotMatchException {
@@ -164,7 +169,7 @@ public class RegularBus {
 	public boolean addPassengerIntoList(Member member) throws CanNotMatchException {
 		
 		if(LocalDate.now().getDayOfWeek().equals(operateDate)) {
-			if(LocalTime.now().isBefore(departureTime)) {
+			if(LocalTime.now().isBefore(terminateTime)) {
 				return passengerList.add(member);
 			}
 		}
@@ -189,7 +194,8 @@ public class RegularBus {
 	
 	public String[] toStringArray() {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-		String[] ret = {Integer.toString(id), 
+		String[] ret = {
+				Integer.toString(id), 
 				routeCode, 
 				routeName, 
 				routeType.toString(),
@@ -197,6 +203,7 @@ public class RegularBus {
 				operateDate.toString(),
 				formatter.format(departureTime),
 				formatter.format(terminateTime),
+				notes,
 				Integer.toString(passengerList.size())
 				};
 		

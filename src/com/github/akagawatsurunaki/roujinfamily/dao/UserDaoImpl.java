@@ -44,7 +44,6 @@ public class UserDaoImpl implements UserDao {
 		return null;
 	}
 
-
 	@Override
 	public void loadAllUsersFromFile() throws FileReadingException {
 		try {
@@ -72,22 +71,25 @@ public class UserDaoImpl implements UserDao {
 
 	@Override
 	public boolean addUser(User newUser) throws FileWritingException, CanNotMatchException {
-		
+
 		List<User> userList = getUserTable().getData();
-		for (User user : userList) {
-			if(user.getId() == newUser.getId()) {
-				user.setUserName(newUser.getUserName());
-				user.setPassword(newUser.getPassword());
-				user.setRealName(newUser.getRealName());
-				user.setRole(newUser.getRole());
-				user.setTelNumber(newUser.getTelNumber());;
-				user.setGender(newUser.getGender());
-				user.setBirthday(newUser.getBirthday());
-				saveAllUsersToFile();
-				return true;
+		if (userList == null || userList.isEmpty()) {
+
+			for (User user : userList) {
+				if (user.getId() == newUser.getId()) {
+					user.setUserName(newUser.getUserName());
+					user.setPassword(newUser.getPassword());
+					user.setRealName(newUser.getRealName());
+					user.setRole(newUser.getRole());
+					user.setTelNumber(newUser.getTelNumber());
+					
+					user.setGender(newUser.getGender());
+					user.setBirthday(newUser.getBirthday());
+					saveAllUsersToFile();
+					return true;
+				}
 			}
 		}
-		
 		newUser.setId(userTable.getIdCount() + 1);
 		userTable.addDataSeg(newUser);
 		saveAllUsersToFile();
@@ -104,11 +106,12 @@ public class UserDaoImpl implements UserDao {
 
 	@Override
 	public boolean removeUser(int id) throws FileWritingException, ObjectNotFoundException {
-		userTable.removeDataSeg(findUserById(id)); 
+		userTable.removeDataSeg(findUserById(id));
 		saveAllUsersToFile();
-		return true; 
-		
+		return true;
+
 	}
+
 	@Override
 	public User findUserByUserName(String userName) throws ObjectNotFoundException {
 		List<User> userList = getUserTable().getData();
@@ -117,9 +120,10 @@ public class UserDaoImpl implements UserDao {
 				return user;
 			}
 		}
-		throw new ObjectNotFoundException("不存在用户名为“" + userName +"”的用户。", "找不到对象", "该错误是由数据层发起的。");
+		throw new ObjectNotFoundException("不存在用户名为“" + userName + "”的用户。", "找不到对象", "该错误是由数据层发起的。");
 
 	}
+
 	@Override
 	public User findUserById(int id) throws ObjectNotFoundException {
 		List<User> userList = getUserTable().getData();
@@ -128,9 +132,10 @@ public class UserDaoImpl implements UserDao {
 				return user;
 			}
 		}
-		throw new ObjectNotFoundException("不存在ID为“" + id +"”的用户。", "找不到对象", "该错误是由数据层发起的。");
+		throw new ObjectNotFoundException("不存在ID为“" + id + "”的用户。", "找不到对象", "该错误是由数据层发起的。");
 
 	}
+
 	@Override
 	public List<User> findUsersByRole(Role role) {
 		List<User> userList = getUserTable().getData();
@@ -142,6 +147,7 @@ public class UserDaoImpl implements UserDao {
 		}
 		return ret;
 	}
+
 	@Override
 	public User findUserByRealName(String realName) {
 		List<User> userList = getUserTable().getData();
@@ -152,6 +158,7 @@ public class UserDaoImpl implements UserDao {
 		}
 		return null;
 	}
+
 	@Override
 	public int findUserIdByPassword(String password) {
 		List<User> userList = getUserTable().getData();
@@ -162,8 +169,5 @@ public class UserDaoImpl implements UserDao {
 		}
 		return -1;
 	}
-
-
-	
 
 }
