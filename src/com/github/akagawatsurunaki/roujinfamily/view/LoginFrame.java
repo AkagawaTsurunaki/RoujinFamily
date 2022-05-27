@@ -8,6 +8,7 @@ import javax.swing.border.EmptyBorder;
 
 import com.github.akagawatsurunaki.roujinfamily.controller.HouseKeeperManagementController;
 import com.github.akagawatsurunaki.roujinfamily.controller.LoginController;
+import com.github.akagawatsurunaki.roujinfamily.controller.LogisticsManagementController;
 import com.github.akagawatsurunaki.roujinfamily.controller.UserManagementController;
 import com.github.akagawatsurunaki.roujinfamily.exception.FileReadingException;
 import com.github.akagawatsurunaki.roujinfamily.exception.ObjectNotFoundException;
@@ -80,7 +81,7 @@ public class LoginFrame extends Frame {
 		JButton btnNewButton_1 = new JButton("确定");
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//UserManagementController.getInstance().loginInvoke();
+				LogisticsManagementController.getInstance().showMainFrame();
 				
 				String userName = textField.getText();
 				String password = new String(passwordField.getPassword());
@@ -106,7 +107,9 @@ public class LoginFrame extends Frame {
 							break;
 						}
 						case LOGISTICS: {
-							msgBox("该功能还未完成。", "登陆失败");
+							
+							LogisticsManagementController.getInstance().showMainFrame();
+							
 							break;
 						}
 						default:

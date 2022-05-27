@@ -14,6 +14,8 @@ import com.github.akagawatsurunaki.roujinfamily.model.Member;
 import com.github.akagawatsurunaki.roujinfamily.model.Role;
 import com.github.akagawatsurunaki.roujinfamily.model.Table;
 import com.github.akagawatsurunaki.roujinfamily.model.User;
+import com.github.akagawatsurunaki.roujinfamily.service.LogisticsManagementService;
+import com.github.akagawatsurunaki.roujinfamily.service.LogisticsManagementServiceImpl;
 import com.github.akagawatsurunaki.roujinfamily.util.GsonUtil;
 
 
@@ -25,47 +27,9 @@ public class TestMain {
 		
 		LocalDate birth = LocalDate.now();
 		
-		Member m1 = new Member(
-				0,
-				"王麻子",
-				Gender.FEMALE,
-				birth,
-				"13918181818",
-				120
-				);
-		
-		Member m2 = new Member(
-				0,
-				"狗蛋",
-				Gender.MALE,
-				birth,
-				"13918181818",
-				120
-				);
-		Member m3 = new Member(
-				0,
-				"不能",
-				Gender.MALE,
-				birth,
-				"13918181818",
-				180
-				);
-		
-		MemberDao dao = MemberDaoImpl.getInstance();
+		LogisticsManagementService se = LogisticsManagementServiceImpl.getInstance();
 		
 		
-		
-		try {
-			
-			dao.loadAllMembersFromFile();
-			
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		
-		//List<Member> members = MemberDaoImpl.getInstance().findMembersByHouseKeeperId(120);
 		
 	};
 
