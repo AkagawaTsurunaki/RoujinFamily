@@ -21,6 +21,7 @@ import com.github.akagawatsurunaki.roujinfamily.service.UserManagementService;
 import com.github.akagawatsurunaki.roujinfamily.service.UserManagementServiceImpl;
 import com.github.akagawatsurunaki.roujinfamily.view.HouseKeeperPreviewFrame;
 import com.github.akagawatsurunaki.roujinfamily.view.MemberEditFrame;
+import com.github.akagawatsurunaki.roujinfamily.view.NewMemberFrame;
 import com.github.akagawatsurunaki.roujinfamily.view.NewUserFrame;
 import com.github.akagawatsurunaki.roujinfamily.view.UserManagementFrame;
 
@@ -33,6 +34,7 @@ public class UserManagementController extends Controller {
 	private NewUserFrame newUserFrame;
 	private HouseKeeperPreviewFrame houseKeeperPreviewFrame;
 	private MemberEditFrame memberEditFrame;
+	private NewMemberFrame newMemberFrame;
 	
 	private User selectedUser;
 	// Must through this method to get selected house keeper.
@@ -195,7 +197,40 @@ public class UserManagementController extends Controller {
 		}
 	}
 	//
-	
+	public void rqsAddMember() {
+		//TODO
+		
+		List<User> userList = service.findUsersByRole(Role.HOUSE_KEEPER);
+		
+		int selectedItemIndex = newMemberFrame.getComboBox().getSelectedIndex();
+		
+		if(selectedItemIndex < 0) {
+			showErrorMessageBox("未指派生活管家给这个会员。", "增加会员失败", "该错误是由控制器发起的。");
+			return;
+		}
+		
+		int houseKeeperId = userList.get(selectedItemIndex).getId();
+		
+		int id = -1;
+		
+		Gender gender = getGenderFromRdBtn(newMemberFrame.getMaleRdBtn());
+		
+		String telNum = newMemberFrame.getTelNumTxtFld().getText();
+		
+		String realName = newMemberFrame.getRealNameTxtFld().getText();
+		
+		LocalDate birthday = LocalDate.parse(newMemberFrame.getBirthdayTxtFld().getText(), glbDateFormatter);
+		
+		try {
+			Member newMember = new Member(id, realName, gender, birthday, telNum, houseKeeperId);
+			service.addMember(newMember);
+		} catch (CanNotMatchException e) {
+			showErrorMessageBox(e);
+		} catch (FileWritingException e) {
+			showErrorMessageBox(e);
+		}
+		
+	}
 	// #endregion
 	
 	// #region Show Frame Methods
@@ -306,6 +341,14 @@ public class UserManagementController extends Controller {
 		} catch (ObjectNotFoundException e) {
 			showErrorMessageBox(e);
 		}
+		
+	}
+	
+	public void showNewMemberFrame() {
+		//TODO
+		newMemberFrame = new NewMemberFrame();
+		newMemberFrame.setVisible(true);
+		updateNewMemberComboBox();
 		
 	}
 	
@@ -431,6 +474,15 @@ public class UserManagementController extends Controller {
 			memberEditFrame.getRightMemberComboBox().addItem(member.getRealName());
 		}
 
+	}
+	
+	public void updateNewMemberComboBox() {
+		rqsLoadAllMembers();
+		List<User> userList = service.findUsersByRole(Role.HOUSE_KEEPER);
+		newMemberFrame.getComboBox().removeAllItems();
+		for(User user : userList) {
+			newMemberFrame.getComboBox().addItem(user.getRealName());
+		}
 	}
 	
 

@@ -1,19 +1,23 @@
 package com.github.akagawatsurunaki.roujinfamily.controller;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
-
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
-
+import com.github.akagawatsurunaki.roujinfamily.exception.CanNotMatchException;
 import com.github.akagawatsurunaki.roujinfamily.exception.FileReadingException;
+import com.github.akagawatsurunaki.roujinfamily.exception.FileWritingException;
+import com.github.akagawatsurunaki.roujinfamily.exception.ObjectNotFoundException;
 import com.github.akagawatsurunaki.roujinfamily.exception.RouJinFamilyException;
+import com.github.akagawatsurunaki.roujinfamily.model.Gender;
 import com.github.akagawatsurunaki.roujinfamily.model.Member;
 import com.github.akagawatsurunaki.roujinfamily.service.HouseKeeperService;
 import com.github.akagawatsurunaki.roujinfamily.service.HouseKeeperServiceImpl;
 import com.github.akagawatsurunaki.roujinfamily.view.HouseKeeperManagementFrame;
+import com.github.akagawatsurunaki.roujinfamily.view.MemberInfoEditFrame;
 
 public class HouseKeeperManagementController extends Controller {
 	
@@ -22,16 +26,23 @@ public class HouseKeeperManagementController extends Controller {
 	private static HouseKeeperManagementController instance = new HouseKeeperManagementController();
 	private HouseKeeperService service = HouseKeeperServiceImpl.getInstance();
 	private HouseKeeperManagementFrame mainFrame;
+	private MemberInfoEditFrame memberInfoEditFrame;
+	private Member selectedMember;
 	private int loginHouseKeeperId = -1;
 	// #endregion
-	
-	// 临时主函数
-	
+
 	public void loginInvoke(int houseKeeperId) {
 		this.loginHouseKeeperId = houseKeeperId;
 		HouseKeeperManagementController.getInstance().showHouseKeeperMngFrame();
 	}
 	
+	public HouseKeeperManagementFrame getMainFrame() {
+		return mainFrame;
+	}
+//	public void setMainFrame(Frame frame) {
+//		this.mainFrame = (HouseKeeperManagementFrame) frame;
+//	}
+//	
 	
 	// #region Singleton Getter
 	
@@ -48,6 +59,14 @@ public class HouseKeeperManagementController extends Controller {
 	// #endregion
 	
 	// #region
+	
+	public void showMemberInfoEditFrame() {
+		memberInfoEditFrame = new MemberInfoEditFrame();
+		mainFrame.setEnabled(false);
+		memberInfoEditFrame.setVisible(true);
+		rqsEditMember();
+	}
+	
 	protected void showErrorMessageBox(RouJinFamilyException e) {
 		String msg = "错误信息：" + e.getErrorMessage() + "\n发起者：" + e.getPositionInfo();
 		String title = e.getTitle();
@@ -64,8 +83,48 @@ public class HouseKeeperManagementController extends Controller {
 	
 	// #region Request Service Methods
 	
+	public void rqsAddMember() {
+
+		int id = selectedMember.getId();
+		
+		Gender gender = getGenderFromRdBtn(memberInfoEditFrame.getMaleRdBtn());
+		
+		String telNum = memberInfoEditFrame.getTelNumTxtFld().getText();
+		
+		String realName = memberInfoEditFrame.getRealNameTxtFld().getText();
+		
+		LocalDate birthday = LocalDate.parse(memberInfoEditFrame.getBirthdayTxtFld().getText(), glbDateFormatter);
+		
+		try {
+			Member newMember = new Member(id, realName, gender, birthday, telNum, loginHouseKeeperId);
+			service.addMember(newMember);
+		} catch (CanNotMatchException e) {
+			showErrorMessageBox(e);
+		} catch (FileWritingException e) {
+			showErrorMessageBox(e);
+		}
+		
+		try {
+			updateTableContent();
+		} catch (FileReadingException e) {
+			showErrorMessageBox(e);
+		}
+		
+	}
+	
 	public void rqsEditMember() {
-		 //List<Member> memberList = service.getMemberTable().getData();
+		int row = mainFrame.getTable().getSelectedRow();
+		if(row == -1) {
+			return;
+		}
+		int memberId = Integer.parseInt(mainFrame.getTable().getValueAt(row, 0).toString());
+		
+		try {
+			selectedMember = service.findMemberById(memberId);
+			updateTextField();
+		} catch (ObjectNotFoundException e) {
+			showErrorMessageBox(e);
+		}
 	}
 	
 	// #endregion
@@ -112,10 +171,21 @@ public class HouseKeeperManagementController extends Controller {
 				return false;
 			}
 		};
-		
-		
+	
 		// Update the whole table.
 		table.setModel(tableModel);
+	}
+	
+	public void updateTextField() {
+
+		memberInfoEditFrame.getRealNameTxtFld().setText(selectedMember.getRealName());
+		
+		memberInfoEditFrame.getBirthdayTxtFld().setText(glbDateFormatter.format(selectedMember.getBirthday()));
+		
+		memberInfoEditFrame.getTelNumTxtFld().setText(selectedMember.getTelNumber());
+		
+		setGenderRadio(memberInfoEditFrame.getMaleRdBtn(), selectedMember);
+		
 	}
 	
 	// #endregion
