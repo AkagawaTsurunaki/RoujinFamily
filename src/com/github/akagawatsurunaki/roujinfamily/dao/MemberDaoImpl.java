@@ -18,7 +18,9 @@ public class MemberDaoImpl implements MemberDao {
 	// #region Properties
 	
 	private static MemberDao instance = new MemberDaoImpl();
+	
 	private static final String filePath = "C:\\Users\\96514\\Desktop\\save\\Members.json";
+	
 	private Table<Member> memberTable =  new Table<Member>(0, new ArrayList<Member>());
 	
 	// #endregion 

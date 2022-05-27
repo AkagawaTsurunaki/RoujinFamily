@@ -2,7 +2,10 @@ package com.github.akagawatsurunaki.roujinfamily.util;
 
 import com.github.akagawatsurunaki.roujinfamily.model.Gender;
 import com.github.akagawatsurunaki.roujinfamily.model.Member;
+import com.github.akagawatsurunaki.roujinfamily.model.OperatePeriod;
+import com.github.akagawatsurunaki.roujinfamily.model.RegularBus;
 import com.github.akagawatsurunaki.roujinfamily.model.Role;
+import com.github.akagawatsurunaki.roujinfamily.model.RouteType;
 import com.github.akagawatsurunaki.roujinfamily.model.Table;
 import java.lang.reflect.Type;
 import java.time.LocalDate;
@@ -20,8 +23,9 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import com.google.gson.reflect.TypeToken;
 import com.github.akagawatsurunaki.roujinfamily.model.User;
-
+import java.time.DayOfWeek;
 public class GsonUtil {
+	
 	// #region Regist Global Gson
 
 	// Regist a global gson in order to serialize and deserialize.
@@ -37,6 +41,52 @@ public class GsonUtil {
 		public JsonElement serialize(LocalTime localTime, Type sourceType, JsonSerializationContext context) {
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
 			return new JsonPrimitive(formatter.format(localTime));
+		}
+	}).registerTypeAdapter(DayOfWeek.class, new JsonSerializer<DayOfWeek>() {
+		@Override
+		public JsonElement serialize(DayOfWeek dayOfWeek, Type sourceType, JsonSerializationContext context) {
+			//TODO
+			switch(dayOfWeek) {
+			case MONDAY:
+				return new JsonPrimitive("MONDAY");
+			case TUESDAY:
+				return new JsonPrimitive("TUESDAY");
+			case WEDNESDAY:
+				return new JsonPrimitive("WEDNESDAY");
+			case THURSDAY:
+				return new JsonPrimitive("THURSDAY");
+			case FRIDAY:
+				return new JsonPrimitive("FRIDAY");
+			case SATURDAY:
+				return new JsonPrimitive("SATURDAY");
+			case SUNDAY:
+				return new JsonPrimitive("SUNDAY");
+			}
+			return new JsonPrimitive("MONDAY");
+		}
+	}).registerTypeAdapter(OperatePeriod.class, new JsonSerializer<OperatePeriod>() {
+		@Override
+		public JsonElement serialize(OperatePeriod operatePeriod, Type sourceType, JsonSerializationContext context) {
+			//TODO
+			switch(operatePeriod) {
+			case AM:
+				return new JsonPrimitive("AM");
+			case PM:
+				return new JsonPrimitive("PM");
+			}
+			return new JsonPrimitive("AM");
+		}
+	}).registerTypeAdapter(RouteType.class, new JsonSerializer<RouteType>() {
+		@Override
+		public JsonElement serialize(RouteType routeType, Type sourceType, JsonSerializationContext context) {
+			//TODO
+			switch(routeType) {
+			case INNER_ISLAND:
+				return new JsonPrimitive("INNER_ISLAND");
+			case OUTER_ISLAND:
+				return new JsonPrimitive("OUTER_ISLAND");
+			}
+			return new JsonPrimitive("INNER_ISLAND");
 		}
 	}).registerTypeAdapter(Gender.class, new JsonSerializer<Gender>() {
 		@Override
@@ -112,10 +162,70 @@ public class GsonUtil {
 				throw new JsonParseException("AkagawaTsurunaki: Fail to parse \"Role\".");
 			}
 		};
-	}).create();
+	}).registerTypeAdapter(DayOfWeek.class, new JsonDeserializer<DayOfWeek>() {
+		@Override
+		public DayOfWeek deserialize(JsonElement jsonElement, Type sourceType, JsonDeserializationContext context) throws JsonParseException {
+			String genderStr = jsonElement.getAsString();
+			if(genderStr.equals("MONDAY")) {
+				return DayOfWeek.MONDAY;
+			}
+			else if(genderStr.equals("TUESDAY")) {
+				return DayOfWeek.TUESDAY;
+			}
+			else if(genderStr.equals("WEDNESDAY")) {
+				return DayOfWeek.WEDNESDAY;
+			}
+			else if(genderStr.equals("THURSDAY")) {
+				return DayOfWeek.THURSDAY;
+			}
+			else if(genderStr.equals("FRIDAY")) {
+				return DayOfWeek.FRIDAY;
+			}
+			else if(genderStr.equals("SATURDAY")) {
+				return DayOfWeek.SATURDAY;
+			}
+			else if(genderStr.equals("SUNDAY")) {
+				return DayOfWeek.SUNDAY;
+			}
+			return null;
+		};
+	}).registerTypeAdapter(OperatePeriod.class, new JsonDeserializer<OperatePeriod>() {
+		@Override
+		public OperatePeriod deserialize(JsonElement jsonElement, Type sourceType, JsonDeserializationContext context) throws JsonParseException {
+			String genderStr = jsonElement.getAsString();
+			if(genderStr.equals("AM")) {
+				return OperatePeriod.AM;
+			}
+			else if(genderStr.equals("PM")) {
+				return OperatePeriod.PM;
+			}
+			else {
+				throw new JsonParseException("AkagawaTsurunaki: Fail to parse \"OperatePeriod\".");
+			}
+		};
+	}).registerTypeAdapter(RouteType.class, new JsonDeserializer<RouteType>() {
+		@Override
+		public RouteType deserialize(JsonElement jsonElement, Type sourceType, JsonDeserializationContext context) throws JsonParseException {
+			String genderStr = jsonElement.getAsString();
+			if(genderStr.equals("INNER_ISLAND")) {
+				return RouteType.INNER_ISLAND;
+			}
+			else if(genderStr.equals("OUTER_ISLAND")) {
+				return RouteType.OUTER_ISLAND;
+			}
+			else {
+				throw new JsonParseException("AkagawaTsurunaki: Fail to parse \"RouteType\".");
+			}
+		};
+	})
+	  
+	  
+	  .create();
 	
 	// #endregion
-
+	
+	// #region User, UserList, UserTable -- Json
+	
 	public static String fromUserTableToJson(Table<User> userTable) {
 		return glbGson.toJson(userTable, new TypeToken<Table<User>>() {}.getType());
 	}
@@ -140,6 +250,10 @@ public class GsonUtil {
 		return glbGson.fromJson(json, new TypeToken<User>() {}.getType());
 	}
 	
+	// #endregion
+	
+	// #region Member, MemberList, MemberTable -- Json
+	
 	public static String fromMemberTableToJson(Table<Member> memberTable) {
 		return glbGson.toJson(memberTable, new TypeToken<Table<Member>>() {}.getType());
 	}
@@ -163,7 +277,35 @@ public class GsonUtil {
 	public static Member fromJsonToMember(String json) {
 		return glbGson.fromJson(json, new TypeToken<Member>() {}.getType());
 	}
-
 	
+	// #endregion
 
+	// #region RegularBus, RegularBusList, RegularBusTable -- Json
+	
+	public static String fromRegularBusTableToJson(Table<RegularBus> regularBusTable) {
+		return glbGson.toJson(regularBusTable, new TypeToken<Table<RegularBus>>() {}.getType());
+	}
+	
+	public static Table<RegularBus> fromJsonToRegularBusTable(String json){
+		return glbGson.fromJson(json, new TypeToken<Table<RegularBus>>() {}.getType());
+	}
+	
+	public static String fromRegularBusesToJson(List<RegularBus> regularBusList) {
+		return glbGson.toJson(regularBusList, new TypeToken<List<RegularBus>>() {}.getType());
+	}
+	
+	public static List<RegularBus> fromJsonToRegularBuses(String json) {
+		return glbGson.fromJson(json, new TypeToken<List<RegularBus>>() {}.getType());
+	}
+	
+	public static String fromRegularBusToJson(RegularBus regularBus) {
+		return glbGson.toJson(regularBus, new TypeToken<RegularBus>() {}.getType());
+	}
+	
+	public static RegularBus fromJsonToRegularBus(String json) {
+		return glbGson.fromJson(json, new TypeToken<RegularBus>() {}.getType());
+	}
+
+	// #endregion
+	
 }

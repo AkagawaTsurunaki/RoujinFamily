@@ -349,7 +349,6 @@ public class UserManagementController extends Controller {
 		newMemberFrame = new NewMemberFrame();
 		newMemberFrame.setVisible(true);
 		updateNewMemberComboBox();
-		
 	}
 	
 	protected void showErrorMessageBox(RouJinFamilyException e) {
