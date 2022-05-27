@@ -8,6 +8,7 @@ public class Table <T> {
 	private List<T> data;
 	
 	// #region Constructor and setters and getters
+	
 	public Table(int idCount, List<T> data) {
 		this.idCount = idCount;
 		this.data = data;
@@ -27,9 +28,9 @@ public class Table <T> {
 	// #endregion
 	
 	// #region Methods
-	public void addDataSeg(T seg) {
+	public boolean addDataSeg(T seg) {
 		idCount++;
-		data.add(seg);
+		return data.add(seg);
 	}
 	
 	public boolean removeDataSeg(T seg) {

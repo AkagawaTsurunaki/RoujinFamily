@@ -16,7 +16,7 @@ public interface RegularBusDao {
 
 	boolean saveAllRegularBuses() throws FileWritingException;
 
-	String[][] getRegularBusTableAsStringArray();
+	String[][] getRegularBusTableAsStringArray() throws FileReadingException;
 
 	List<Member> getPassengerListInRegularBus(int regularBusId) throws ObjectNotFoundException;
 
@@ -41,6 +41,10 @@ public interface RegularBusDao {
 	RegularBus findRegularBus(int regularBusId) throws ObjectNotFoundException;
 
 	String[] getRegularBusTableTitle();
+
+	boolean addRegularBus(RegularBus bus) throws FileWritingException, CanNotMatchException;
+
+	Table<RegularBus> getRegularBusTable();
 	
 
 }

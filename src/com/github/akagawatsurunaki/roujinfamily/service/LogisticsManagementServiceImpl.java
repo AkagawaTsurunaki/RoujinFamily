@@ -10,6 +10,7 @@ import com.github.akagawatsurunaki.roujinfamily.exception.FileWritingException;
 import com.github.akagawatsurunaki.roujinfamily.exception.ObjectNotFoundException;
 import com.github.akagawatsurunaki.roujinfamily.model.Member;
 import com.github.akagawatsurunaki.roujinfamily.model.RegularBus;
+import com.github.akagawatsurunaki.roujinfamily.model.Table;
 
 public class LogisticsManagementServiceImpl implements LogisticsManagementService {
 
@@ -38,7 +39,7 @@ public class LogisticsManagementServiceImpl implements LogisticsManagementServic
 		return dao.getRegularBusTableTitle();
 	}
 	@Override
-    public String[][] getRegularBusTableAsStringArray() {
+    public String[][] getRegularBusTableAsStringArray() throws FileReadingException {
 		return dao.getRegularBusTableAsStringArray();
 	}
 
@@ -56,6 +57,12 @@ public class LogisticsManagementServiceImpl implements LogisticsManagementServic
 	public List<Member> getPassengerListInRegularBus(RegularBus regularBus) throws ObjectNotFoundException {
 		return dao.getPassengerListInRegularBus(regularBus);
 	}
+	
+	@Override
+	public Table<RegularBus> getRegularBusTable() {
+		return dao.getRegularBusTable();
+	}
+	
 
 	@Override
 	public Member findPassengerInRegularBus(Member member, RegularBus regularBus) throws ObjectNotFoundException {
@@ -65,6 +72,11 @@ public class LogisticsManagementServiceImpl implements LogisticsManagementServic
 	@Override
 	public Member findPassengerInRegularBus(int memberId, int regularBusId) throws ObjectNotFoundException {
 		return dao.findPassengerInRegularBus(memberId, regularBusId);
+	}
+	
+	@Override
+	public boolean addRegularBus(RegularBus newRegularBus) throws FileWritingException, CanNotMatchException {
+		return dao.addRegularBus(newRegularBus);
 	}
 
 	@Override

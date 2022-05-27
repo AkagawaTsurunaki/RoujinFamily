@@ -6,6 +6,9 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import com.github.akagawatsurunaki.roujinfamily.controller.LogisticsManagementController;
+
 import javax.swing.JTable;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -57,6 +60,7 @@ public class LogisticsManagementFrame extends JFrame {
 		JButton btnNewButton = new JButton("ÐÂ½¨°à³µ");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				LogisticsManagementController.getInstance().showNewRegularBusFrame();
 			}
 		});
 		btnNewButton.setBounds(10, 65, 120, 39);
