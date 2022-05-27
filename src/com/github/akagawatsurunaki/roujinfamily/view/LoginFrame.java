@@ -80,6 +80,8 @@ public class LoginFrame extends Frame {
 		JButton btnNewButton_1 = new JButton("È·¶¨");
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				//UserManagementController.getInstance().loginInvoke();
+				
 				String userName = textField.getText();
 				String password = new String(passwordField.getPassword());
 				try {

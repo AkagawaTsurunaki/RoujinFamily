@@ -3,6 +3,9 @@ package com.github.akagawatsurunaki.roujinfamily.view;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import com.github.akagawatsurunaki.roujinfamily.controller.HouseKeeperManagementController;
+
 import javax.swing.JTable;
 import javax.swing.JScrollBar;
 import javax.swing.JButton;
@@ -38,6 +41,7 @@ public class HouseKeeperManagementFrame extends Frame {
 		JButton btnNewButton = new JButton("修改个人信息");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				HouseKeeperManagementController.getInstance().showMemberInfoEditFrame();
 			}
 		});
 		btnNewButton.setBounds(10, 10, 115, 37);

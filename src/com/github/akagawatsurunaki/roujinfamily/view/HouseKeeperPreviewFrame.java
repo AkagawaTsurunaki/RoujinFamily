@@ -59,22 +59,14 @@ public class HouseKeeperPreviewFrame extends Frame {
 		lblNewLabel_1.setBounds(68, 35, 107, 23);
 		contentPane.add(lblNewLabel_1);
 		
-		JButton btnNewButton = new JButton("确定");
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		btnNewButton.setBounds(68, 207, 97, 30);
-		contentPane.add(btnNewButton);
-		
-		JButton btnNewButton_1 = new JButton("取消");
+		JButton btnNewButton_1 = new JButton("确认");
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				UserManagementController.getInstance().getUserManagementFrame().setEnabled(true);
 				HouseKeeperPreviewFrame.this.dispose();
 			}
 		});
-		btnNewButton_1.setBounds(269, 207, 97, 30);
+		btnNewButton_1.setBounds(165, 223, 97, 30);
 		contentPane.add(btnNewButton_1);
 	}
 }
