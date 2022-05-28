@@ -2,6 +2,7 @@ package com.github.akagawatsurunaki.roujinfamily.controller;
 
 import java.time.format.DateTimeFormatter;
 
+import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 
 import com.github.akagawatsurunaki.roujinfamily.exception.RouJinFamilyException;
@@ -9,6 +10,7 @@ import com.github.akagawatsurunaki.roujinfamily.model.Gender;
 import com.github.akagawatsurunaki.roujinfamily.model.Member;
 import com.github.akagawatsurunaki.roujinfamily.model.User;
 import com.github.akagawatsurunaki.roujinfamily.view.Frame;
+import com.github.akagawatsurunaki.roujinfamily.view.LoginFrame;
 
 public class Controller {
 	// Show an error message box on current window with error message and title. 
@@ -16,11 +18,17 @@ public class Controller {
 	
 	protected Frame mainFrame;
 	protected DateTimeFormatter glbDateFormatter = DateTimeFormatter.ofPattern("yyyy-M-d");
+
 	
-	protected void showErrorMessageBox(RouJinFamilyException e) {
+	protected void showErrorMessageBox(RouJinFamilyException e, Frame frame) {
+		String msg = "错误信息：" + e.getErrorMessage() + "\n发起者：" + e.getPositionInfo();
+		String title = e.getTitle();
+		JOptionPane.showMessageDialog(frame, msg, title, JOptionPane.OK_OPTION);
 	}
 	
-	protected void showErrorMessageBox(String msg, String title, String pos) {
+	protected void showErrorMessageBox(String msg, String title, String pos, Frame frame) {
+		RouJinFamilyException e = new RouJinFamilyException(msg, title, pos);
+		showErrorMessageBox(e, frame);
 	}
 	
 	protected void setGenderRadio(JRadioButton maleBtn, Member member) {

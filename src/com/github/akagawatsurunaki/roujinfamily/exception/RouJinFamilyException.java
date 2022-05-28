@@ -23,4 +23,10 @@ public class RouJinFamilyException extends Exception {
 	protected RouJinFamilyException() {
 		
 	}
+
+	public RouJinFamilyException(String msg, String title, String pos) {
+		this.errorMessage = msg;
+		this.title = title;
+		this.positionInfo = pos;
+	}
 }

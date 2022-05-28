@@ -236,7 +236,9 @@ public class RegularBus {
 
 	
 	public String[] toStringArray() {
+		
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+		
 		String[] ret = {
 				Integer.toString(id), 
 				routeCode, 
