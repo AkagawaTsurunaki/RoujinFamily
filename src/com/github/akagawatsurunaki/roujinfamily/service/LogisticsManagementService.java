@@ -45,6 +45,15 @@ public interface LogisticsManagementService {
 	boolean addRegularBus(RegularBus newRegularBus) throws FileWritingException, CanNotMatchException;
 
 	Table<RegularBus> getRegularBusTable();
+
+	boolean removeRegularBus(int id) throws FileWritingException;
+
+	void editTerminateTime(int id, String time) throws ObjectNotFoundException, CanNotMatchException, FileWritingException;
+
+	
+
+	
+	
 	
 	
 }

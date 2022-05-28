@@ -13,7 +13,9 @@ import javax.swing.table.TableModel;
 import com.github.akagawatsurunaki.roujinfamily.exception.CanNotMatchException;
 import com.github.akagawatsurunaki.roujinfamily.exception.FileReadingException;
 import com.github.akagawatsurunaki.roujinfamily.exception.FileWritingException;
+import com.github.akagawatsurunaki.roujinfamily.exception.ObjectNotFoundException;
 import com.github.akagawatsurunaki.roujinfamily.exception.RouJinFamilyException;
+import com.github.akagawatsurunaki.roujinfamily.model.Constants;
 import com.github.akagawatsurunaki.roujinfamily.model.Member;
 import com.github.akagawatsurunaki.roujinfamily.model.RegularBus;
 import com.github.akagawatsurunaki.roujinfamily.model.RouteDirection;
@@ -21,6 +23,8 @@ import com.github.akagawatsurunaki.roujinfamily.model.RouteType;
 import com.github.akagawatsurunaki.roujinfamily.service.LogisticsManagementService;
 import com.github.akagawatsurunaki.roujinfamily.service.LogisticsManagementServiceImpl;
 import com.github.akagawatsurunaki.roujinfamily.util.GlobalFormatter;
+import com.github.akagawatsurunaki.roujinfamily.view.CheckInFrame;
+import com.github.akagawatsurunaki.roujinfamily.view.EditTerminateTimeFrame;
 import com.github.akagawatsurunaki.roujinfamily.view.LogisticsManagementFrame;
 import com.github.akagawatsurunaki.roujinfamily.view.NewRegularBusFrame;
 
@@ -29,7 +33,8 @@ public class LogisticsManagementController extends Controller {
 	private static LogisticsManagementController instance = new LogisticsManagementController();
 	private LogisticsManagementService service = LogisticsManagementServiceImpl.getInstance();
 	private NewRegularBusFrame newRegularBusFrame;
-
+	private EditTerminateTimeFrame editTerminateTimeFrame;
+	private CheckInFrame checkInFrame;
 	public static LogisticsManagementController getInstance() {
 		if (instance == null) {
 			instance = new LogisticsManagementController();
@@ -40,92 +45,86 @@ public class LogisticsManagementController extends Controller {
 	private LogisticsManagementFrame mainFrame;
 
 	public void rqsAddRegularBus() {
+		// Get data from frame.
 		String routeCode = newRegularBusFrame.getRouteCodeTxtFld().getText();
 		String routeName = newRegularBusFrame.getRouteNameTxtFld().getText();
-
-		int index = newRegularBusFrame.getWeekCbBox().getSelectedIndex();
-
-		DayOfWeek week = DayOfWeek.FRIDAY;
-
-		switch (index) {
-		case 1: {
-			week = DayOfWeek.FRIDAY;
-			break;
-		}
-		case 2: {
-			week = DayOfWeek.TUESDAY;
-			break;
-		}
-		case 3: {
-			week = DayOfWeek.WEDNESDAY;
-			break;
-		}
-		case 4: {
-			week = DayOfWeek.THURSDAY;
-			break;
-		}
-		case 5: {
-			week = DayOfWeek.FRIDAY;
-			break;
-		}
-		case 6: {
-			week = DayOfWeek.SATURDAY;
-			break;
-		}
-		case 7: {
-			week = DayOfWeek.SUNDAY;
-			break;
-		}
-		}
-		
-		RouteDirection routeDirection;
-		
-		if(newRegularBusFrame.getUpRdVtn().isSelected()) {
-			routeDirection = RouteDirection.UP;
-		}
-		else {
-			routeDirection = RouteDirection.DOWN;
-		}
-		
-		RouteType routeType;
-		
-		if(newRegularBusFrame.getInlandRdBtn().isSelected()) {
-			routeType = RouteType.INNER_ISLAND;
-		}
-		else {
-			routeType = RouteType.OUTER_ISLAND;
-		}
-		
-		LocalTime dptTime = LocalTime.parse(newRegularBusFrame.getDptTimeTxtFld().getText());
-		
-		LocalTime tmnTime = LocalTime.of(23, 59);
-		
+		DayOfWeek operateDate = DayOfWeek.values()[1 + newRegularBusFrame.getWeekCbBox().getSelectedIndex()];
+		RouteDirection routeDirection = newRegularBusFrame.getUpRdVtn().isSelected() ? 
+										RouteDirection.UP : RouteDirection.DOWN;
+		RouteType routeType = newRegularBusFrame.getInlandRdBtn().isSelected() ?
+							  RouteType.INNER_ISLAND : RouteType.OUTER_ISLAND;
+		LocalTime departureTime = LocalTime.parse(newRegularBusFrame.getDptTimeTxtFld().getText());
+		LocalTime terminateTime = Constants.DEFAULT_TERMINNATE_TIME;
 		String notes = newRegularBusFrame.getNotesTxtArea().getText();
-		
+		// Try to pack the data.
 		try {
 			RegularBus bus = new RegularBus(
-					-1, 
+					Constants.DEFAULT_OBJECT_ID, 
 					routeCode,
 					routeName,
 					routeType,
 					routeDirection,
-					week,
-					dptTime,
-					tmnTime,
-					notes,
-					new ArrayList<Member>()
+					operateDate,
+					departureTime,
+					terminateTime,
+					notes
 					);
 			
+			// Try to add new bus.
 			service.addRegularBus(bus);
+			
+			// Refresh the table beneath.
+			updateRegularBusTable();
+			
 		} catch (CanNotMatchException e) {
 			showErrorMessageBox(e);
 		} catch (FileWritingException e) {
 			showErrorMessageBox(e);
 		}
-				
-
+		
 	}
 
+	public void rqsRemoveRegularBus() {
+		int[] rows = mainFrame.getTable().getSelectedRows();
+		
+		for(int i : rows) {
+			
+			int id = Integer.parseInt(mainFrame.getTable().getValueAt(i, 0).toString());
+			
+			try {
+				service.removeRegularBus(id);
+			} catch (FileWritingException e) {
+				showErrorMessageBox(e);
+			}
+		}
+		
+		updateRegularBusTable();
+		
+	}
+	
+	
+	public void rqsEditTerminateTime() {
+		
+		// TODO:GET -> SAVE -> REFRESH
+		String time = editTerminateTimeFrame.getTextField().getText();
+		int row = mainFrame.getTable().getSelectedRow();
+		if(row < -1) {
+			return;
+		}
+		int id = Integer.parseInt(mainFrame.getTable().getValueAt(row, 0).toString());
+		try {
+			service.editTerminateTime(id, time);
+		} catch (ObjectNotFoundException e) {
+			showErrorMessageBox(e);
+		} catch (CanNotMatchException e) {
+			showErrorMessageBox(e);
+		} catch (FileWritingException e) {
+			showErrorMessageBox(e);
+		}
+		updateRegularBusTable();
+		
+	}
+	
 	public LogisticsManagementFrame getMainFrame() {
 		return this.mainFrame;
 	}
@@ -134,7 +133,15 @@ public class LogisticsManagementController extends Controller {
 		newRegularBusFrame = new NewRegularBusFrame();
 		newRegularBusFrame.setVisible(true);
 		mainFrame.setEnabled(false);
+		updateNewBusFrame();
 	}
+	
+	public void showEditTerminateTimeFrame() {
+		editTerminateTimeFrame = new EditTerminateTimeFrame();
+		editTerminateTimeFrame.setVisible(true);
+		mainFrame.setEnabled(false);
+	}
+	
 
 	public void loginInvoke() {
 
@@ -152,6 +159,13 @@ public class LogisticsManagementController extends Controller {
 		updateRegularBusTable();
 	}
 
+	public void showChenkInFrame() {
+		checkInFrame = new CheckInFrame();
+		mainFrame.setEnabled(false);
+		checkInFrame.setVisible(true);
+		updateCheckInFrameLeft();
+	}
+	
 	private void updateRegularBusTable() {
 
 		String[] tableTitle = service.getRegularBusTableTitle();
@@ -171,6 +185,40 @@ public class LogisticsManagementController extends Controller {
 			showErrorMessageBox(e);
 		}
 
+	}
+	
+	private void updateNewBusFrame() {
+		
+		newRegularBusFrame.getWeekCbBox().removeAllItems();
+		
+		for(DayOfWeek day : DayOfWeek.values()) {
+			newRegularBusFrame.getWeekCbBox().addItem(day.toString());
+		}
+
+	}
+	
+	public void updateCheckInFrameLeft() {
+		
+		List<RegularBus> busList = service.getRegularBusTable().getData();
+		checkInFrame.getBusCbBox().removeAllItems();
+		for(RegularBus bus : busList) {
+			checkInFrame.getBusCbBox().addItem(String.valueOf((bus.getId())));
+		}
+		
+	}
+	
+	public void updateCheckInFrameRight() {
+		try {
+			int busId = Integer.parseInt((checkInFrame.getBusCbBox().getSelectedItem()).toString());
+			List<Member> memberList = service.getPassengerListInRegularBus(busId);
+			checkInFrame.getPassengerCbBox().removeAllItems();
+			
+			for(Member member : memberList) {
+				checkInFrame.getPassengerCbBox().addItem(member.getRealName());
+			}
+		} catch (ObjectNotFoundException e) {
+			showErrorMessageBox(e);
+		}
 	}
 
 	// #region Override Methods from Super Methods
