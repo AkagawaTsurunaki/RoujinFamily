@@ -90,6 +90,11 @@ public class LogisticsManagementFrame extends JFrame {
 		contentPane.add(btnNewButton_3);
 		
 		JButton btnNewButton_4 = new JButton("µÇ¼Ç");
+		btnNewButton_4.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				LogisticsManagementController.getInstance().showBookFrame();
+			}
+		});
 		btnNewButton_4.setBounds(530, 65, 120, 39);
 		contentPane.add(btnNewButton_4);
 		

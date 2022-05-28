@@ -209,9 +209,15 @@ public class RegularBus {
 			if(LocalTime.now().isBefore(terminateTime)) {
 				return passengerList.add(member);
 			}
+			else {
+				throw new CanNotMatchException("登记时间必须在该班车出发时间之前。", "登记失败", "该错误是由模型层发起的");
+			}
 		}
-		throw new CanNotMatchException("登记时间必须在该班车出发时间之前。", "登记失败", "该错误是由模型层发起的");
+		else {
+			throw new CanNotMatchException("此班车必须在" + operateDate + "时才能被登记。", "登记失败", "该错误是由模型层发起的");
 
+		}
+		
 	}
 	
 	public boolean removePassengerFromList(Member member) {

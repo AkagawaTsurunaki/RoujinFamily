@@ -150,7 +150,7 @@ public class RegularBusDaoImpl implements RegularBusDao {
     @Override
     public boolean removePassengerFromRegularBus(Member member, int regularBusId) throws ObjectNotFoundException, FileWritingException {
     	RegularBus bus = findRegularBus(regularBusId);
-    	boolean flag = bus.removePassengerFromList(regularBusId);
+    	boolean flag = bus.removePassengerFromList(member.getId());
     	saveAllRegularBuses();
     	return flag;
     }
@@ -228,7 +228,7 @@ public class RegularBusDaoImpl implements RegularBusDao {
     // #region TableContentData Getters
     @Override
     public String[] getRegularBusTableTitle() {
-    	String[] tableTitle = { "身份标识", "线路代码", "路线名称", 
+    	String[] tableTitle = { "ID", "线路代码", "路线名称", 
     			"方向", "运营日期", "运营时段", "发车时间", "截止时间", "预约人数" };
     	return tableTitle;
     }
