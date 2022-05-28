@@ -45,6 +45,10 @@ public interface RegularBusDao {
 	boolean addRegularBus(RegularBus bus) throws FileWritingException, CanNotMatchException;
 
 	Table<RegularBus> getRegularBusTable();
+
+	boolean removeRegularBus(int id) throws FileWritingException;
+
+	void editTerminateTime(int id, String time) throws ObjectNotFoundException, CanNotMatchException, FileWritingException;
 	
 
 }

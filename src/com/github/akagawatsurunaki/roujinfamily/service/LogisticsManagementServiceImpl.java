@@ -110,6 +110,15 @@ public class LogisticsManagementServiceImpl implements LogisticsManagementServic
 	public RegularBus findRegularBus(int regularBusId) throws ObjectNotFoundException {
 		return dao.findRegularBus(regularBusId);
 	}
+	@Override
+	public boolean removeRegularBus(int id) throws FileWritingException {
+		return dao.removeRegularBus(id);
+	}
 	
+	@Override
+	public void editTerminateTime(int id, String time) throws ObjectNotFoundException, CanNotMatchException, FileWritingException {
+		dao.editTerminateTime(id, time);
+		
+	}
 	// #endregion
 }

@@ -1,6 +1,7 @@
 package com.github.akagawatsurunaki.roujinfamily.dao;
 
 import java.io.IOException;
+import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -13,6 +14,7 @@ import com.github.akagawatsurunaki.roujinfamily.model.RegularBus;
 import com.github.akagawatsurunaki.roujinfamily.model.Table;
 import com.github.akagawatsurunaki.roujinfamily.model.User;
 import com.github.akagawatsurunaki.roujinfamily.util.FileUtil;
+import com.github.akagawatsurunaki.roujinfamily.util.GlobalFormatter;
 import com.github.akagawatsurunaki.roujinfamily.util.GsonUtil;
 
 public class RegularBusDaoImpl implements RegularBusDao {
@@ -98,6 +100,13 @@ public class RegularBusDaoImpl implements RegularBusDao {
 
 		return true;
     }
+    @Override
+    public void editTerminateTime(int id, String time) throws ObjectNotFoundException, CanNotMatchException, FileWritingException {
+    	LocalTime newtime = LocalTime.parse(time, GlobalFormatter.timeFormatter);
+    	RegularBus bus = findRegularBus(id);
+    	bus.setTerminateTime(newtime);
+    	saveAllRegularBuses();
+    }
     
     // #endregion
     
@@ -145,6 +154,22 @@ public class RegularBusDaoImpl implements RegularBusDao {
     	saveAllRegularBuses();
     	return flag;
     }
+    
+    @Override
+    public boolean removeRegularBus(int id) throws FileWritingException {
+    	
+    	for(RegularBus bus: regularBusTable.getData()) {
+    		if(bus.getId() == id) {
+        		regularBusTable.removeDataSeg(bus);
+        		saveAllRegularBuses();
+        		return true;
+    		}
+    		
+    	}
+		return false;
+    	
+    }
+    
     
     // #endregion
     

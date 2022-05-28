@@ -4,6 +4,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import com.github.akagawatsurunaki.roujinfamily.exception.CanNotMatchException;
 
@@ -54,11 +55,39 @@ public class RegularBus {
 		setPassengerList(passengerList);
 	}
 	
+	public RegularBus(int id,
+			String routeCode,
+			String routeName,
+			RouteType routeType,
+			RouteDirection routeDirection,
+			DayOfWeek operateDate,
+			LocalTime departureTime,
+			LocalTime terminateTime,
+			String notes
+			) throws CanNotMatchException {
+		setId(id);
+		setRouteCode(routeCode);
+		setRouteName(routeName);
+		setRouteType(routeType);
+		setRouteDirection(routeDirection);
+		setOperateDate(operateDate);
+		setDepartureTime(departureTime);
+		setTerminateTime(terminateTime);
+		
+		if(departureTime.isAfter(terminateTime)) {
+			throw new CanNotMatchException("出发时间不能晚于截止时间。", "非法输入", "该错误是由模型层发起的。");
+		}
+		
+		setNotes(notes);
+		setPassengerList(null);
+	}
+	
 	// #endregion
 	
 	
 	// #region Getters
 	
+
 	public int getId() {
 		return id;
 	}
@@ -149,8 +178,11 @@ public class RegularBus {
 		this.departureTime = departureTime;
 	}
 
-	public void setTerminateTime(LocalTime terminateTime) {
+	public void setTerminateTime(LocalTime terminateTime) throws CanNotMatchException {
 		this.terminateTime = terminateTime;
+		if(departureTime.isAfter(terminateTime)) {
+			throw new CanNotMatchException("出发时间不能晚于截止时间。", "非法输入", "该错误是由模型层发起的。");
+		}
 	}
 
 	public void setNotes(String notes) throws CanNotMatchException {
@@ -161,6 +193,11 @@ public class RegularBus {
 	}
 	
 	public void setPassengerList(List<Member> passengerList) {
+		
+		if(passengerList == null || passengerList.isEmpty()) {
+			passengerList = new ArrayList<Member>();
+		}
+		
 		this.passengerList = passengerList;
 	}
 	
@@ -203,7 +240,6 @@ public class RegularBus {
 				operateDate.toString(),
 				formatter.format(departureTime),
 				formatter.format(terminateTime),
-				notes,
 				Integer.toString(passengerList.size())
 				};
 		

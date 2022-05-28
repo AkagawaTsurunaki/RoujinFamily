@@ -14,6 +14,7 @@ import javax.swing.JTextField;
 import javax.swing.JRadioButton;
 import javax.swing.JComboBox;
 import javax.swing.JTextArea;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -42,10 +43,6 @@ public class NewRegularBusFrame extends JFrame {
 		return weekCbBox;
 	}
 
-	public JComboBox<String> getOprTimeCbBox() {
-		return oprTimeCbBox;
-	}
-
 	public JRadioButton getInlandRdBtn() {
 		return inlandRdBtn;
 	}
@@ -58,7 +55,6 @@ public class NewRegularBusFrame extends JFrame {
 	private JTextField routeCodeTxtFld;
 	private JTextField routeNameTxtFld;
 	private JComboBox<String> weekCbBox;
-	private JComboBox<String> oprTimeCbBox;
 	private JRadioButton inlandRdBtn;
 	private JRadioButton upRdVtn;
 	private JTextField dptTimeTxtFld;
@@ -94,9 +90,13 @@ public class NewRegularBusFrame extends JFrame {
 		inlandRdBtn.setBounds(142, 140, 127, 23);
 		contentPane.add(inlandRdBtn);
 		
-		JRadioButton rdbtnNewRadioButton_1 = new JRadioButton("岛外班车");
-		rdbtnNewRadioButton_1.setBounds(142, 175, 127, 23);
-		contentPane.add(rdbtnNewRadioButton_1);
+		JRadioButton outlandRbBtn = new JRadioButton("岛外班车");
+		outlandRbBtn.setBounds(142, 175, 127, 23);
+		contentPane.add(outlandRbBtn);
+		
+		ButtonGroup landBg = new ButtonGroup();
+		landBg.add(inlandRdBtn);
+		landBg.add(outlandRbBtn);
 		
 		JLabel lblNewLabel_2 = new JLabel("线路类型");
 		lblNewLabel_2.setBounds(61, 144, 58, 15);
@@ -110,9 +110,13 @@ public class NewRegularBusFrame extends JFrame {
 		upRdVtn.setBounds(429, 140, 127, 23);
 		contentPane.add(upRdVtn);
 		
-		JRadioButton rdbtnNewRadioButton_3 = new JRadioButton("下行");
-		rdbtnNewRadioButton_3.setBounds(429, 175, 127, 23);
-		contentPane.add(rdbtnNewRadioButton_3);
+		JRadioButton downRdVtn = new JRadioButton("下行");
+		downRdVtn.setBounds(429, 175, 127, 23);
+		contentPane.add(downRdVtn);
+		
+		ButtonGroup updownBg = new ButtonGroup();
+		updownBg.add(upRdVtn);
+		updownBg.add(downRdVtn);
 		
 		JLabel lblNewLabel_4 = new JLabel("运营日期");
 		lblNewLabel_4.setBounds(61, 236, 58, 15);
@@ -122,29 +126,21 @@ public class NewRegularBusFrame extends JFrame {
 		weekCbBox.setBounds(142, 232, 136, 23);
 		contentPane.add(weekCbBox);
 		
-		JLabel lblNewLabel_5 = new JLabel("运营时段");
-		lblNewLabel_5.setBounds(329, 236, 58, 15);
-		contentPane.add(lblNewLabel_5);
-		
-		oprTimeCbBox = new JComboBox<String>();
-		oprTimeCbBox.setBounds(429, 232, 136, 23);
-		contentPane.add(oprTimeCbBox);
-		
 		JLabel lblNewLabel_6 = new JLabel("发车时间");
-		lblNewLabel_6.setBounds(61, 306, 58, 15);
+		lblNewLabel_6.setBounds(329, 236, 58, 15);
 		contentPane.add(lblNewLabel_6);
 		
 		dptTimeTxtFld = new JTextField();
-		dptTimeTxtFld.setBounds(140, 303, 138, 21);
+		dptTimeTxtFld.setBounds(427, 233, 138, 21);
 		contentPane.add(dptTimeTxtFld);
 		dptTimeTxtFld.setColumns(10);
 		
 		JLabel lblNewLabel_7 = new JLabel("备注");
-		lblNewLabel_7.setBounds(61, 381, 58, 15);
+		lblNewLabel_7.setBounds(61, 304, 58, 15);
 		contentPane.add(lblNewLabel_7);
 		
 		notesTxtArea = new JTextArea();
-		notesTxtArea.setBounds(142, 376, 423, 101);
+		notesTxtArea.setBounds(142, 304, 423, 101);
 		contentPane.add(notesTxtArea);
 		
 		JButton btnNewButton = new JButton("确认");
@@ -155,7 +151,7 @@ public class NewRegularBusFrame extends JFrame {
 				NewRegularBusFrame.this.dispose();
 			}
 		});
-		btnNewButton.setBounds(61, 508, 97, 23);
+		btnNewButton.setBounds(61, 464, 97, 23);
 		contentPane.add(btnNewButton);
 		
 		JButton btnNewButton_1 = new JButton("取消");
@@ -165,7 +161,7 @@ public class NewRegularBusFrame extends JFrame {
 				NewRegularBusFrame.this.dispose();
 			}
 		});
-		btnNewButton_1.setBounds(468, 508, 97, 23);
+		btnNewButton_1.setBounds(468, 464, 97, 23);
 		contentPane.add(btnNewButton_1);
 	}
 }
