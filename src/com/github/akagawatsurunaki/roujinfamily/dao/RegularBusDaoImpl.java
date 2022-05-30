@@ -5,6 +5,9 @@ import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+
 import com.github.akagawatsurunaki.roujinfamily.exception.CanNotMatchException;
 import com.github.akagawatsurunaki.roujinfamily.exception.FileReadingException;
 import com.github.akagawatsurunaki.roujinfamily.exception.FileWritingException;
@@ -225,33 +228,30 @@ public class RegularBusDaoImpl implements RegularBusDao {
     
     // #endregion
     
-    // #region TableContentData Getters
     @Override
-    public String[] getRegularBusTableTitle() {
-    	String[] tableTitle = { "ID", "线路代码", "路线名称", 
-    			"方向", "运营日期", "运营时段", "发车时间", "截止时间", "预约人数" };
-    	return tableTitle;
-    }
-    @Override
-    public String[][] getRegularBusTableAsStringMatrix() throws FileReadingException {
+    public TableModel getRegularBusTableModel() {
     	
-    	loadAllRegularBuses();
-    	List<RegularBus> busList = regularBusTable.getData();
-    	int len = getRegularBusTableTitle().length;
-    	String[][] tableContent = new String[busList.size()][len];
+    	List<RegularBus> busList = getRegularBusTable().getData();
+    	String[] tableTitle = { "ID", "线路代码", "路线名称", "方向", "运营日期", "运营时段", "发车时间", "截止时间", "预约人数" };
+    	String[][] tableContent = new String[busList.size()][tableTitle.length];
     	
     	int i = 0;
-    	
-		for (RegularBus bus : busList) {
-			tableContent[i] = Arrays.copyOf(bus.toStringArray(), len);
+    	for (RegularBus bus : busList) {
+			tableContent[i] = Arrays.copyOf(bus.toStringArray(), tableTitle.length);
 			i++;
 		}
+    	
+		TableModel tableModel = new DefaultTableModel(tableContent, tableTitle) {
+			private static final long serialVersionUID = 1L;
+			// The table can not be operated.
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		};
 		
-		return tableContent;
+		return tableModel;
 
     }
-
-    // #endregion
 	
 
 }

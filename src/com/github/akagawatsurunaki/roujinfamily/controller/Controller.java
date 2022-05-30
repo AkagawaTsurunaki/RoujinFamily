@@ -10,6 +10,7 @@ import javax.swing.JRadioButton;
 import com.github.akagawatsurunaki.roujinfamily.exception.RouJinFamilyException;
 import com.github.akagawatsurunaki.roujinfamily.model.Gender;
 import com.github.akagawatsurunaki.roujinfamily.model.Member;
+import com.github.akagawatsurunaki.roujinfamily.model.RegularBus;
 import com.github.akagawatsurunaki.roujinfamily.model.User;
 import com.github.akagawatsurunaki.roujinfamily.view.Frame;
 import com.github.akagawatsurunaki.roujinfamily.view.LoginFrame;
@@ -64,10 +65,17 @@ public class Controller {
 		}
 	}
 	
-	protected <T extends Member> void  updateComboBoxWithRealName(List<T> list, JComboBox<String> cbBox) { 
-		cbBox.removeAllItems();
+	protected <T extends Member> void  updateComboBoxWithRealName(List<T> list, JComboBox<String> cmbBox) { 
+		cmbBox.removeAllItems();
 		for(T t : list) {
-			cbBox.addItem(t.getRealName());
+			cmbBox.addItem(t.getRealName());
+		}
+	}
+	
+	protected void updateComboBoxWithId(List<RegularBus> list, JComboBox<String> cmbBox) {
+		cmbBox.removeAllItems();
+		for(RegularBus bus : list) {
+			cmbBox.addItem(String.valueOf(bus.getId()));
 		}
 	}
 	

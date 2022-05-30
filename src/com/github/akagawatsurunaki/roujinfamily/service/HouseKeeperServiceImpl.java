@@ -2,6 +2,8 @@ package com.github.akagawatsurunaki.roujinfamily.service;
 
 import java.util.List;
 
+import javax.swing.table.TableModel;
+
 import com.github.akagawatsurunaki.roujinfamily.dao.MemberDao;
 import com.github.akagawatsurunaki.roujinfamily.dao.MemberDaoImpl;
 import com.github.akagawatsurunaki.roujinfamily.exception.CanNotMatchException;
@@ -44,5 +46,9 @@ public class HouseKeeperServiceImpl implements HouseKeeperService {
 	@Override
 	public boolean addMember(Member member) throws FileWritingException, CanNotMatchException {
 		return memberDao.addMember(member);
+	}
+	@Override
+	public TableModel getMemberEditTableModel(int hskId) {
+		return memberDao.getMemberEditTableModel(hskId);
 	}
 }

@@ -162,7 +162,7 @@ public class MemberDaoImpl implements MemberDao {
 		return ret;
 	}
 	@Override
-	public TableModel getMemberEditTableModel(int hskId){
+	public TableModel getMemberEditTableModel(int hskId) {
 		List<Member> segMemberList = findMembersByHouseKeeperId(hskId);
 		String[] tableTitle = { "身份标识", "姓名", "性别", "出生日期", "电话" };
 		String[][] tableContent = new String[segMemberList.size()][tableTitle.length];
@@ -180,6 +180,8 @@ public class MemberDaoImpl implements MemberDao {
 		};
 		return tableModel;
 	}
+	
+	
 
 	// #endregion
 }

@@ -2,6 +2,8 @@ package com.github.akagawatsurunaki.roujinfamily.dao;
 
 import java.util.List;
 
+import javax.swing.table.TableModel;
+
 import com.github.akagawatsurunaki.roujinfamily.exception.CanNotMatchException;
 import com.github.akagawatsurunaki.roujinfamily.exception.FileReadingException;
 import com.github.akagawatsurunaki.roujinfamily.exception.FileWritingException;
@@ -16,7 +18,7 @@ public interface RegularBusDao {
 
 	boolean saveAllRegularBuses() throws FileWritingException;
 
-	String[][] getRegularBusTableAsStringMatrix() throws FileReadingException;
+	TableModel getRegularBusTableModel();
 
 	List<Member> getPassengerListInRegularBus(int regularBusId) throws ObjectNotFoundException;
 
@@ -40,8 +42,6 @@ public interface RegularBusDao {
 
 	RegularBus findRegularBus(int regularBusId) throws ObjectNotFoundException;
 
-	String[] getRegularBusTableTitle();
-
 	boolean addRegularBus(RegularBus bus) throws FileWritingException, CanNotMatchException;
 
 	Table<RegularBus> getRegularBusTable();
@@ -50,5 +50,5 @@ public interface RegularBusDao {
 
 	void editTerminateTime(int id, String time) throws ObjectNotFoundException, CanNotMatchException, FileWritingException;
 	
-
+	
 }

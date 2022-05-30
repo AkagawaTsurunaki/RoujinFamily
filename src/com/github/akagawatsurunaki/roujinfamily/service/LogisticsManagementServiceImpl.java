@@ -2,6 +2,8 @@ package com.github.akagawatsurunaki.roujinfamily.service;
 
 import java.util.List;
 
+import javax.swing.table.TableModel;
+
 import com.github.akagawatsurunaki.roujinfamily.dao.RegularBusDao;
 import com.github.akagawatsurunaki.roujinfamily.dao.RegularBusDaoImpl;
 import com.github.akagawatsurunaki.roujinfamily.exception.CanNotMatchException;
@@ -34,14 +36,6 @@ public class LogisticsManagementServiceImpl implements LogisticsManagementServic
 	}
 	
 	// #region TableContentData Getters
-	@Override
-	public String[] getRegularBusTableTitle() {
-		return dao.getRegularBusTableTitle();
-	}
-	@Override
-    public String[][] getRegularBusTableAsStringArray() throws FileReadingException {
-		return dao.getRegularBusTableAsStringMatrix();
-	}
 
 	@Override
 	public boolean saveAllRegularBuses() throws FileWritingException {
@@ -121,4 +115,9 @@ public class LogisticsManagementServiceImpl implements LogisticsManagementServic
 		
 	}
 	// #endregion
+
+	@Override
+	public TableModel getRegularBusTableModel() {
+		return dao.getRegularBusTableModel();
+	}
 }
