@@ -1,7 +1,9 @@
 package com.github.akagawatsurunaki.roujinfamily.controller;
 
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 
@@ -16,9 +18,10 @@ public class Controller {
 	// Show an error message box on current window with error message and title. 
 	// It will disable substratum windows. 
 	
-	protected Frame mainFrame;
+	//protected Frame mainFrame;
 	protected DateTimeFormatter glbDateFormatter = DateTimeFormatter.ofPattern("yyyy-M-d");
 
+	// #region Show Error Message Box Methods
 	
 	protected void showErrorMessageBox(RouJinFamilyException e, Frame frame) {
 		String msg = "错误信息：" + e.getErrorMessage() + "\n发起者：" + e.getPositionInfo();
@@ -30,6 +33,8 @@ public class Controller {
 		RouJinFamilyException e = new RouJinFamilyException(msg, title, pos);
 		showErrorMessageBox(e, frame);
 	}
+	
+	// #endregion
 	
 	protected void setGenderRadio(JRadioButton maleBtn, Member member) {
 		if (member.getGender() == Gender.MALE) {
@@ -57,17 +62,15 @@ public class Controller {
 		else {
 			return Gender.FEMALE;
 		}
-		
 	}
 	
-//	protected Member packageMember() {
-//		return null;
-//	}
-//	protected String[] unpackMemberToStrArr(Frame infoFrame, Member member) {
-//		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-M-d");
-//		String birthday = formatter.format(member.getBirthday());
-//		
-//		
-//		return null;
-//	}
+	protected <T extends Member> void  updateComboBoxWithRealName(List<T> list, JComboBox<String> cbBox) { 
+		cbBox.removeAllItems();
+		for(T t : list) {
+			cbBox.addItem(t.getRealName());
+		}
+	}
+	
+
+	
 }

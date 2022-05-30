@@ -233,7 +233,7 @@ public class RegularBusDaoImpl implements RegularBusDao {
     	return tableTitle;
     }
     @Override
-    public String[][] getRegularBusTableAsStringArray() throws FileReadingException {
+    public String[][] getRegularBusTableAsStringMatrix() throws FileReadingException {
     	
     	loadAllRegularBuses();
     	List<RegularBus> busList = regularBusTable.getData();

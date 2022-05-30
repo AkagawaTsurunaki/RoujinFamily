@@ -2,7 +2,11 @@ package com.github.akagawatsurunaki.roujinfamily.dao;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 import com.github.akagawatsurunaki.roujinfamily.exception.FileReadingException;
 import com.github.akagawatsurunaki.roujinfamily.exception.FileWritingException;
@@ -156,6 +160,25 @@ public class MemberDaoImpl implements MemberDao {
 			}
 		}
 		return ret;
+	}
+	@Override
+	public TableModel getMemberEditTableModel(int hskId){
+		List<Member> segMemberList = findMembersByHouseKeeperId(hskId);
+		String[] tableTitle = { "身份标识", "姓名", "性别", "出生日期", "电话" };
+		String[][] tableContent = new String[segMemberList.size()][tableTitle.length];
+		int i = 0;
+		for (Member member : segMemberList) {
+			tableContent[i] = Arrays.copyOf(member.toStringArray(), tableTitle.length);
+			i++;
+		}
+		TableModel tableModel = new DefaultTableModel(tableContent, tableTitle) {
+			private static final long serialVersionUID = 1L;
+			// The table can not be operated.
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		};
+		return tableModel;
 	}
 
 	// #endregion

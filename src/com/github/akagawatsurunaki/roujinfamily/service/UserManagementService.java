@@ -2,6 +2,8 @@ package com.github.akagawatsurunaki.roujinfamily.service;
 
 import java.util.List;
 
+import javax.swing.table.TableModel;
+
 import com.github.akagawatsurunaki.roujinfamily.exception.FileReadingException;
 import com.github.akagawatsurunaki.roujinfamily.exception.FileWritingException;
 import com.github.akagawatsurunaki.roujinfamily.exception.CanNotMatchException;
@@ -33,5 +35,7 @@ public interface UserManagementService {
 	User findUserByRealName(String realName);
 	List<Member> getMemberListCanBeAdded(int houseKeeperId);
 	void saveAllMembers() throws FileWritingException;
+	TableModel getUserTableModel() throws FileReadingException;
+	TableModel getMemberEditTableModel(int hskId);
 
 }

@@ -40,7 +40,7 @@ public class LogisticsManagementServiceImpl implements LogisticsManagementServic
 	}
 	@Override
     public String[][] getRegularBusTableAsStringArray() throws FileReadingException {
-		return dao.getRegularBusTableAsStringArray();
+		return dao.getRegularBusTableAsStringMatrix();
 	}
 
 	@Override

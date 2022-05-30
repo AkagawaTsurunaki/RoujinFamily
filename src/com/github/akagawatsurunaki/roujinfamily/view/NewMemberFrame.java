@@ -103,7 +103,7 @@ public class NewMemberFrame extends JFrame {
 		JButton btnNewButton = new JButton("È·¶¨");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				UserManagementController.getInstance().rqsAddMember();
+				UserManagementController.getInstance().rqsAddMemberToHouseKeeper();
 				UserManagementController.getInstance().getUserManagementFrame().setEnabled(true);
 				NewMemberFrame.this.dispose();
 			}

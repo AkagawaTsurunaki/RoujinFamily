@@ -2,6 +2,8 @@ package com.github.akagawatsurunaki.roujinfamily.dao;
 
 import java.util.List;
 
+import javax.swing.table.TableModel;
+
 import com.github.akagawatsurunaki.roujinfamily.exception.FileReadingException;
 import com.github.akagawatsurunaki.roujinfamily.exception.FileWritingException;
 import com.github.akagawatsurunaki.roujinfamily.exception.CanNotMatchException;
@@ -36,4 +38,5 @@ public interface UserDao {
 	public List<User> findUsersByRole(Role role);
 	User findUserByRealName(String realName);
 	int findUserIdByPassword(String password);
+	TableModel getUserTableModel() throws FileReadingException;
 }

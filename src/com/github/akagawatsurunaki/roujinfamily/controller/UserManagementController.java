@@ -13,12 +13,14 @@ import com.github.akagawatsurunaki.roujinfamily.exception.FileWritingException;
 import com.github.akagawatsurunaki.roujinfamily.exception.CanNotMatchException;
 import com.github.akagawatsurunaki.roujinfamily.exception.ObjectNotFoundException;
 import com.github.akagawatsurunaki.roujinfamily.exception.RouJinFamilyException;
+import com.github.akagawatsurunaki.roujinfamily.model.Constants;
 import com.github.akagawatsurunaki.roujinfamily.model.Gender;
 import com.github.akagawatsurunaki.roujinfamily.model.Member;
 import com.github.akagawatsurunaki.roujinfamily.model.Role;
 import com.github.akagawatsurunaki.roujinfamily.model.User;
 import com.github.akagawatsurunaki.roujinfamily.service.UserManagementService;
 import com.github.akagawatsurunaki.roujinfamily.service.UserManagementServiceImpl;
+import com.github.akagawatsurunaki.roujinfamily.util.GlobalFormatter;
 import com.github.akagawatsurunaki.roujinfamily.view.HouseKeeperPreviewFrame;
 import com.github.akagawatsurunaki.roujinfamily.view.MemberEditFrame;
 import com.github.akagawatsurunaki.roujinfamily.view.NewMemberFrame;
@@ -36,24 +38,16 @@ public class UserManagementController extends Controller {
 	private MemberEditFrame memberEditFrame;
 	private NewMemberFrame newMemberFrame;
 	
-	private User selectedUser;
+	//private User selectedUser;
 	// Must through this method to get selected house keeper.
-	private User getSelectedUser() throws ObjectNotFoundException {
-		
+	private User getSelectedUserInMainFrame() throws ObjectNotFoundException {
 		int selectedRow = mainFrame.getTable().getSelectedRow();
-		
 		if(selectedRow == -1) {
-			this.selectedUser = null;
-			return selectedUser;
+			return null;
 		}
-		
 		int selectedHouseKeeperId = 
 				Integer.parseInt(mainFrame.getTable().getValueAt(selectedRow, 0).toString());
-		
-		this.selectedUser = rqsFindUserById(selectedHouseKeeperId);
-		
-		return selectedUser;
-
+		return service.findUserById(selectedHouseKeeperId);
 	}
 	
 	private UserManagementController() {};
@@ -75,168 +69,109 @@ public class UserManagementController extends Controller {
 	// #endregion
 
 	// #region Request Service Methods
-
-	// Request service to load all users into the memory.
-	private void rqsLoadAllUsers() {
+	
+	public void rqsUpdateMemberListComboBox(String name) {
 		try {
-			service.loadAllUsers();
+			updateMemberListComboBox(name);
 		} catch (FileReadingException e) {
-			showErrorMessageBox(e);
+			showErrorMessageBox(e, mainFrame);
 		}
 	}
-	//
-	private void rqsLoadAllMembers() {
-		try {
-			service.loadAllMembers();
-		} catch (FileReadingException e) {
-			showErrorMessageBox(e);
-		}
-	}
+	
+	
 	// Request service to add a new user into the current user data list in the memory.
 	public void rqsAddUser() {
 		try {
-			service.addUser(packUserDataSeg());
-		} catch (CanNotMatchException e) {
-			showErrorMessageBox(e);
-		} catch (FileWritingException e) {
-			showErrorMessageBox(e);
+			service.addUser(packUserInfo());
+			// After a request, must fresh the table content.
+			updateUserTableContent();
+		} catch (CanNotMatchException | FileWritingException e) {
+			showErrorMessageBox(e, mainFrame);
+		} catch (Exception e) {
+			showErrorMessageBox("您输入的信息是非法的。\n这可能是由于您输入了无法读取的信息，或者存在未输入的部分。", "非法输入", "该错误是由控制器层发起的。", mainFrame);
 		}
-		// After a request, must fresh the table content.
-		updateUserTableContent();
+		
 	}
 	// Request service to remove the selected user from the current user data list in the memory.
 	// This method allow system user to multiselect users that will be removed. 
 	public void rqsRemoveUser() {
-		JTable table = mainFrame.getTable();
-		int[] slcRowsIndex = table.getSelectedRows();
+		int[] slcRowsIndex = mainFrame.getTable().getSelectedRows();
 		// Remove users for each row selected.
 		for (int i : slcRowsIndex) {
-			int id = Integer.parseInt(table.getValueAt(i, 0).toString());
-	
+			int id = Integer.parseInt(mainFrame.getTable().getValueAt(i, 0).toString());
 			try {
 				service.removeUser(id);
-			} catch (FileWritingException e) {
-				showErrorMessageBox(e);
-			} catch (ObjectNotFoundException e) {
-				showErrorMessageBox(e);
+			} catch (FileWritingException  | ObjectNotFoundException e) {
+				showErrorMessageBox(e, mainFrame);
 			}
 		}
 		// After a request, must fresh the table content.
 		updateUserTableContent();
 	}
-	// Request service to find a user with the same id, if not, it will throw UserNotFoundException.
-	public User rqsFindUserById(int id) throws ObjectNotFoundException {
-		return service.findUserById(id);
-	}
-	//
-	public List<Member> rqsfindMembersByHouseKeeperId(int houseKeeperId) {
-		return service.findMembersByHouseKeeperId(houseKeeperId);
-	}
-	// 
-	public User rqsFindUserByRealName(String realName) {
-		return service.findUserByRealName(realName);
-	}
 	
-	public List<User> rqsfindUsersByRole(Role role) {
-		return service.findUsersByRole(role);
-	}
-	/*
-	 * 
-	 * 
-	 * 
-	 */
 	public void rqsEditMember(int selectedItemIndexInRightComboBox) {
 
 		try {
-			List<Member> memberList = service.getMemberListCanBeAdded(getSelectedUser().getId());
+			List<Member> memberList = service.getMemberListCanBeAdded(getSelectedUserInMainFrame().getId());
 			Member member = memberList.get(selectedItemIndexInRightComboBox);
-			
-			member.setHouseKeeperId(getSelectedUser().getId());
+			member.setHouseKeeperId(getSelectedUserInMainFrame().getId());
 			service.saveAllMembers();
-			
 			updateMemberEditTable();
 			updateRightMemberComboBox();
-			
-		} catch (ObjectNotFoundException | FileWritingException e) {
-			showErrorMessageBox(e);
+		} catch (ObjectNotFoundException | FileReadingException | FileWritingException e) {
+			showErrorMessageBox(e, mainFrame);
 		}
 	}
 	
-	public void rqsRemoveMemberFromHouseKeeper() {
+	public void rqsRemoveHouseKeeperFromMember() {
 		
 		try {
 			
 			int row = memberEditFrame.getLeftTable().getSelectedRow();
 			int memberId = Integer.parseInt(memberEditFrame.getLeftTable().getValueAt(row, 0).toString());
 			List<Member> memberList = service.getMemberTable().getData();
-			
 			for(Member member : memberList) {
 				if(member.getId() == memberId) {
 					member.setHouseKeeperId(-1);
 				}
 			}
-			
 			service.saveAllMembers();
 			updateMemberEditTable();
 			updateRightMemberComboBox();
-		
+			
 		} catch (ObjectNotFoundException | FileWritingException | FileReadingException e) {
-			showErrorMessageBox(e);
-		}
-		
-		
-	}
-	//
-	public void rqsRemoveMember(int memberId) {
-		try {
-			service.removeMember(memberId);
-		} catch (FileWritingException e) {
-			showErrorMessageBox(e);
-		} catch (ObjectNotFoundException e) {
-			showErrorMessageBox(e);
+			showErrorMessageBox(e, mainFrame);
 		}
 	}
-	//
-	public void rqsAddMember() {
-		//TODO
+
+	public void rqsAddMemberToHouseKeeper() {
 		
 		List<User> userList = service.findUsersByRole(Role.HOUSE_KEEPER);
-		
 		int selectedItemIndex = newMemberFrame.getComboBox().getSelectedIndex();
 		
 		if(selectedItemIndex < 0) {
-			showErrorMessageBox("未指派生活管家给这个会员。", "增加会员失败", "该错误是由控制器发起的。");
+			showErrorMessageBox("未指派生活管家给这个会员。", "增加会员失败", "该错误是由控制器发起的。", mainFrame);
 			return;
 		}
 		
 		int houseKeeperId = userList.get(selectedItemIndex).getId();
-		
-		int id = -1;
-		
 		Gender gender = getGenderFromRdBtn(newMemberFrame.getMaleRdBtn());
-		
 		String telNum = newMemberFrame.getTelNumTxtFld().getText();
-		
 		String realName = newMemberFrame.getRealNameTxtFld().getText();
-		
 		LocalDate birthday = LocalDate.parse(newMemberFrame.getBirthdayTxtFld().getText(), glbDateFormatter);
 		
 		try {
-			Member newMember = new Member(id, realName, gender, birthday, telNum, houseKeeperId);
+			Member newMember = new Member(Constants.DEFAULT_OBJECT_ID, realName, gender, birthday, telNum, houseKeeperId);
 			service.addMember(newMember);
-		} catch (CanNotMatchException e) {
-			showErrorMessageBox(e);
-		} catch (FileWritingException e) {
-			showErrorMessageBox(e);
+		} catch (CanNotMatchException | FileWritingException e) {
+			showErrorMessageBox(e, mainFrame);
 		}
 		
 	}
 	// #endregion
 	
 	// #region Show Frame Methods
-	
 
-	
 	// Show the main frame.
 	// When a new main frame is showed, it will refresh table content automatically.
 	public void showMainFrame() {
@@ -261,18 +196,13 @@ public class UserManagementController extends Controller {
 		
 		JTable table = mainFrame.getTable();
 		int slcRowIndex = table.getSelectedRow();
-		if(slcRowIndex == -1) {
-			return;
-		}
+		if(slcRowIndex == -1) { return; }
 		mainFrame.setEnabled(false);
-		
 		showNewUserFrame();
-		
-		int id = Integer.parseInt(table.getValueAt(slcRowIndex, 0).toString());
-		User user;
-		
+
 		try {
-			user = rqsFindUserById(id);
+			int id = Integer.parseInt(table.getValueAt(slcRowIndex, 0).toString());
+			User user = service.findUserById(id);
 			newUserFrame.setUserId(user.getId());
 			newUserFrame.getUserNameTxtFld().setText(user.getUserName());
 			newUserFrame.getPasswordTxtFld().setText(user.getPassword());
@@ -281,85 +211,61 @@ public class UserManagementController extends Controller {
 			String birthday = formatter.format(user.getBirthday());
 			newUserFrame.getBirthdayTxtFld().setText(birthday);
 			newUserFrame.getTelNumTxtFld().setText(user.getTelNumber());
-			if(user.getGender() == Gender.FEMALE) {
-				newUserFrame.getFemaleRdBt().setSelected(true);
-			}
-			else {
-				newUserFrame.getFemaleRdBt().setSelected(false);
-			}
+			newUserFrame.getFemaleRdBt().setSelected(user.getGender() == Gender.FEMALE ? true : false);
 			newUserFrame.getRoleCbBox().setSelectedItem(user.getRole());
-			
 		} catch (ObjectNotFoundException e) {
-			showErrorMessageBox(e);
+			showErrorMessageBox(e, mainFrame);
 		}
 		
 	}
 	// 
 	public void showHouseKeeperEditFrame(int id) {
 		try {
-			User user = rqsFindUserById(id);
+			User user = service.findUserById(id);
 			if(user.getRole() == Role.HOUSE_KEEPER) {
 				mainFrame.setEnabled(false);
 				houseKeeperPreviewFrame = new HouseKeeperPreviewFrame();
 				houseKeeperPreviewFrame.setVisible(true);
 				updateHouseKeeperListComboBox();
-				
 			}
 			else {
-				showErrorMessageBox("这个用户没有服务。", "查看用户服务时遇到问题", "该错误是由控制器发起的。");
+				showErrorMessageBox("这个用户没有服务。", "查看用户服务时遇到问题", "该错误是由控制器发起的。", mainFrame);
 			}
 			
-		} catch (ObjectNotFoundException e) {
-			showErrorMessageBox(e);
+		} catch (ObjectNotFoundException | FileReadingException e) {
+			showErrorMessageBox(e, mainFrame);
 		}
-
-		
 	}
 	
 	// 
 	public void showMemberEditFrame() {
 
 		try {
-			if(getSelectedUser() == null) {
+			if(getSelectedUserInMainFrame() == null) {
 				return;
 			}
-			if(getSelectedUser().getRole() != Role.HOUSE_KEEPER) {
-				showErrorMessageBox("这个用户不支持修改服务，修改服务的对象必须是生活管家。", "修改服务时遇到问题", "该错误是由控制器发起的。");
+			if(getSelectedUserInMainFrame().getRole() != Role.HOUSE_KEEPER) {
+				showErrorMessageBox("这个用户不支持修改服务，修改服务的对象必须是生活管家。", "修改服务时遇到问题", "该错误是由控制器发起的。", mainFrame);
 				return;
 			}
-		} catch (ObjectNotFoundException e) {
-			showErrorMessageBox(e);
-		}
-
-		mainFrame.setEnabled(false);
-		memberEditFrame = new MemberEditFrame();
-		memberEditFrame.setVisible(true);
-		
-		try {
+			mainFrame.setEnabled(false);
+			memberEditFrame = new MemberEditFrame();
+			memberEditFrame.setVisible(true);
 			updateMemberEditTable();
 			updateRightMemberComboBox();
-		} catch (ObjectNotFoundException e) {
-			showErrorMessageBox(e);
+		} catch (ObjectNotFoundException | FileReadingException e) {
+			showErrorMessageBox(e, mainFrame);
 		}
-		
 	}
 	
 	public void showNewMemberFrame() {
-		//TODO
 		newMemberFrame = new NewMemberFrame();
 		newMemberFrame.setVisible(true);
-		updateNewMemberComboBox();
-	}
-	
-	protected void showErrorMessageBox(RouJinFamilyException e) {
-		String msg = "错误信息：" + e.getErrorMessage() + "\n发起者：" + e.getPositionInfo();
-		String title = e.getTitle();
-		JOptionPane.showMessageDialog(mainFrame, msg, title, JOptionPane.OK_OPTION);
-	}
-	
-	protected void showErrorMessageBox(String msg, String title, String pos) {
-		String message = "错误信息：" + msg + "\n发起者：" + pos;
-		JOptionPane.showMessageDialog(mainFrame, message, title, JOptionPane.OK_OPTION);
+		try {
+			updateNewMemberComboBox();
+		} catch (FileReadingException e) {
+			showErrorMessageBox(e, mainFrame);
+		}
 	}
 	
 	// #endregion
@@ -367,126 +273,74 @@ public class UserManagementController extends Controller {
 	// #region Util Methods
 	
 	// Package the user information into an object instance.
-	
 	// It will thorw UserInfoInvalidException when encounter certain not-matched data.
-	
-	private User packUserDataSeg() throws CanNotMatchException {
+	private User packUserInfo() throws CanNotMatchException, Exception {
 		int id = newUserFrame.getUserId();
 		String userName = newUserFrame.getUserNameTxtFld().getText();
 		String password = newUserFrame.getPasswordTxtFld().getText();
 		String realName = newUserFrame.getRealNameTxtFld().getText();
 		Gender gender = newUserFrame.getFemaleRdBt().isSelected() ? Gender.FEMALE : Gender.MALE;
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-M-d");
-		LocalDate birthday = LocalDate.parse(newUserFrame.getBirthdayTxtFld().getText(), formatter);
+		String birthdayStr = newUserFrame.getBirthdayTxtFld().getText();
+		LocalDate birthday = LocalDate.parse(birthdayStr, GlobalFormatter.dateFormatter);
 		String telNumber = newUserFrame.getTelNumTxtFld().getText();
 		Role role = (Role) newUserFrame.getRoleCbBox().getSelectedItem();
 		User user = new User(id, userName, password, realName, gender, birthday, telNumber, role);
 		return user;
 	}
+	
+	// #endregion
+	
+	// #region Update Methods
+	
 	// Refresh the table content about the information of the users.
-
-
 	private void updateUserTableContent() {
 		try {
-			rqsLoadAllUsers();
-			List<User> usersList = service.getUsersTable().getData();
-			String[] tableTitle = { "身份标识", "账户", "姓名", "性别", "出生日期", "电话", "权限" };
-			String[][] tableContent = new String[usersList.size()][tableTitle.length];
-			int i = 0;
-			for (User u : usersList) {
-				tableContent[i] = Arrays.copyOf(u.toStringArray(), tableTitle.length);
-				i++;
-			}
-			TableModel tableModel = new DefaultTableModel(tableContent, tableTitle) {
-				private static final long serialVersionUID = 1L;
-
-				public boolean isCellEditable(int row, int column) {
-					return false;
-				}
-			};
-			mainFrame.updateUserTableContent(tableModel);
+			mainFrame.updateUserTableContent(service.getUserTableModel());
 		} catch (FileReadingException e) {
-			showErrorMessageBox(e);
+			showErrorMessageBox(e, mainFrame);
 		}
 	}
 	
-	public void updateMemberListComboBox(String houseKeeperRealName) {
-		rqsLoadAllMembers();
-		houseKeeperPreviewFrame.getMemberListComboBox().removeAllItems();
-		User houseKeeper = rqsFindUserByRealName(houseKeeperRealName);
-		List<Member> memberList = rqsfindMembersByHouseKeeperId(houseKeeper.getId());
-		for(Member member : memberList) {
-			houseKeeperPreviewFrame.getMemberListComboBox().addItem(member.getRealName());
-		}
+	private void updateMemberListComboBox(String houseKeeperRealName) throws FileReadingException {
+		service.loadAllMembers();
+		User houseKeeper = service.findUserByRealName(houseKeeperRealName);		
+		updateComboBoxWithRealName(
+				service.findMembersByHouseKeeperId(houseKeeper.getId()), 
+				houseKeeperPreviewFrame.getMemberListComboBox());
 	}
 	
-	public void updateHouseKeeperListComboBox() {
-		rqsLoadAllUsers();
-		List<User> houseKeeperList = rqsfindUsersByRole(Role.HOUSE_KEEPER);
+	private void updateHouseKeeperListComboBox() throws FileReadingException {
+		service.loadAllUsers();
+		List<User> houseKeeperList = service.findUsersByRole(Role.HOUSE_KEEPER);
 		for(User houseKeeper : houseKeeperList) {
 			houseKeeperPreviewFrame.getHouseKeeperListComboBox().addItem(houseKeeper.getRealName());
 		}
 	}
 	
-	public void updateMemberEditTable() throws ObjectNotFoundException {
+	private void updateMemberEditTable() throws ObjectNotFoundException, FileReadingException {
 		
 		// Load all of the data in files.
-		rqsLoadAllMembers();
-		rqsLoadAllUsers();
-		
+		service.loadAllMembers();
+		service.loadAllUsers();
 		// Create title and content.
-		JTable table = memberEditFrame.getLeftTable();
-		List<Member> segMemberList = service.findMembersByHouseKeeperId(getSelectedUser().getId());
-		String[] tableTitle = { "身份标识", "姓名", "性别", "出生日期", "电话" };
-		String[][] tableContent = new String[segMemberList.size()][tableTitle.length];
-		
-		int i = 0;
-		for (Member member : segMemberList) {
-			tableContent[i] = Arrays.copyOf(member.toStringArray(), tableTitle.length);
-			i++;
-		}
-		
-		TableModel tableModel = new DefaultTableModel(tableContent, tableTitle) {
-			private static final long serialVersionUID = 1L;
-			// The table can not be operated.
-			public boolean isCellEditable(int row, int column) {
-				return false;
-			}
-		};
-		
 		// Update the left-up label with housekeeper name.
-		memberEditFrame.getHouseKeeperLabel().setText(getSelectedUser().getRealName());
-		
+		memberEditFrame.getHouseKeeperLabel().setText(getSelectedUserInMainFrame().getRealName());
 		// Update the whole table.
-		table.setModel(tableModel);
+		memberEditFrame.getLeftTable().setModel(service.getMemberEditTableModel(getSelectedUserInMainFrame().getId()));
 	}
 	
 	// This method will refresh the data in the right combo box in MemberEditFrame
 	
-	public void updateRightMemberComboBox() throws ObjectNotFoundException {
-		
-		rqsLoadAllMembers();
-		List<Member> memberList;
-		memberList = service.getMemberListCanBeAdded(getSelectedUser().getId());
-		memberEditFrame.getRightMemberComboBox().removeAllItems();
-		for(Member member : memberList) {
-			memberEditFrame.getRightMemberComboBox().addItem(member.getRealName());
-		}
-
+	private void updateRightMemberComboBox() throws ObjectNotFoundException, FileReadingException {
+		service.loadAllMembers();
+		updateComboBoxWithRealName(
+				service.getMemberListCanBeAdded(getSelectedUserInMainFrame().getId()),
+				memberEditFrame.getRightMemberComboBox());
 	}
 	
-	public void updateNewMemberComboBox() {
-		rqsLoadAllMembers();
-		List<User> userList = service.findUsersByRole(Role.HOUSE_KEEPER);
-		newMemberFrame.getComboBox().removeAllItems();
-		for(User user : userList) {
-			newMemberFrame.getComboBox().addItem(user.getRealName());
-		}
+	private void updateNewMemberComboBox() throws FileReadingException {
+		service.loadAllMembers();
+		updateComboBoxWithRealName(service.findUsersByRole(Role.HOUSE_KEEPER), newMemberFrame.getComboBox());
 	}
-	
-
 	// #endregion
-
-	//
-
 }
