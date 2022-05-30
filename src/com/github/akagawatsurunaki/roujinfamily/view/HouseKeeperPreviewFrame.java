@@ -51,7 +51,7 @@ public class HouseKeeperPreviewFrame extends Frame {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
 				String name = HouseKeeperPreviewFrame.this.houseKeeperListComboBox.getSelectedItem().toString();
-				UserManagementController.getInstance().updateMemberListComboBox(name);
+				UserManagementController.getInstance().rqsUpdateMemberListComboBox(name);
 			}
 		});
 		

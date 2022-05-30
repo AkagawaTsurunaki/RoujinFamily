@@ -68,7 +68,7 @@ public class MemberEditFrame extends Frame {
 		JButton btnNewButton_1 = new JButton("É¾³ý¹Ë¿Í");
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				UserManagementController.getInstance().rqsRemoveMemberFromHouseKeeper();
+				UserManagementController.getInstance().rqsRemoveHouseKeeperFromMember();
 			}
 		});
 		btnNewButton_1.setBounds(448, 68, 107, 23);

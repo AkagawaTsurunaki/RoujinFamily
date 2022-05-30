@@ -39,10 +39,6 @@ public class HouseKeeperManagementController extends Controller {
 	public HouseKeeperManagementFrame getMainFrame() {
 		return mainFrame;
 	}
-//	public void setMainFrame(Frame frame) {
-//		this.mainFrame = (HouseKeeperManagementFrame) frame;
-//	}
-//	
 	
 	// #region Singleton Getter
 	

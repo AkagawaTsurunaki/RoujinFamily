@@ -2,7 +2,12 @@ package com.github.akagawatsurunaki.roujinfamily.dao;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+
 import com.github.akagawatsurunaki.roujinfamily.exception.FileReadingException;
 import com.github.akagawatsurunaki.roujinfamily.exception.FileWritingException;
 import com.github.akagawatsurunaki.roujinfamily.exception.CanNotMatchException;
@@ -168,6 +173,29 @@ public class UserDaoImpl implements UserDao {
 			}
 		}
 		return -1;
+	}
+	@Override 
+	public TableModel getUserTableModel() throws FileReadingException{
+		loadAllUsersFromFile();
+		
+		List<User> usersList =  getUserTable().getData();
+		String[] tableTitle = { "身份标识", "账户", "姓名", "性别", "出生日期", "电话", "权限" };
+		String[][] tableContent = new String[usersList.size()][tableTitle.length];
+		int i = 0;
+		for (User u : usersList) {
+			tableContent[i] = Arrays.copyOf(u.toStringArray(), tableTitle.length);
+			i++;
+		}
+		
+		TableModel tableModel = new DefaultTableModel(tableContent, tableTitle) {
+			private static final long serialVersionUID = 1L;
+
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		};
+		
+		return tableModel;
 	}
 
 }

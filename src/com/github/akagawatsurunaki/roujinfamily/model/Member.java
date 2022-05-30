@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 import com.github.akagawatsurunaki.roujinfamily.exception.CanNotMatchException;
+import com.github.akagawatsurunaki.roujinfamily.util.GlobalFormatter;
 import com.github.akagawatsurunaki.roujinfamily.util.Matcher;
 
 public class Member {
@@ -104,12 +105,11 @@ public class Member {
 
 	// #region Methods
 	public String[] toStringArray() {
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-M-d");
 		String[] retArr = { 
 				Integer.toString(id), 
 				realName, 
 				gender.toString(),
-				formatter.format(birthday),
+				GlobalFormatter.dateFormatter.format(birthday),
 				telNumber,
 		};
 		return retArr;

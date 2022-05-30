@@ -2,6 +2,8 @@ package com.github.akagawatsurunaki.roujinfamily.service;
 
 import java.util.List;
 
+import javax.swing.table.TableModel;
+
 import com.github.akagawatsurunaki.roujinfamily.dao.MemberDao;
 import com.github.akagawatsurunaki.roujinfamily.dao.MemberDaoImpl;
 import com.github.akagawatsurunaki.roujinfamily.dao.UserDao;
@@ -141,4 +143,13 @@ public class UserManagementServiceImpl implements UserManagementService {
 	}
 	
 	// #endregion
+	@Override
+	public TableModel getUserTableModel() throws FileReadingException{
+		return userDao.getUserTableModel();
+	}
+	
+	@Override
+	public TableModel getMemberEditTableModel(int hskId) {
+		return memberDao.getMemberEditTableModel(hskId);
+	}
 }
