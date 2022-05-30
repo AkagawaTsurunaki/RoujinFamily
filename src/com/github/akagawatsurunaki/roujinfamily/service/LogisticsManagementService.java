@@ -2,6 +2,8 @@ package com.github.akagawatsurunaki.roujinfamily.service;
 
 import java.util.List;
 
+import javax.swing.table.TableModel;
+
 import com.github.akagawatsurunaki.roujinfamily.exception.CanNotMatchException;
 import com.github.akagawatsurunaki.roujinfamily.exception.FileReadingException;
 import com.github.akagawatsurunaki.roujinfamily.exception.FileWritingException;
@@ -11,10 +13,6 @@ import com.github.akagawatsurunaki.roujinfamily.model.RegularBus;
 import com.github.akagawatsurunaki.roujinfamily.model.Table;
 
 public interface LogisticsManagementService {
-
-	public String[] getRegularBusTableTitle();
-
-	String[][] getRegularBusTableAsStringArray() throws FileReadingException;
 
 	boolean loadAllRegularBuses() throws FileReadingException;
 
@@ -50,7 +48,7 @@ public interface LogisticsManagementService {
 
 	void editTerminateTime(int id, String time) throws ObjectNotFoundException, CanNotMatchException, FileWritingException;
 
-	
+	public TableModel getRegularBusTableModel();
 
 	
 	

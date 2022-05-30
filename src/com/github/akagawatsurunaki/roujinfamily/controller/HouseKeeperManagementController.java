@@ -12,6 +12,7 @@ import com.github.akagawatsurunaki.roujinfamily.exception.FileReadingException;
 import com.github.akagawatsurunaki.roujinfamily.exception.FileWritingException;
 import com.github.akagawatsurunaki.roujinfamily.exception.ObjectNotFoundException;
 import com.github.akagawatsurunaki.roujinfamily.exception.RouJinFamilyException;
+import com.github.akagawatsurunaki.roujinfamily.model.Constants;
 import com.github.akagawatsurunaki.roujinfamily.model.Gender;
 import com.github.akagawatsurunaki.roujinfamily.model.Member;
 import com.github.akagawatsurunaki.roujinfamily.service.HouseKeeperService;
@@ -28,20 +29,11 @@ public class HouseKeeperManagementController extends Controller {
 	private HouseKeeperManagementFrame mainFrame;
 	private MemberInfoEditFrame memberInfoEditFrame;
 	private Member selectedMember;
-	private int loginHouseKeeperId = -1;
+	private int loginHouseKeeperId = Constants.DEFAULT_OBJECT_ID;
+	
 	// #endregion
 
-	public void loginInvoke(int houseKeeperId) {
-		this.loginHouseKeeperId = houseKeeperId;
-		HouseKeeperManagementController.getInstance().showHouseKeeperMngFrame();
-	}
-	
-	public HouseKeeperManagementFrame getMainFrame() {
-		return mainFrame;
-	}
-	
 	// #region Singleton Getter
-	
 	
 	public static HouseKeeperManagementController getInstance() {
 		if(instance == null) {
@@ -49,12 +41,29 @@ public class HouseKeeperManagementController extends Controller {
 		}
 		return instance;
 	}
-	
+
 	private HouseKeeperManagementController() {};
 	
 	// #endregion
 	
-	// #region
+	// #region Invoke Method
+	
+	public void loginInvoke(int houseKeeperId) {
+		this.loginHouseKeeperId = houseKeeperId;
+		HouseKeeperManagementController.getInstance().showHouseKeeperManagementFrame();
+	}
+	
+	// #endregion
+	
+	// #region Frame Getter
+	
+	public HouseKeeperManagementFrame getMainFrame() {
+		return mainFrame;
+	}
+	
+	// #endregion
+
+	// #region Show Frame Methods
 	
 	public void showMemberInfoEditFrame() {
 		memberInfoEditFrame = new MemberInfoEditFrame();
@@ -63,52 +72,40 @@ public class HouseKeeperManagementController extends Controller {
 		rqsEditMember();
 	}
 	
-	protected void showErrorMessageBox(RouJinFamilyException e) {
-		String msg = "错误信息：" + e.getErrorMessage() + "\n发起者：" + e.getPositionInfo();
-		String title = e.getTitle();
-		JOptionPane.showMessageDialog(mainFrame, msg, title, JOptionPane.OK_OPTION);
+	public void showHouseKeeperManagementFrame() {
+		mainFrame = new HouseKeeperManagementFrame();
+		mainFrame.setVisible(true);
+		try {
+			updateTableContent();
+		} catch (FileReadingException e) {
+			showErrorMessageBox(e, mainFrame);
+		}
 	}
 	
-	protected void showErrorMessageBox(String msg, String title, String pos) {
-		String message = "错误信息：" + msg + "\n发起者：" + pos;
-		JOptionPane.showMessageDialog(mainFrame, message, title, JOptionPane.OK_OPTION);
-	}
 	// #endregion
-	
-	
-	
+
 	// #region Request Service Methods
 	
 	public void rqsAddMember() {
 
 		int id = selectedMember.getId();
-		
 		Gender gender = getGenderFromRdBtn(memberInfoEditFrame.getMaleRdBtn());
-		
 		String telNum = memberInfoEditFrame.getTelNumTxtFld().getText();
-		
 		String realName = memberInfoEditFrame.getRealNameTxtFld().getText();
-		
 		LocalDate birthday = LocalDate.parse(memberInfoEditFrame.getBirthdayTxtFld().getText(), glbDateFormatter);
 		
 		try {
 			Member newMember = new Member(id, realName, gender, birthday, telNum, loginHouseKeeperId);
 			service.addMember(newMember);
-		} catch (CanNotMatchException e) {
-			showErrorMessageBox(e);
-		} catch (FileWritingException e) {
-			showErrorMessageBox(e);
-		}
-		
-		try {
 			updateTableContent();
-		} catch (FileReadingException e) {
-			showErrorMessageBox(e);
+		} catch (CanNotMatchException | FileWritingException | FileReadingException e) {
+			showErrorMessageBox(e, mainFrame);
 		}
 		
 	}
 	
 	public void rqsEditMember() {
+		
 		int row = mainFrame.getTable().getSelectedRow();
 		if(row == -1) {
 			return;
@@ -119,69 +116,26 @@ public class HouseKeeperManagementController extends Controller {
 			selectedMember = service.findMemberById(memberId);
 			updateTextField();
 		} catch (ObjectNotFoundException e) {
-			showErrorMessageBox(e);
+			showErrorMessageBox(e, mainFrame);
 		}
 	}
 	
 	// #endregion
-	
-	// #region Show Methods
-	
-	public void showHouseKeeperMngFrame() {
-		
-		mainFrame = new HouseKeeperManagementFrame();
-		mainFrame.setVisible(true);
-		try {
-			updateTableContent();
-		} catch (FileReadingException e) {
-			showErrorMessageBox(e);
-		}
 
-	}
-	
-	// #endregion
-	
 	// #region Update Methods
 	
-	public void updateTableContent() throws FileReadingException {
-		
+	private void updateTableContent() throws FileReadingException {
 		// Load all of the data in files.
 		service.loadAllMembersFromFile();
-		// Create title and content.
-		JTable table = mainFrame.getTable();
-		List<Member> memberList = service.findMembersByHouseKeeperId(loginHouseKeeperId);
-		
-		String[] tableTitle = { "身份标识", "姓名", "性别", "出生日期", "电话" };
-		String[][] tableContent = new String[memberList.size()][tableTitle.length];
-
-		int i = 0;
-		for (Member member : memberList) {
-			tableContent[i] = Arrays.copyOf(member.toStringArray(), tableTitle.length);
-			i++;
-		}
-		
-		TableModel tableModel = new DefaultTableModel(tableContent, tableTitle) {
-			private static final long serialVersionUID = 1L;
-			// The table can not be operated.
-			public boolean isCellEditable(int row, int column) {
-				return false;
-			}
-		};
-	
 		// Update the whole table.
-		table.setModel(tableModel);
+		mainFrame.getTable().setModel(service.getMemberEditTableModel(loginHouseKeeperId));
 	}
 	
-	public void updateTextField() {
-
+	private void updateTextField() {
 		memberInfoEditFrame.getRealNameTxtFld().setText(selectedMember.getRealName());
-		
 		memberInfoEditFrame.getBirthdayTxtFld().setText(glbDateFormatter.format(selectedMember.getBirthday()));
-		
 		memberInfoEditFrame.getTelNumTxtFld().setText(selectedMember.getTelNumber());
-		
-		setGenderRadio(memberInfoEditFrame.getMaleRdBtn(), selectedMember);
-		
+		setGenderRadio(memberInfoEditFrame.getMaleRdBtn(), selectedMember);	
 	}
 	
 	// #endregion

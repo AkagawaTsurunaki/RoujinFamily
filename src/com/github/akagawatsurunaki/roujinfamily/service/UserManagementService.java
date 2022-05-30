@@ -18,7 +18,6 @@ public interface UserManagementService {
 	public boolean addUser(User user)throws FileWritingException, CanNotMatchException;
 	public boolean clearAllUsers() throws FileWritingException;
 	public boolean removeUser(int id) throws FileWritingException, ObjectNotFoundException;
-	
 	public User findUserByName(String userName) throws ObjectNotFoundException;
 	public boolean loadAllUsers() throws FileReadingException;
 	public Table<User> getUsersTable() throws FileReadingException;
