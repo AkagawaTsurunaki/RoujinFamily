@@ -14,7 +14,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class NewUserFrame extends Frame {
+public class NewUserFrame extends JFrame {
 
 	public JTextField getUserNameTxtFld() {
 		return userNameTxtFld;

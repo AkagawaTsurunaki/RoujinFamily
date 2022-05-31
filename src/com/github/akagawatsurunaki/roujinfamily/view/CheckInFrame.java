@@ -13,25 +13,19 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 public class CheckInFrame extends JFrame {
-
+	
+	private static final long serialVersionUID = 1L;
+	
 	public JComboBox<String> getBusCbBox() {
 		return busCbBox;
 	}
-
-
-
-	private static final long serialVersionUID = 1L;
 
 	public JComboBox<String> getPassengerCbBox() {
 		return passengerCbBox;
 	}
 
-	
-
-	JComboBox<String> busCbBox;
-	JComboBox<String> passengerCbBox;
-
-
+	private JComboBox<String> busCbBox;
+	private JComboBox<String> passengerCbBox;
 	private JPanel contentPane;
 	private JButton btnNewButton_1;
 

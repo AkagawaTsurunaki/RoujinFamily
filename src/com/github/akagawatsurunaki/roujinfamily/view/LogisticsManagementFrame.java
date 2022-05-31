@@ -16,7 +16,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 
-public class LogisticsManagementFrame extends Frame {
+public class LogisticsManagementFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;

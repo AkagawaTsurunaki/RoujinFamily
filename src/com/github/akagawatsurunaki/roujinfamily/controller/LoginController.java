@@ -19,7 +19,7 @@ public class LoginController extends Controller {
 	
 	// #endregion
 	
-	// #region Singleton Constructor and Getters
+	// #region Singleton Getters
 	public static LoginController getInstance() {
 		if(instance == null) {
 			instance = new LoginController();

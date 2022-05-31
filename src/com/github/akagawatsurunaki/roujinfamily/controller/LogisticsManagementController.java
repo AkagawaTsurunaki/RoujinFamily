@@ -2,20 +2,12 @@ package com.github.akagawatsurunaki.roujinfamily.controller;
 
 import java.time.DayOfWeek;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
-
-import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
-
-import com.github.akagawatsurunaki.roujinfamily.dao.MemberDao;
 import com.github.akagawatsurunaki.roujinfamily.dao.MemberDaoImpl;
 import com.github.akagawatsurunaki.roujinfamily.exception.CanNotMatchException;
 import com.github.akagawatsurunaki.roujinfamily.exception.FileReadingException;
 import com.github.akagawatsurunaki.roujinfamily.exception.FileWritingException;
 import com.github.akagawatsurunaki.roujinfamily.exception.ObjectNotFoundException;
-import com.github.akagawatsurunaki.roujinfamily.exception.RouJinFamilyException;
 import com.github.akagawatsurunaki.roujinfamily.model.Constants;
 import com.github.akagawatsurunaki.roujinfamily.model.Member;
 import com.github.akagawatsurunaki.roujinfamily.model.RegularBus;
@@ -53,6 +45,66 @@ public class LogisticsManagementController extends Controller {
 	}
 
 	private LogisticsManagementFrame mainFrame;
+
+	// #endregion
+
+	// #region MainFrame Getter
+
+	public LogisticsManagementFrame getMainFrame() {
+		return this.mainFrame;
+	}
+
+	// #endregion
+
+	// #region Invoke Method
+
+	public void loginInvoke() {
+
+		try {
+			service.loadAllRegularBuses();
+		} catch (FileReadingException e) {
+			showErrorMessageBox(e, mainFrame);
+		}
+		showMainFrame();
+	}
+
+	// #endregion
+
+	// #region Show Frame Methods
+
+	public void showNewRegularBusFrame() {
+		newRegularBusFrame = new NewRegularBusFrame();
+		newRegularBusFrame.setVisible(true);
+		mainFrame.setEnabled(false);
+		updateNewBusFrame();
+	}
+
+	public void showEditTerminateTimeFrame() {
+		editTerminateTimeFrame = new EditTerminateTimeFrame();
+		editTerminateTimeFrame.setVisible(true);
+		mainFrame.setEnabled(false);
+	}
+
+	public void showMainFrame() {
+		mainFrame = new LogisticsManagementFrame();
+		mainFrame.setVisible(true);
+		updateRegularBusTable();
+	}
+
+	public void showChenkInFrame() {
+
+		checkInFrame = new CheckInFrame();
+		mainFrame.setEnabled(false);
+		checkInFrame.setVisible(true);
+		updateCheckInFrameLeft();
+	}
+
+	public void showBookFrame() {
+
+		bookFrame = new BookFrame();
+		bookFrame.setVisible(true);
+		mainFrame.setEnabled(false);
+	}
 
 	// #endregion
 
@@ -162,64 +214,10 @@ public class LogisticsManagementController extends Controller {
 
 	}
 
-	public LogisticsManagementFrame getMainFrame() {
-		return this.mainFrame;
-	}
+	// #endregion
 
-	public void showNewRegularBusFrame() {
-		newRegularBusFrame = new NewRegularBusFrame();
-		newRegularBusFrame.setVisible(true);
-		mainFrame.setEnabled(false);
-		updateNewBusFrame();
-	}
-
-	public void showEditTerminateTimeFrame() {
-		editTerminateTimeFrame = new EditTerminateTimeFrame();
-		editTerminateTimeFrame.setVisible(true);
-		mainFrame.setEnabled(false);
-	}
-
-	public void loginInvoke() {
-
-		try {
-			service.loadAllRegularBuses();
-		} catch (FileReadingException e) {
-			showErrorMessageBox(e, mainFrame);
-		}
-		showMainFrame();
-	}
-
-	public void showMainFrame() {
-		mainFrame = new LogisticsManagementFrame();
-		mainFrame.setVisible(true);
-		updateRegularBusTable();
-	}
-
-	public void showChenkInFrame() {
-
-		checkInFrame = new CheckInFrame();
-		mainFrame.setEnabled(false);
-		checkInFrame.setVisible(true);
-		updateCheckInFrameLeft();
-	}
-
-	public void showBookFrame() {
-
-		bookFrame = new BookFrame();
-		bookFrame.setVisible(true);
-		mainFrame.setEnabled(false);
-	}
-
-	public void updateRegularBusTable() {
-
-		try {
-			service.loadAllRegularBuses();
-			mainFrame.getTable().setModel(service.getRegularBusTableModel());
-		} catch (FileReadingException e) {
-			showErrorMessageBox(e, mainFrame);
-		}
-	}
-
+	// #region Update Methods
+	
 	private void updateNewBusFrame() {
 
 		newRegularBusFrame.getWeekCbBox().removeAllItems();
@@ -230,8 +228,18 @@ public class LogisticsManagementController extends Controller {
 
 	}
 
-	public void updateCheckInFrameLeft() {
+	private void updateCheckInFrameLeft() {
 		updateComboBoxWithId(service.getRegularBusTable().getData(), checkInFrame.getBusCbBox());
+	}
+	
+	public void updateRegularBusTable() {
+
+		try {
+			service.loadAllRegularBuses();
+			mainFrame.getTable().setModel(service.getRegularBusTableModel());
+		} catch (FileReadingException e) {
+			showErrorMessageBox(e, mainFrame);
+		}
 	}
 
 	public void updateCheckInFrameRight() {
@@ -243,4 +251,7 @@ public class LogisticsManagementController extends Controller {
 		}
 
 	}
+	
+	// #endregion
+	
 }
