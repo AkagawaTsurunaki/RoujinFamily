@@ -1,22 +1,16 @@
 package com.github.akagawatsurunaki.roujinfamily.controller;
 
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.List;
-import javax.swing.JOptionPane;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 import com.github.akagawatsurunaki.roujinfamily.exception.CanNotMatchException;
 import com.github.akagawatsurunaki.roujinfamily.exception.FileReadingException;
 import com.github.akagawatsurunaki.roujinfamily.exception.FileWritingException;
 import com.github.akagawatsurunaki.roujinfamily.exception.ObjectNotFoundException;
-import com.github.akagawatsurunaki.roujinfamily.exception.RouJinFamilyException;
 import com.github.akagawatsurunaki.roujinfamily.model.Constants;
 import com.github.akagawatsurunaki.roujinfamily.model.Gender;
 import com.github.akagawatsurunaki.roujinfamily.model.Member;
 import com.github.akagawatsurunaki.roujinfamily.service.HouseKeeperService;
 import com.github.akagawatsurunaki.roujinfamily.service.HouseKeeperServiceImpl;
+import com.github.akagawatsurunaki.roujinfamily.util.GlobalFormatter;
 import com.github.akagawatsurunaki.roujinfamily.view.HouseKeeperManagementFrame;
 import com.github.akagawatsurunaki.roujinfamily.view.MemberInfoEditFrame;
 
@@ -50,7 +44,7 @@ public class HouseKeeperManagementController extends Controller {
 	
 	public void loginInvoke(int houseKeeperId) {
 		this.loginHouseKeeperId = houseKeeperId;
-		HouseKeeperManagementController.getInstance().showHouseKeeperManagementFrame();
+		HouseKeeperManagementController.getInstance().showMainFrame();
 	}
 	
 	// #endregion
@@ -72,7 +66,7 @@ public class HouseKeeperManagementController extends Controller {
 		rqsEditMember();
 	}
 	
-	public void showHouseKeeperManagementFrame() {
+	public void showMainFrame() {
 		mainFrame = new HouseKeeperManagementFrame();
 		mainFrame.setVisible(true);
 		try {
@@ -92,7 +86,7 @@ public class HouseKeeperManagementController extends Controller {
 		Gender gender = getGenderFromRdBtn(memberInfoEditFrame.getMaleRdBtn());
 		String telNum = memberInfoEditFrame.getTelNumTxtFld().getText();
 		String realName = memberInfoEditFrame.getRealNameTxtFld().getText();
-		LocalDate birthday = LocalDate.parse(memberInfoEditFrame.getBirthdayTxtFld().getText(), glbDateFormatter);
+		LocalDate birthday = LocalDate.parse(memberInfoEditFrame.getBirthdayTxtFld().getText(), GlobalFormatter.dateFormatter);
 		
 		try {
 			Member newMember = new Member(id, realName, gender, birthday, telNum, loginHouseKeeperId);
@@ -133,12 +127,13 @@ public class HouseKeeperManagementController extends Controller {
 	
 	private void updateTextField() {
 		memberInfoEditFrame.getRealNameTxtFld().setText(selectedMember.getRealName());
-		memberInfoEditFrame.getBirthdayTxtFld().setText(glbDateFormatter.format(selectedMember.getBirthday()));
+		memberInfoEditFrame.getBirthdayTxtFld().setText(GlobalFormatter.dateFormatter.format(selectedMember.getBirthday()));
 		memberInfoEditFrame.getTelNumTxtFld().setText(selectedMember.getTelNumber());
 		memberInfoEditFrame.getMaleRdBtn().setSelected(selectedMember.getGender() == Gender.MALE ? true : false);
 		memberInfoEditFrame.getFemaleRdBtn().setSelected(selectedMember.getGender() == Gender.FEMALE ? true : false);
 
 	}
+
 	
 	// #endregion
 	

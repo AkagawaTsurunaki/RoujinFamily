@@ -1,41 +1,39 @@
 package com.github.akagawatsurunaki.roujinfamily.controller;
 
-import java.time.format.DateTimeFormatter;
 import java.util.List;
-
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
-
 import com.github.akagawatsurunaki.roujinfamily.exception.RouJinFamilyException;
 import com.github.akagawatsurunaki.roujinfamily.model.Gender;
 import com.github.akagawatsurunaki.roujinfamily.model.Member;
 import com.github.akagawatsurunaki.roujinfamily.model.RegularBus;
 import com.github.akagawatsurunaki.roujinfamily.model.User;
-import com.github.akagawatsurunaki.roujinfamily.view.Frame;
-import com.github.akagawatsurunaki.roujinfamily.view.LoginFrame;
-
-public class Controller {
-	// Show an error message box on current window with error message and title. 
-	// It will disable substratum windows. 
+public abstract class Controller {
 	
-	//protected Frame mainFrame;
-	protected DateTimeFormatter glbDateFormatter = DateTimeFormatter.ofPattern("yyyy-M-d");
-
+	// #region Abstract Methods
+	
+	public abstract void showMainFrame();
+	
+	// #endregion
+	
 	// #region Show Error Message Box Methods
 	
-	protected void showErrorMessageBox(RouJinFamilyException e, Frame frame) {
+	protected void showErrorMessageBox(RouJinFamilyException e, JFrame frame) {
 		String msg = "错误信息：" + e.getErrorMessage() + "\n发起者：" + e.getPositionInfo();
 		String title = e.getTitle();
 		JOptionPane.showMessageDialog(frame, msg, title, JOptionPane.OK_OPTION);
 	}
 	
-	protected void showErrorMessageBox(String msg, String title, String pos, Frame frame) {
+	protected void showErrorMessageBox(String msg, String title, String pos, JFrame frame) {
 		RouJinFamilyException e = new RouJinFamilyException(msg, title, pos);
 		showErrorMessageBox(e, frame);
 	}
 	
 	// #endregion
+	
+	// #region Swing Component Update Methods
 	
 	protected void setGenderRadio(JRadioButton maleBtn, Member member) {
 		if (member.getGender() == Gender.MALE) {
@@ -79,6 +77,6 @@ public class Controller {
 		}
 	}
 	
-
+	// #endregion
 	
 }

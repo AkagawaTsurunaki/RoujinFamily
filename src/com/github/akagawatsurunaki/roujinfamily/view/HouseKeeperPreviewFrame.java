@@ -12,7 +12,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.ActionEvent;
 
-public class HouseKeeperPreviewFrame extends Frame {
+public class HouseKeeperPreviewFrame extends JFrame {
 
 
 	private static final long serialVersionUID = 1L;

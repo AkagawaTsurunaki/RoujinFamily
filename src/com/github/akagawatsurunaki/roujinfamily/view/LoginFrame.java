@@ -11,7 +11,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JPasswordField;
 
-public class LoginFrame extends Frame {
+public class LoginFrame extends JFrame {
 
 	public JTextField getAccountTxtFld() {
 		return accountTxtFld;
