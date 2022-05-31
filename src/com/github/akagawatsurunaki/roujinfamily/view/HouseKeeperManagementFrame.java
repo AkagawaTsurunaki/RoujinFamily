@@ -46,6 +46,14 @@ public class HouseKeeperManagementFrame extends Frame {
 		});
 		btnNewButton.setBounds(10, 10, 115, 37);
 		contentPane.add(btnNewButton);
+		
+		JButton btnNewButton_1 = new JButton("ÍË³ö");
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
+			}
+		});
+		btnNewButton_1.setBounds(390, 10, 115, 36);
+		contentPane.add(btnNewButton_1);
 	}
-
 }

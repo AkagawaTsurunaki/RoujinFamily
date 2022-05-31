@@ -21,7 +21,8 @@ import com.github.akagawatsurunaki.roujinfamily.util.GsonUtil;
 public class UserDaoImpl implements UserDao {
 
 	private static UserDao instance = new UserDaoImpl();
-	private static final String filePath = "C:\\Users\\96514\\Desktop\\save\\Test.json";
+	private static final String filePath = ".\\save\\User.json";
+			//"C:\\Users\\96514\\Desktop\\save\\Test.json";
 	private static User loginUser;
 	private Table<User> userTable;
 
@@ -78,8 +79,7 @@ public class UserDaoImpl implements UserDao {
 	public boolean addUser(User newUser) throws FileWritingException, CanNotMatchException {
 
 		List<User> userList = getUserTable().getData();
-		if (userList == null || userList.isEmpty()) {
-
+		if (userList == null || userList.isEmpty()) {} else {
 			for (User user : userList) {
 				if (user.getId() == newUser.getId()) {
 					user.setUserName(newUser.getUserName());
@@ -87,7 +87,6 @@ public class UserDaoImpl implements UserDao {
 					user.setRealName(newUser.getRealName());
 					user.setRole(newUser.getRole());
 					user.setTelNumber(newUser.getTelNumber());
-					
 					user.setGender(newUser.getGender());
 					user.setBirthday(newUser.getBirthday());
 					saveAllUsersToFile();

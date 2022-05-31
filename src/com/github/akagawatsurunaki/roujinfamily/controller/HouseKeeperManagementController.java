@@ -135,7 +135,9 @@ public class HouseKeeperManagementController extends Controller {
 		memberInfoEditFrame.getRealNameTxtFld().setText(selectedMember.getRealName());
 		memberInfoEditFrame.getBirthdayTxtFld().setText(glbDateFormatter.format(selectedMember.getBirthday()));
 		memberInfoEditFrame.getTelNumTxtFld().setText(selectedMember.getTelNumber());
-		setGenderRadio(memberInfoEditFrame.getMaleRdBtn(), selectedMember);	
+		memberInfoEditFrame.getMaleRdBtn().setSelected(selectedMember.getGender() == Gender.MALE ? true : false);
+		memberInfoEditFrame.getFemaleRdBtn().setSelected(selectedMember.getGender() == Gender.FEMALE ? true : false);
+
 	}
 	
 	// #endregion

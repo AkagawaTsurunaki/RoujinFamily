@@ -1,11 +1,12 @@
 package com.github.akagawatsurunaki.roujinfamily.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Table <T> {
 
 	private int idCount;
-	private List<T> data;
+	private List<T> data = new ArrayList<T>();
 	
 	// #region Constructor and setters and getters
 	

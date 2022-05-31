@@ -82,10 +82,11 @@ public class NewMemberFrame extends JFrame {
 		JRadioButton femalRdBtn = new JRadioButton("Å®");
 		femalRdBtn.setBounds(268, 419, 73, 23);
 		contentPane.add(femalRdBtn);
-		
+
 		ButtonGroup btnGrp = new ButtonGroup(); 
 		btnGrp.add(maleRdBtn);
 		btnGrp.add(femalRdBtn);
+		maleRdBtn.setSelected(true);
 		
 		lblNewLabel_2 = new JLabel("ÐÔ±ð");
 		lblNewLabel_2.setBounds(48, 423, 58, 15);

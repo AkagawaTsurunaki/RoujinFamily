@@ -74,6 +74,7 @@ public class LogisticsManagementController extends Controller {
 					GlobalFormatter.timeFormatter);
 		} catch (Exception e) {
 			showErrorMessageBox("时间格式必须为HH:mm，即24小时制，例如早上八点，请输入08:00。", "非法输入", "该错误是由控制器发起的", mainFrame);
+			return;
 		}
 
 		LocalTime terminateTime = Constants.DEFAULT_TERMINNATE_TIME;
