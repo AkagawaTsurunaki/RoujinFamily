@@ -24,4 +24,5 @@ public interface MemberDao {
 	List<Member> findMembersByHouseKeeperId(int houseKeeperId);
 	List<Member> getMemberListCanBeAdded(int houseKeeperId);
 	TableModel getMemberEditTableModel(int hskId);
+	boolean removeMemberFromHouseKeeper(int memberId) throws ObjectNotFoundException, FileWritingException;
 }

@@ -77,8 +77,7 @@ public class UserManagementController extends Controller {
 			showErrorMessageBox(e, mainFrame);
 		}
 	}
-	
-	
+
 	// Request service to add a new user into the current user data list in the memory.
 	public void rqsAddUser() {
 		try {
@@ -127,14 +126,20 @@ public class UserManagementController extends Controller {
 		
 		try {
 			
-			int row = memberEditFrame.getLeftTable().getSelectedRow();
-			int memberId = Integer.parseInt(memberEditFrame.getLeftTable().getValueAt(row, 0).toString());
-			List<Member> memberList = service.getMemberTable().getData();
-			for(Member member : memberList) {
-				if(member.getId() == memberId) {
-					member.setHouseKeeperId(-1);
-				}
+			int rows[] = memberEditFrame.getLeftTable().getSelectedRows();
+			for(int r : rows) {
+				int memberId = Integer.parseInt(memberEditFrame.getLeftTable().getValueAt(r, 0).toString());
+				service.removeMemberFromHouseKeeper(memberId);
 			}
+			
+			
+			
+//			List<Member> memberList = service.getMemberTable().getData();
+//			for(Member member : memberList) {
+//				if(member.getId() == memberId) {
+//					member.setHouseKeeperId(-1);
+//				}
+//			}
 			service.saveAllMembers();
 			updateMemberEditTable();
 			updateRightMemberComboBox();
@@ -295,6 +300,7 @@ public class UserManagementController extends Controller {
 	// Refresh the table content about the information of the users.
 	private void updateUserTableContent() {
 		try {
+			service.loadAllUsers();
 			mainFrame.updateUserTableContent(service.getUserTableModel());
 		} catch (FileReadingException e) {
 			showErrorMessageBox(e, mainFrame);

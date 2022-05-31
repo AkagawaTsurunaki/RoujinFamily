@@ -24,34 +24,28 @@ public class MemberInfoEditFrame extends JFrame {
 	private JTextField telNumTxtFld;
 	private JButton btnNewButton_1;
 	private JRadioButton maleRdBtn;
-	
+	private JRadioButton femalRdBtn;
 	
 	
 	public JTextField getRealNameTxtFld() {
 		return realNameTxtFld;
 	}
 
-
-
-
 	public JTextField getBirthdayTxtFld() {
 		return birthdayTxtFld;
 	}
-
-
-
 
 	public JTextField getTelNumTxtFld() {
 		return telNumTxtFld;
 	}
 
-
-
-
 	public JRadioButton getMaleRdBtn() {
 		return maleRdBtn;
 	}
 	
+	public JRadioButton getFemaleRdBtn() {
+		return femalRdBtn;
+	}
 
 	public MemberInfoEditFrame() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -83,7 +77,7 @@ public class MemberInfoEditFrame extends JFrame {
 		maleRdBtn.setBounds(164, 319, 82, 23);
 		contentPane.add(maleRdBtn);
 		
-		JRadioButton femalRdBtn = new JRadioButton("Ů");
+		femalRdBtn = new JRadioButton("Ů");
 		femalRdBtn.setBounds(272, 319, 73, 23);
 		contentPane.add(femalRdBtn);
 		

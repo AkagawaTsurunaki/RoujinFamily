@@ -2,6 +2,7 @@ package com.github.akagawatsurunaki.roujinfamily.dao;
 
 import java.io.IOException;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -26,7 +27,8 @@ public class RegularBusDaoImpl implements RegularBusDao {
 	
 	private static RegularBusDao instance = new RegularBusDaoImpl();
 	
-	private static final String filePath = "C:\\Users\\96514\\Desktop\\save\\RegularBus.json";
+	private static final String filePath = ".\\save\\RegularBus.json";
+			//"C:\\Users\\96514\\Desktop\\save\\RegularBus.json";
 	
 	// #region Constructors and Instance Getters
 	
@@ -78,9 +80,15 @@ public class RegularBusDaoImpl implements RegularBusDao {
     @Override
     public boolean addRegularBus(RegularBus newRegularBus) throws FileWritingException, CanNotMatchException {
     	
-		List<RegularBus> busList = regularBusTable.getData();
 		
-		if(busList == null || busList.isEmpty()) {
+		
+		if(this.regularBusTable == null || regularBusTable.getData().isEmpty()) {
+			List<RegularBus> list = new ArrayList<RegularBus>();
+			this.regularBusTable = new Table<RegularBus>(0, list);
+			this.regularBusTable.getData().add(newRegularBus);
+			return true;
+		} else {
+			List<RegularBus> busList = regularBusTable.getData();
 			for (RegularBus bus : busList) {
 				if(bus.getId() == newRegularBus.getId()) {
 					bus.setDepartureTime(newRegularBus.getDepartureTime());
@@ -100,7 +108,6 @@ public class RegularBusDaoImpl implements RegularBusDao {
 		newRegularBus.setId(regularBusTable.getIdCount() + 1);
 		regularBusTable.addDataSeg(newRegularBus);
 		saveAllRegularBuses();
-
 		return true;
     }
     @Override

@@ -36,5 +36,6 @@ public interface UserManagementService {
 	void saveAllMembers() throws FileWritingException;
 	TableModel getUserTableModel() throws FileReadingException;
 	TableModel getMemberEditTableModel(int hskId);
+	boolean removeMemberFromHouseKeeper(int memberId) throws ObjectNotFoundException, FileWritingException;
 
 }

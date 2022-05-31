@@ -66,6 +66,10 @@ public class UserManagementServiceImpl implements UserManagementService {
 	public boolean removeMember(int id) throws FileWritingException, ObjectNotFoundException {
 		return memberDao.removeMember(id);
 	}
+	@Override
+	public boolean removeMemberFromHouseKeeper(int memberId) throws ObjectNotFoundException, FileWritingException{
+		return memberDao.removeMemberFromHouseKeeper(memberId);
+	}
 	
 	// #endregion
 	

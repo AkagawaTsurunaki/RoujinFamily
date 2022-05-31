@@ -12,6 +12,7 @@ import com.github.akagawatsurunaki.roujinfamily.exception.FileReadingException;
 import com.github.akagawatsurunaki.roujinfamily.exception.FileWritingException;
 import com.github.akagawatsurunaki.roujinfamily.exception.CanNotMatchException;
 import com.github.akagawatsurunaki.roujinfamily.exception.ObjectNotFoundException;
+import com.github.akagawatsurunaki.roujinfamily.model.Constants;
 import com.github.akagawatsurunaki.roujinfamily.model.Member;
 import com.github.akagawatsurunaki.roujinfamily.model.Table;
 import com.github.akagawatsurunaki.roujinfamily.util.FileUtil;
@@ -23,9 +24,10 @@ public class MemberDaoImpl implements MemberDao {
 
 	private static MemberDao instance = new MemberDaoImpl();
 
-	private static final String filePath = "C:\\Users\\96514\\Desktop\\save\\Members.json";
+	private static final String filePath = ".\\save\\Members.json";
+	// "C:\\Users\\96514\\Desktop\\save\\Members.json";
 
-	private Table<Member> memberTable = new Table<Member>(0, new ArrayList<Member>());
+	private Table<Member> memberTable;
 
 	// #endregion
 
@@ -91,10 +93,13 @@ public class MemberDaoImpl implements MemberDao {
 	@Override
 	public boolean addMember(Member newMember) throws FileWritingException, CanNotMatchException {
 
-		List<Member> memberList = getMemberTable().getData();
-
-		if (memberList == null || memberList.isEmpty()) {
-
+		if (this.memberTable == null || memberTable.getData().isEmpty()) {
+			List<Member> list = new ArrayList<Member>();
+			this.memberTable = new Table<Member>(0, list);
+			this.memberTable.getData().add(newMember);
+			return true;
+		} else {
+			List<Member> memberList = getMemberTable().getData();
 			for (Member member : memberList) {
 				if (member.getId() == newMember.getId()) {
 					member.setRealName(newMember.getRealName());
@@ -111,6 +116,7 @@ public class MemberDaoImpl implements MemberDao {
 		this.memberTable.addDataSeg(newMember);
 		saveAllMembersToFile();
 		return true;
+
 	}
 
 	@Override
@@ -125,7 +131,14 @@ public class MemberDaoImpl implements MemberDao {
 		memberTable.removeDataSeg(findMemberById(id));
 		saveAllMembersToFile();
 		return true;
-
+	}
+	
+	@Override 
+	public boolean removeMemberFromHouseKeeper(int memberId) throws ObjectNotFoundException, FileWritingException {
+		Member member = findMemberById(memberId);
+		member.setHouseKeeperId(Constants.DEFAULT_OBJECT_ID);
+		saveAllMembersToFile();
+		return true;
 	}
 
 	@Override
@@ -161,6 +174,7 @@ public class MemberDaoImpl implements MemberDao {
 		}
 		return ret;
 	}
+
 	@Override
 	public TableModel getMemberEditTableModel(int hskId) {
 		List<Member> segMemberList = findMembersByHouseKeeperId(hskId);
@@ -173,6 +187,7 @@ public class MemberDaoImpl implements MemberDao {
 		}
 		TableModel tableModel = new DefaultTableModel(tableContent, tableTitle) {
 			private static final long serialVersionUID = 1L;
+
 			// The table can not be operated.
 			public boolean isCellEditable(int row, int column) {
 				return false;
@@ -180,8 +195,6 @@ public class MemberDaoImpl implements MemberDao {
 		};
 		return tableModel;
 	}
-	
-	
 
 	// #endregion
 }
