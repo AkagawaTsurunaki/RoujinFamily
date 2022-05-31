@@ -24,9 +24,6 @@ public class UserManagementFrame extends JFrame {
 		return table;
 	}
 
-	/**
-	 * Create the frame.
-	 */
 	public UserManagementFrame() {
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

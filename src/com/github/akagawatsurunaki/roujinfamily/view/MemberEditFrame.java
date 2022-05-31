@@ -15,30 +15,24 @@ import javax.swing.JComboBox;
 
 public class MemberEditFrame extends JFrame {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
-	
-	
-
-
-	public JComboBox<String> getRightMemberComboBox() {
-		return rightMemberComboBox;
-	}
 	private JPanel contentPane;
 	private JTable leftTable;
 	JLabel houseKeeperLabel;
 	private JComboBox<String> rightMemberComboBox;
-	
-	
-	
+
 	public JLabel getHouseKeeperLabel() {
 		return houseKeeperLabel;
 	}
+	
 	public JTable getLeftTable() {
 		return this.leftTable;
 	}
+	
+	public JComboBox<String> getRightMemberComboBox() {
+		return rightMemberComboBox;
+	}
+	
 	public MemberEditFrame() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 598, 295);
