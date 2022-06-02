@@ -14,6 +14,10 @@ import com.github.akagawatsurunaki.roujinfamily.util.GlobalFormatter;
 import com.github.akagawatsurunaki.roujinfamily.view.HouseKeeperManagementFrame;
 import com.github.akagawatsurunaki.roujinfamily.view.MemberInfoEditFrame;
 
+/**
+ * @author Akagawa Tsurunaki
+ *
+ */
 public class HouseKeeperManagementController extends Controller {
 	
 	// #region Properties 

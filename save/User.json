@@ -1,1 +1,49 @@
-{"idCount":4,"data":[{"userName":"Admin","password":"Admin2022?!","role":"ADMINISTRATOR","id":0,"realName":"默认管理员","gender":"MALE","birthday":"2022-5-22","telNumber":"13999999999","houseKeeperId":0},{"userName":"LiXiuli","password":"123!Asd456?","role":"HOUSE_KEEPER","id":1,"realName":"李秀丽","gender":"FEMALE","birthday":"1995-3-17","telNumber":"13999999998","houseKeeperId":0},{"userName":"HouQin","password":"HouQin123??","role":"LOGISTICS","id":3,"realName":"后嗪","gender":"MALE","birthday":"1980-2-27","telNumber":"13999999997","houseKeeperId":0},{"userName":"HaoShengHuo","password":"332GSIjs123!","role":"HOUSE_KEEPER","id":4,"realName":"豪昇火","gender":"MALE","birthday":"1998-1-1","telNumber":"13834567890","houseKeeperId":0}]}
+{
+    "idCount": 4,
+    "data": [
+        {
+            "userName": "Admin",
+            "password": "Admin2022?!",
+            "role": "ADMINISTRATOR",
+            "id": 0,
+            "realName": "默认管理员",
+            "gender": "MALE",
+            "birthday": "2022-5-22",
+            "telNumber": "13999999999",
+            "houseKeeperId": 0
+        },
+        {
+            "userName": "LiXiuli",
+            "password": "123!Asd456?",
+            "role": "HOUSE_KEEPER",
+            "id": 1,
+            "realName": "李秀丽",
+            "gender": "FEMALE",
+            "birthday": "1995-3-17",
+            "telNumber": "13999999998",
+            "houseKeeperId": 0
+        },
+        {
+            "userName": "HouQin",
+            "password": "HouQin123??",
+            "role": "LOGISTICS",
+            "id": 3,
+            "realName": "后嗪",
+            "gender": "MALE",
+            "birthday": "1980-2-27",
+            "telNumber": "13999999997",
+            "houseKeeperId": 0
+        },
+        {
+            "userName": "HaoShengHuo",
+            "password": "332GSIjs123!",
+            "role": "HOUSE_KEEPER",
+            "id": 4,
+            "realName": "豪昇火",
+            "gender": "MALE",
+            "birthday": "1998-1-1",
+            "telNumber": "13834567890",
+            "houseKeeperId": 0
+        }
+    ]
+}

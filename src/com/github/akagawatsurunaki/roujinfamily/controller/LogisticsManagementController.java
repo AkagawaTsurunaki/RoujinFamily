@@ -22,6 +22,10 @@ import com.github.akagawatsurunaki.roujinfamily.view.EditTerminateTimeFrame;
 import com.github.akagawatsurunaki.roujinfamily.view.LogisticsManagementFrame;
 import com.github.akagawatsurunaki.roujinfamily.view.NewRegularBusFrame;
 
+/**
+ * @author Akagawa Tsurunaki
+ *
+ */
 public class LogisticsManagementController extends Controller {
 
 	// #region Properties
