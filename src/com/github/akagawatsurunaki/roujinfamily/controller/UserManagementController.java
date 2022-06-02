@@ -281,20 +281,20 @@ public class UserManagementController extends Controller {
 			showErrorMessageBox("未指派生活管家给这个会员。", "增加会员失败", "该错误是由控制器发起的。", mainFrame);
 			return;
 		}
-
-		int houseKeeperId = userList.get(selectedItemIndex).getId();
-		Gender gender = getGenderFromRdBtn(newMemberFrame.getMaleRdBtn());
-		String telNum = newMemberFrame.getTelNumTxtFld().getText();
-		String realName = newMemberFrame.getRealNameTxtFld().getText();
-		LocalDate birthday = LocalDate.parse(newMemberFrame.getBirthdayTxtFld().getText(),
-				GlobalFormatter.timeFormatter);
-
 		try {
+			int houseKeeperId = userList.get(selectedItemIndex).getId();
+			Gender gender = getGenderFromRdBtn(newMemberFrame.getMaleRdBtn());
+			String telNum = newMemberFrame.getTelNumTxtFld().getText();
+			String realName = newMemberFrame.getRealNameTxtFld().getText();
+			LocalDate birthday = LocalDate.parse(newMemberFrame.getBirthdayTxtFld().getText(),
+					GlobalFormatter.timeFormatter);
 			Member newMember = new Member(Constants.DEFAULT_OBJECT_ID, realName, gender, birthday, telNum,
 					houseKeeperId);
 			service.addMember(newMember);
 		} catch (CanNotMatchException | FileWritingException e) {
 			showErrorMessageBox(e, mainFrame);
+		} catch (Exception e) {
+			showErrorMessageBox("您输入的信息是非法的。", "新增会员失败", "该错误是由控制器发起的。", mainFrame);
 		}
 
 	}
