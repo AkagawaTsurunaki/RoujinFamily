@@ -18,6 +18,10 @@ import com.github.akagawatsurunaki.roujinfamily.model.User;
 import com.github.akagawatsurunaki.roujinfamily.util.FileUtil;
 import com.github.akagawatsurunaki.roujinfamily.util.GsonUtil;
 
+/**
+ * @author Akagawa Tsurunaki
+ * 
+ */
 public class UserDaoImpl implements UserDao {
 
 	private static UserDao instance = new UserDaoImpl();

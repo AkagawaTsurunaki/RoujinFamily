@@ -1,5 +1,9 @@
 package com.github.akagawatsurunaki.roujinfamily.exception;
 
+/**
+ * @author Akagawa Tsurunaki
+ *
+ */
 public class RouJinFamilyException extends Exception {
 	
 

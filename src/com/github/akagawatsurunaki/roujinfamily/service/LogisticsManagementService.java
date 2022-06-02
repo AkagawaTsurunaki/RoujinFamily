@@ -12,6 +12,10 @@ import com.github.akagawatsurunaki.roujinfamily.model.Member;
 import com.github.akagawatsurunaki.roujinfamily.model.RegularBus;
 import com.github.akagawatsurunaki.roujinfamily.model.Table;
 
+/**
+ * @author Akagawa Tsurunaki
+ *
+ */
 public interface LogisticsManagementService {
 
 	boolean loadAllRegularBuses() throws FileReadingException;

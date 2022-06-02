@@ -17,6 +17,10 @@ import com.github.akagawatsurunaki.roujinfamily.model.Role;
 import com.github.akagawatsurunaki.roujinfamily.model.Table;
 import com.github.akagawatsurunaki.roujinfamily.model.User;
 
+/**
+ * @author Akagawa Tsurunaki
+ *
+ */
 public class UserManagementServiceImpl implements UserManagementService {
 
 	private static UserManagementService instance = new UserManagementServiceImpl();

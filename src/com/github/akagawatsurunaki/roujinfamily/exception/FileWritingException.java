@@ -1,5 +1,8 @@
 package com.github.akagawatsurunaki.roujinfamily.exception;
-
+/**
+ * @author Akagawa Tsurunaki
+ *
+ */
 public class FileWritingException extends RouJinFamilyException {
 
 	private static final long serialVersionUID = 1L;

@@ -12,6 +12,10 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+/**
+ * @author Akagawa Tsurunaki
+ *
+ */
 public class MemberInfoEditFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;

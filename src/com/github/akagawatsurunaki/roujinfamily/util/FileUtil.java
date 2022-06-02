@@ -11,6 +11,10 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * @author Akagawa Tsurunaki
+ *
+ */
 public class FileUtil {
 
 	public static void writeFile(String filePath, String content) throws IOException {

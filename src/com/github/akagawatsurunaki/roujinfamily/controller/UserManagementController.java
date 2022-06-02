@@ -22,6 +22,10 @@ import com.github.akagawatsurunaki.roujinfamily.view.NewMemberFrame;
 import com.github.akagawatsurunaki.roujinfamily.view.NewUserFrame;
 import com.github.akagawatsurunaki.roujinfamily.view.UserManagementFrame;
 
+/**
+ * @author Akagawa Tsurunaki
+ *
+ */
 public class UserManagementController extends Controller {
 
 	// #region Properties

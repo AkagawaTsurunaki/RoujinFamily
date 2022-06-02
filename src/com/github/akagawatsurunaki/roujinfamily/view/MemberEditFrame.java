@@ -13,6 +13,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JComboBox;
 
+/**
+ * @author Akagawa Tsurunaki
+ *
+ */
 public class MemberEditFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;

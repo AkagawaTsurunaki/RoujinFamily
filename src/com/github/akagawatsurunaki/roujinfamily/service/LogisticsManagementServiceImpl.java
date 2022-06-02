@@ -1,9 +1,7 @@
 package com.github.akagawatsurunaki.roujinfamily.service;
 
 import java.util.List;
-
 import javax.swing.table.TableModel;
-
 import com.github.akagawatsurunaki.roujinfamily.dao.RegularBusDao;
 import com.github.akagawatsurunaki.roujinfamily.dao.RegularBusDaoImpl;
 import com.github.akagawatsurunaki.roujinfamily.exception.CanNotMatchException;
@@ -14,6 +12,10 @@ import com.github.akagawatsurunaki.roujinfamily.model.Member;
 import com.github.akagawatsurunaki.roujinfamily.model.RegularBus;
 import com.github.akagawatsurunaki.roujinfamily.model.Table;
 
+/**
+ * @author Akagawa Tsurunaki
+ *
+ */
 public class LogisticsManagementServiceImpl implements LogisticsManagementService {
 
 	// #region Properties

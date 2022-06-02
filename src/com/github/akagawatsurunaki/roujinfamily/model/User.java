@@ -5,6 +5,10 @@ import java.time.format.DateTimeFormatter;
 import com.github.akagawatsurunaki.roujinfamily.exception.CanNotMatchException;
 import com.github.akagawatsurunaki.roujinfamily.util.Matcher;
 
+/**
+ * @author Akagawa Tsurunaki
+ *
+ */
 public class User extends Member {
 
 	// #region Properties
