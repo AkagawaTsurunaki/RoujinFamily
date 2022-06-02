@@ -7,9 +7,16 @@ import com.github.akagawatsurunaki.roujinfamily.exception.ObjectNotFoundExceptio
 import com.github.akagawatsurunaki.roujinfamily.model.Role;
 
 public class LoginServiceImpl implements LoginService {
+	
+	// #region Properties
+	
 	private static LoginService instance = new LoginServiceImpl();
 	private static UserDao dao = UserDaoImpl.getInstance();
-	//#region Singleton
+	
+	// #endregion
+	
+	// #region Singleton Getter
+	
 	public static LoginService getInstance() {
 		if(instance == null) {
 			instance = new LoginServiceImpl();
@@ -17,7 +24,10 @@ public class LoginServiceImpl implements LoginService {
 		return instance;
 	}
 	private LoginServiceImpl() {}
-	//#endregion
+	
+	// #endregion
+	
+	// #region Override Methods
 	
 	public void initialize() throws FileReadingException {
 		dao.initialize();
@@ -31,5 +41,7 @@ public class LoginServiceImpl implements LoginService {
 	public int findUserIdByPassword(String password) {
 		return dao.findUserIdByPassword(password);
 	}
+	
+	// #endregion
 	
 }

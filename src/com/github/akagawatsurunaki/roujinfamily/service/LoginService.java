@@ -5,7 +5,9 @@ import com.github.akagawatsurunaki.roujinfamily.exception.ObjectNotFoundExceptio
 import com.github.akagawatsurunaki.roujinfamily.model.Role;
 
 public interface LoginService {
-	public void initialize() throws FileReadingException;
-	public Role login(String nm, String rawPsw) throws ObjectNotFoundException, FileReadingException;
+	
+	void initialize() throws FileReadingException;
+	Role login(String nm, String rawPsw) throws ObjectNotFoundException, FileReadingException;
 	int findUserIdByPassword(String password);
+	
 }

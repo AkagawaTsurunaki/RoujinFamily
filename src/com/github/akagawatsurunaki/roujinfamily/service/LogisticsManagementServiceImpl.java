@@ -16,9 +16,14 @@ import com.github.akagawatsurunaki.roujinfamily.model.Table;
 
 public class LogisticsManagementServiceImpl implements LogisticsManagementService {
 
-	private static LogisticsManagementServiceImpl instance = new LogisticsManagementServiceImpl();
+	// #region Properties
 	
+	private static LogisticsManagementServiceImpl instance = new LogisticsManagementServiceImpl();
 	private static RegularBusDao dao = RegularBusDaoImpl.getInstance();
+	
+	// #endregion
+	
+	// #region Singleton Getter
 	
 	public static LogisticsManagementService getInstance() {
 		
@@ -30,12 +35,14 @@ public class LogisticsManagementServiceImpl implements LogisticsManagementServic
 	
 	private LogisticsManagementServiceImpl() {}
 	
+	// #endregion
+	
+	// #region Override Methods
+		
 	@Override
 	public boolean loadAllRegularBuses() throws FileReadingException {
 		return dao.loadAllRegularBuses();
 	}
-	
-	// #region TableContentData Getters
 
 	@Override
 	public boolean saveAllRegularBuses() throws FileWritingException {
@@ -57,7 +64,6 @@ public class LogisticsManagementServiceImpl implements LogisticsManagementServic
 		return dao.getRegularBusTable();
 	}
 	
-
 	@Override
 	public Member findPassengerInRegularBus(Member member, RegularBus regularBus) throws ObjectNotFoundException {
 		return dao.findPassengerInRegularBus(member, regularBus);
@@ -114,10 +120,11 @@ public class LogisticsManagementServiceImpl implements LogisticsManagementServic
 		dao.editTerminateTime(id, time);
 		
 	}
-	// #endregion
 
 	@Override
 	public TableModel getRegularBusTableModel() {
 		return dao.getRegularBusTableModel();
 	}
+	
+	// #endregion
 }
