@@ -12,17 +12,10 @@ import com.github.akagawatsurunaki.roujinfamily.model.Table;
 public interface HouseKeeperService {
 
 	Table<Member> getMemberTable();
-
 	void loadAllMembersFromFile() throws FileReadingException;
-
 	List<Member> findMembersByHouseKeeperId(int houseKeeperId);
-
 	Member findMemberById(int id) throws ObjectNotFoundException;
-
 	boolean addMember(Member member) throws FileWritingException, CanNotMatchException;
-
 	TableModel getMemberEditTableModel(int hskId);
-	
-	
 
 }
