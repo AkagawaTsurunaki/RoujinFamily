@@ -10,7 +10,6 @@ import com.github.akagawatsurunaki.roujinfamily.model.Table;
 import java.lang.reflect.Type;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

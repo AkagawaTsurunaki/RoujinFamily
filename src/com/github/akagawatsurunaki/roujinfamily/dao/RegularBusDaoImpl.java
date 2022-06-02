@@ -5,10 +5,8 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
-
 import com.github.akagawatsurunaki.roujinfamily.exception.CanNotMatchException;
 import com.github.akagawatsurunaki.roujinfamily.exception.FileReadingException;
 import com.github.akagawatsurunaki.roujinfamily.exception.FileWritingException;
@@ -16,7 +14,6 @@ import com.github.akagawatsurunaki.roujinfamily.exception.ObjectNotFoundExceptio
 import com.github.akagawatsurunaki.roujinfamily.model.Member;
 import com.github.akagawatsurunaki.roujinfamily.model.RegularBus;
 import com.github.akagawatsurunaki.roujinfamily.model.Table;
-import com.github.akagawatsurunaki.roujinfamily.model.User;
 import com.github.akagawatsurunaki.roujinfamily.util.FileUtil;
 import com.github.akagawatsurunaki.roujinfamily.util.GlobalFormatter;
 import com.github.akagawatsurunaki.roujinfamily.util.GsonUtil;

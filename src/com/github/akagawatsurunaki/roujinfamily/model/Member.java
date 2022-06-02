@@ -1,8 +1,6 @@
 package com.github.akagawatsurunaki.roujinfamily.model;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-
 import com.github.akagawatsurunaki.roujinfamily.exception.CanNotMatchException;
 import com.github.akagawatsurunaki.roujinfamily.util.GlobalFormatter;
 import com.github.akagawatsurunaki.roujinfamily.util.Matcher;
