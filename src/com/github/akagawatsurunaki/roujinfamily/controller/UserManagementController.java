@@ -296,7 +296,6 @@ public class UserManagementController extends Controller {
 		} catch (Exception e) {
 			showErrorMessageBox("您输入的信息是非法的。", "新增会员失败", "该错误是由控制器发起的。", mainFrame);
 		}
-
 	}
 	// #endregion
 
