@@ -6,6 +6,10 @@ import com.github.akagawatsurunaki.roujinfamily.exception.FileReadingException;
 import com.github.akagawatsurunaki.roujinfamily.exception.ObjectNotFoundException;
 import com.github.akagawatsurunaki.roujinfamily.model.Role;
 
+/**
+ * @author Akagawa Tsurunaki
+ *
+ */
 public class LoginServiceImpl implements LoginService {
 	
 	// #region Properties

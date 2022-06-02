@@ -18,6 +18,10 @@ import com.github.akagawatsurunaki.roujinfamily.model.Table;
 import com.github.akagawatsurunaki.roujinfamily.util.FileUtil;
 import com.github.akagawatsurunaki.roujinfamily.util.GsonUtil;
 
+/**
+ * @author Akagawa Tsurunaki
+ *
+ */
 public class MemberDaoImpl implements MemberDao {
 
 	// #region Properties

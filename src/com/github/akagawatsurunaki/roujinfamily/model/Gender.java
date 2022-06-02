@@ -1,5 +1,9 @@
 package com.github.akagawatsurunaki.roujinfamily.model;
 
+/**
+ * @author Akagawa Tsurunaki
+ *
+ */
 public enum Gender {
 	MALE {
 		public String toString() {
@@ -16,6 +20,4 @@ public enum Gender {
 			return "δ֪";
 		}
 	}
-	
-
 }

@@ -11,6 +11,10 @@ import com.github.akagawatsurunaki.roujinfamily.exception.ObjectNotFoundExceptio
 import com.github.akagawatsurunaki.roujinfamily.model.Member;
 import com.github.akagawatsurunaki.roujinfamily.model.Table;
 
+/**
+ * @author Akagawa Tsurunaki
+ *
+ */
 public interface MemberDao {
 	public void initialize() throws FileReadingException;
 	public void loadAllMembersFromFile() throws FileReadingException;

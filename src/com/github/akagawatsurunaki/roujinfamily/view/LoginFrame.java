@@ -11,6 +11,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JPasswordField;
 
+/**
+ * @author Akagawa Tsurunaki
+ *
+ */
 public class LoginFrame extends JFrame {
 
 	public JTextField getAccountTxtFld() {

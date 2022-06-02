@@ -3,6 +3,11 @@ package com.github.akagawatsurunaki.roujinfamily.model;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Akagawa Tsurunaki
+ *
+ * @param <T>
+ */
 public class Table <T> {
 
 	private int idCount;

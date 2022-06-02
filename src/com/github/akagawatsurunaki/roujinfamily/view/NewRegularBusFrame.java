@@ -14,6 +14,10 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+/**
+ * @author Akagawa Tsurunaki
+ *
+ */
 public class NewRegularBusFrame extends JFrame {
 
 	public JTextArea getNotesTxtArea() {

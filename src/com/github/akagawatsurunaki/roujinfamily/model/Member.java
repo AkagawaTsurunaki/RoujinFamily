@@ -5,6 +5,10 @@ import com.github.akagawatsurunaki.roujinfamily.exception.CanNotMatchException;
 import com.github.akagawatsurunaki.roujinfamily.util.GlobalFormatter;
 import com.github.akagawatsurunaki.roujinfamily.util.Matcher;
 
+/**
+ * @author Akagawa Tsurunaki
+ *
+ */
 public class Member {
 	
 	// #region Properties

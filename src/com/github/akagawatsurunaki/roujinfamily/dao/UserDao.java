@@ -12,6 +12,10 @@ import com.github.akagawatsurunaki.roujinfamily.model.Role;
 import com.github.akagawatsurunaki.roujinfamily.model.Table;
 import com.github.akagawatsurunaki.roujinfamily.model.User;
 
+/**
+ * @author Akagawa Tsurunaki
+ * 
+ */
 public interface UserDao {
 	
 	public void initialize() throws FileReadingException;

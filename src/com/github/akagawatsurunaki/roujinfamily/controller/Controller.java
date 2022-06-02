@@ -10,6 +10,11 @@ import com.github.akagawatsurunaki.roujinfamily.model.Gender;
 import com.github.akagawatsurunaki.roujinfamily.model.Member;
 import com.github.akagawatsurunaki.roujinfamily.model.RegularBus;
 import com.github.akagawatsurunaki.roujinfamily.model.User;
+
+/**
+ * @author Akagawa Tsurunaki
+ *
+ */
 public abstract class Controller {
 	
 	// #region Abstract Methods

@@ -13,6 +13,10 @@ import com.github.akagawatsurunaki.roujinfamily.model.Role;
 import com.github.akagawatsurunaki.roujinfamily.model.Table;
 import com.github.akagawatsurunaki.roujinfamily.model.User;
 
+/**
+ * @author Akagawa Tsurunaki
+ *
+ */
 public interface UserManagementService {
 
 	public boolean addUser(User user)throws FileWritingException, CanNotMatchException;

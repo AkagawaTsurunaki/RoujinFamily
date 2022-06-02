@@ -23,6 +23,12 @@ import com.google.gson.JsonSerializer;
 import com.google.gson.reflect.TypeToken;
 import com.github.akagawatsurunaki.roujinfamily.model.User;
 import java.time.DayOfWeek;
+
+
+/**
+ * @author Akagawa Tsurunaki
+ *
+ */
 public class GsonUtil {
 	
 	// #region Regist Global Gson

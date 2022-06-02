@@ -8,6 +8,10 @@ import com.github.akagawatsurunaki.roujinfamily.service.LoginService;
 import com.github.akagawatsurunaki.roujinfamily.service.LoginServiceImpl;
 import com.github.akagawatsurunaki.roujinfamily.view.LoginFrame;
 
+/**
+ * @author Akagawa Tsurunaki
+ *
+ */
 public class LoginController extends Controller {
 	
 	// #region Properties
@@ -20,6 +24,7 @@ public class LoginController extends Controller {
 	// #endregion
 	
 	// #region Singleton Getters
+	
 	public static LoginController getInstance() {
 		if(instance == null) {
 			instance = new LoginController();
@@ -44,6 +49,9 @@ public class LoginController extends Controller {
 		
 		try {
 			// If input error several times in succession.
+			
+			// LogisticsManagementController.getInstance().showMainFrame();
+			
 			if (errorCount >= MAX_ERROR_COUNT) {
 				showErrorMessageBox("输入错误次数过多，为保护系统安全，程序即将关闭。", "程序即将关闭", "本次程序关闭是由控制器发起的。", mainLoginFrame);
 				System.exit(0);

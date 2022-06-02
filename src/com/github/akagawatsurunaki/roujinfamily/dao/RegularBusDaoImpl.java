@@ -18,6 +18,10 @@ import com.github.akagawatsurunaki.roujinfamily.util.FileUtil;
 import com.github.akagawatsurunaki.roujinfamily.util.GlobalFormatter;
 import com.github.akagawatsurunaki.roujinfamily.util.GsonUtil;
 
+/**
+ * @author Akagawa Tsurunaki
+ *
+ */
 public class RegularBusDaoImpl implements RegularBusDao {
 	
 	Table<RegularBus> regularBusTable;

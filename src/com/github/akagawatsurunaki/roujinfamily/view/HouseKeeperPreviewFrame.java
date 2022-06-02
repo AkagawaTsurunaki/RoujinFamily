@@ -12,6 +12,10 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.ActionEvent;
 
+/**
+ * @author Akagawa Tsurunaki
+ *
+ */
 public class HouseKeeperPreviewFrame extends JFrame {
 
 

@@ -8,6 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 import com.github.akagawatsurunaki.roujinfamily.exception.CanNotMatchException;
 
+/**
+ * @author Akagawa Tsurunaki
+ *
+ */
 public class RegularBus {
 
 	// #region Peoperties

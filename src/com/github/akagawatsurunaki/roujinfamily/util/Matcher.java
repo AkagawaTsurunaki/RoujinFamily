@@ -4,6 +4,10 @@ import java.util.regex.Pattern;
 
 import com.github.akagawatsurunaki.roujinfamily.model.Constants;
 
+/**
+ * @author Akagawa Tsurunaki
+ *
+ */
 public class Matcher {
 
 	//#region Matcher
