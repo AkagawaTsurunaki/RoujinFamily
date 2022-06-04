@@ -85,19 +85,20 @@ public class HouseKeeperManagementController extends Controller {
 	// #region Request Service Methods
 	
 	public void rqsAddMember() {
-
-		int id = selectedMember.getId();
-		Gender gender = getGenderFromRdBtn(memberInfoEditFrame.getMaleRdBtn());
-		String telNum = memberInfoEditFrame.getTelNumTxtFld().getText();
-		String realName = memberInfoEditFrame.getRealNameTxtFld().getText();
-		LocalDate birthday = LocalDate.parse(memberInfoEditFrame.getBirthdayTxtFld().getText(), GlobalFormatter.dateFormatter);
-		
+			
 		try {
+			int id = selectedMember.getId();
+			Gender gender = getGenderFromRdBtn(memberInfoEditFrame.getMaleRdBtn());
+			String telNum = memberInfoEditFrame.getTelNumTxtFld().getText();
+			String realName = memberInfoEditFrame.getRealNameTxtFld().getText();
+			LocalDate birthday = LocalDate.parse(memberInfoEditFrame.getBirthdayTxtFld().getText(), GlobalFormatter.dateFormatter);
 			Member newMember = new Member(id, realName, gender, birthday, telNum, loginHouseKeeperId);
 			service.addMember(newMember);
 			updateTableContent();
 		} catch (CanNotMatchException | FileWritingException | FileReadingException e) {
 			showErrorMessageBox(e, mainFrame);
+		} catch (Exception e) {
+			showErrorMessageBox("您输入的信息是非法的。\n请检查您是否有空的输入项。", "非法输入", "该错误是由控制器发起的。", mainFrame);
 		}
 		
 	}
