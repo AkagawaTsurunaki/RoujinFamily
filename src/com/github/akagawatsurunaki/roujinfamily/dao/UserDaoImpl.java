@@ -26,7 +26,6 @@ public class UserDaoImpl implements UserDao {
 
 	private static UserDao instance = new UserDaoImpl();
 	private static final String filePath = ".\\save\\User.json";
-			//"C:\\Users\\96514\\Desktop\\save\\Test.json";
 	private static User loginUser;
 	private Table<User> userTable;
 

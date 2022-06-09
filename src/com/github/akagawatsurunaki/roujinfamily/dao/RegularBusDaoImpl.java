@@ -29,7 +29,6 @@ public class RegularBusDaoImpl implements RegularBusDao {
 	private static RegularBusDao instance = new RegularBusDaoImpl();
 	
 	private static final String filePath = ".\\save\\RegularBus.json";
-			//"C:\\Users\\96514\\Desktop\\save\\RegularBus.json";
 	
 	// #region Constructors and Instance Getters
 	

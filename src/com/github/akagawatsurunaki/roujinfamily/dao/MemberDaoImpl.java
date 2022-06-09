@@ -29,7 +29,6 @@ public class MemberDaoImpl implements MemberDao {
 	private static MemberDao instance = new MemberDaoImpl();
 
 	private static final String filePath = ".\\save\\Members.json";
-	// "C:\\Users\\96514\\Desktop\\save\\Members.json";
 
 	private Table<Member> memberTable;
 
