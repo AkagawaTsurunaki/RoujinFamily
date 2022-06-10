@@ -287,7 +287,7 @@ public class UserManagementController extends Controller {
 			String telNum = newMemberFrame.getTelNumTxtFld().getText();
 			String realName = newMemberFrame.getRealNameTxtFld().getText();
 			LocalDate birthday = LocalDate.parse(newMemberFrame.getBirthdayTxtFld().getText(),
-					GlobalFormatter.timeFormatter);
+					GlobalFormatter.dateFormatter);
 			Member newMember = new Member(Constants.DEFAULT_OBJECT_ID, realName, gender, birthday, telNum,
 					houseKeeperId);
 			service.addMember(newMember);
