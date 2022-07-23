@@ -1,4 +1,7 @@
 # Northeastern University (NEU in China) Basic Programming Training Course Assignment and Homework: RoujinFamily
 
-  This procedure has been completed and basically passed the competitive examination in first-year college. 
-  Fyi. Glad to help you.
+Language: Java
+
+Tech stacks: Json, 3-tier architecture (MVC included), Singleton, Java swing.
+
+Glad to help you.
