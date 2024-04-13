@@ -1,0 +1,60 @@
+{
+    "idCount": 5,
+    "data": [
+        {
+            "userName": "Admin008",
+            "password": "SY37CvXvz8srHjR",
+            "role": "ADMINISTRATOR",
+            "id": 0,
+            "realName": "Poopy",
+            "gender": "MALE",
+            "birthday": "2022-5-22",
+            "telNumber": "18999999999",
+            "houseKeeperId": 0
+        },
+        {
+            "userName": "TeaPot",
+            "password": "9RkRpL2LR45Aspt",
+            "role": "HOUSE_KEEPER",
+            "id": 1,
+            "realName": "Kakky",
+            "gender": "FEMALE",
+            "birthday": "1995-3-17",
+            "telNumber": "17999999999",
+            "houseKeeperId": 0
+        },
+        {
+            "userName": "Logiiiee",
+            "password": "w4NoO7gh9L8xEPN",
+            "role": "LOGISTICS",
+            "id": 3,
+            "realName": "White",
+            "gender": "MALE",
+            "birthday": "1980-2-27",
+            "telNumber": "17999999998",
+            "houseKeeperId": 0
+        },
+        {
+            "userName": "GoodDay",
+            "password": "WAKYJXxoNHgvj0h",
+            "role": "HOUSE_KEEPER",
+            "id": 4,
+            "realName": "Natty",
+            "gender": "MALE",
+            "birthday": "1998-1-1",
+            "telNumber": "17999999997",
+            "houseKeeperId": 0
+        },
+        {
+            "userName": "hahaha",
+            "password": "6KFtt8EAji58B9l",
+            "role": "ADMINISTRATOR",
+            "id": 5,
+            "realName": "Smile",
+            "gender": "MALE",
+            "birthday": "2002-1-1",
+            "telNumber": "17999999996",
+            "houseKeeperId": 0
+        }
+    ]
+}

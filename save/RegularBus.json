@@ -1,0 +1,41 @@
+{
+    "idCount": 8,
+    "data": [
+        {
+            "id": 1,
+            "routeCode": "ToaruCityBus01",
+            "routeName": "Toaru City Bus 01",
+            "routeType": "INNER_ISLAND",
+            "routeDirection": "DOWN",
+            "operateDate": "MONDAY",
+            "departureTime": "09:00",
+            "terminateTime": "23:00",
+            "notes": "The first bus in Toaru City.",
+            "passengerList": []
+        },
+        {
+            "id": 2,
+            "routeCode": "ToaruCityBus02",
+            "routeName": "Toaru City Bus 02",
+            "routeType": "INNER_ISLAND",
+            "routeDirection": "DOWN",
+            "operateDate": "MONDAY",
+            "departureTime": "09:00",
+            "terminateTime": "12:00",
+            "notes": "The biggest bus in Toaru City",
+            "passengerList": []
+        },
+        {
+            "id": 8,
+            "routeCode": "ToaruCityBus03",
+            "routeName": "Toaru City Bus 03",
+            "routeType": "INNER_ISLAND",
+            "routeDirection": "DOWN",
+            "operateDate": "THURSDAY",
+            "departureTime": "09:00",
+            "terminateTime": "23:00",
+            "notes": "The hottest bus in Toaru City",
+            "passengerList": []
+        }
+    ]
+}
